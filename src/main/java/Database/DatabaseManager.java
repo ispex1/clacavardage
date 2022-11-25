@@ -9,7 +9,7 @@ public class DatabaseManager {
     }
 
     public static void archiveMessage(int idSession, Message msg){
-        BDD(idSession).add(msg); //requête JDBC
+        //BDD(idSession).add(msg); //requête JDBC
     }
 
 }
