@@ -12,6 +12,9 @@ public class Message {
     // COMMENT FAIRE ARRIVER LA DATA ??
     // CHANGER TYPE TIME ?? dd:mm:yyyy / hh:mm:ss
 
+    public Message(){
+    }
+
     public Message(String data, String time, User sender, User receiver){
         this.setData(data);
         this.setTime(time);
