@@ -1,4 +1,4 @@
-package Model.User;
+package model.user;
 
 public class User {
     private String ip;

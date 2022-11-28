@@ -1,8 +1,8 @@
-package Model;
+package model;
 
-import Database.DatabaseManager;
-import Model.User.User;
-import Model.Message;
+import database.DatabaseManager;
+import model.Message;
+import model.user.User;
 
 import java.util.ArrayList;
 

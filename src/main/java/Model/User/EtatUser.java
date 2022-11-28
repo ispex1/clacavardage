@@ -1,4 +1,4 @@
-package Model.User;
+package model.user;
 
 //POUR + INFOS : https://www.youtube.com/watch?v=KNCfbjhKgxg
 

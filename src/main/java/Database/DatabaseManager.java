@@ -1,10 +1,11 @@
-package Database;
+package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import Model.Message;
+import model.Message;
+import model.user.User;
 
 public class DatabaseManager {
     // JDBC driver name and database URL

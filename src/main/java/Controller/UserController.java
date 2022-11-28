@@ -1,8 +1,8 @@
-package Controller;
-
-import Model.User.User;
+package controller;
 
 import java.util.ArrayList;
+
+import model.user.User;
 
 public class UserController {
 
