@@ -12,7 +12,9 @@ public class DatabaseManager {
     String url = "jdbc:sqlite:./sqlite/clac.db";  
 
     public DatabaseManager(){
-
+        String db = "DatabaseManager created";
+        Message msg = new Message(db);
+        System.out.println(msg.getData());
     }
 
     // connect to the database
