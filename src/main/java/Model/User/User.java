@@ -7,6 +7,10 @@ public class User {
     private int port; //utile ?? + rajouter à l'UML
     private EtatUser etatUser;
 
+    public User (String ip){
+        this.ip = ip;
+    }
+
     public User (String pseudo, String ip, int idUser, int port, EtatUser etatUser){
         this.setPseudo(pseudo);
         this.setIP(ip);
@@ -24,7 +28,7 @@ public class User {
         return this.pseudo;
     }
 
-    public void setIP(String IP){
+    public void setIP(String ip){
         this.ip = ip ;
     }
     public String getIP(){

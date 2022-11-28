@@ -1,14 +1,19 @@
 import database.DatabaseManager;
 import model.Message;
+import model.user.*;
 
-public class main {
+public class Main{
 
     public static void main (String[] args){
-        System.out.println("hello world");
         Message msg = new Message("gros caca");
-        System.out.println(msg.getData());
-        DatabaseManager db = new DatabaseManager();
+        User este = new User("este");
+        User gaboche = new User("gaboche");
+        msg.setSender(este);
+        msg.setReceiver(gaboche);
+        System.out.println(msg.toString());
+
+
+        DatabasemManager db = new DatabaseManager();
     }
 
 }
-

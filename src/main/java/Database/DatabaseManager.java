@@ -4,29 +4,35 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import model.Message;
-import model.user.User;
+import model.*;
 
 public class DatabaseManager {
-    // JDBC driver name and database URL
-    String url = "jdbc:sqlite:./sqlite/clac.db";  
 
     public DatabaseManager(){
-        String db = "DatabaseManager created";
-        Message msg = new Message(db);
-        System.out.println(msg.getData());
+        connect();
     }
 
-    // connect to the database
-    private Connection connect() {
-		Connection conn = null;
+    public void connect() {
+        Connection conn = null;
         try {
+            // db parameters
+            String url = "jdbc:sqlite:sqlite/clac.db";
+            // create a connection to the database
             conn = DriverManager.getConnection(url);
+            System.out.println("Connection to SQLite has been established.");
+            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
-        return conn;
- 	}	 
+    }
 
     
 

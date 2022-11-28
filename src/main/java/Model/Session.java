@@ -1,10 +1,10 @@
 package model;
 
-import database.DatabaseManager;
-import model.Message;
-import model.user.User;
+import model.user.*;
 
 import java.util.ArrayList;
+
+import database.DatabaseManager;
 
 public class Session {
     private static String socket;

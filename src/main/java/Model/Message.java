@@ -39,6 +39,15 @@ public class Message {
         this.setReceiver(receiver);
     }
 
+    @Override 
+    public String toString(){
+        return ("Sender : "     + this.getSender().getIP()      + " | "  
+            +   "Receiver : "   + this.getReceiver().getIP()    + " | "  
+            +   "Message : "    + this.getData()                + " | "  
+            +   "Time : "       + this.getTime()                + " | "
+            );
+    }
+
     // GETTER & SETTER
 
     public void setData(String data){
