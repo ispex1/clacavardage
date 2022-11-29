@@ -19,9 +19,13 @@ public class Main{
         System.out.println(msg.toString());
 
         DatabaseManager db = new DatabaseManager();   
-        db.insertMessage(gaboche.getIP(), msg);
-        ArrayList<Integer> list = db.findIndexV2(gaboche.getIP(), "caca");
+        //db.insertMessage(gaboche.getIP(), msg);
+        ArrayList<Integer> list = db.findIndex(gaboche.getIP(), "caca");
         printList(list);
+        for (int i = 1; i < list.size()+1; i++){
+            db.deleteMessage(gaboche.getIP(), i);
+        }
+
     }
 
     //print every element of the arrayList

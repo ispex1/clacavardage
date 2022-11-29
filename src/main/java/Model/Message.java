@@ -23,7 +23,7 @@ public class Message {
 		this.setTime(sdf.format(new Date()));
     }
 
-    public Message(String msg, User sender, User receiver){
+    public Message(User sender, User receiver, String msg){
         this.setData(msg);
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         this.setTime(sdf.format(new Date()));
@@ -31,9 +31,8 @@ public class Message {
         this.setReceiver(receiver);
     }
 
-
-    public Message(String data, String time, User sender, User receiver){
-        this.setData(data);
+    public Message(User sender, User receiver, String msg, String time){
+        this.setData(msg);
         this.setTime(time);
         this.setSender(sender);
         this.setReceiver(receiver);

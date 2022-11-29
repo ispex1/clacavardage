@@ -67,6 +67,7 @@ public class DatabaseManager {
         String sql= "CREATE TABLE IF NOT EXISTS " + ipOther +"(\n"
                 + "	indexMsg integer PRIMARY KEY,\n" // index du message
                 + " sender text NOT NULL, \n" // ip de l'envoyeur
+                + " receiver text NOT NULL, \n" // ip du receveur
                 + " message text NOT NULL, \n" // message
                 + "	time text NOT NULL"// date et heure
                 + ");"; 
@@ -98,13 +99,14 @@ public class DatabaseManager {
     }
 
     public void insertMessage(String ipOther, Message msg) {
-        String sql = "INSERT INTO " + ipOther + "(indexMsg,sender,message,time) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO " + ipOther + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(2, msg.getSender().getIP());
-                pstmt.setString(3, msg.getData());
-                pstmt.setString(4, msg.getTime());
+                pstmt.setString(3, msg.getReceiver().getIP());
+                pstmt.setString(4, msg.getData());
+                pstmt.setString(5, msg.getTime());
                 pstmt.executeUpdate();
                 System.out.println("A new message has been add to the " + ipOther + " table");
         } catch (SQLException e) {
@@ -113,7 +115,7 @@ public class DatabaseManager {
         }
     }
 
-    public ArrayList<Integer> findIndexV2(String ipOther, String data){
+    public ArrayList<Integer> findIndex(String ipOther, String data){
         String sql = "SELECT indexMsg, message FROM " + ipOther;
         ArrayList<Integer> indexList = new ArrayList<Integer>();
 
@@ -130,6 +132,36 @@ public class DatabaseManager {
             System.out.println(e.getMessage());
         }
         return indexList;
+    }
+
+    public void deleteMessage(String ipOther, int index) {
+        String sql = "DELETE FROM " + ipOther + " WHERE indexMsg = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, index);
+                pstmt.executeUpdate();
+                System.out.println("The message with the index " + index + " has been successfully deleted");
+        } catch (SQLException e) {
+            System.out.println("Error deleting a message");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Message getMsg(String ipOther, int index) {
+        String sql = "SELECT * FROM " + ipOther + " WHERE indexMsg = ?";
+        Message msg = null;
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, index);
+                ResultSet rs = pstmt.executeQuery();
+                //msg = new Message(rs.getString("sender"), rs.getString("receiver"), rs.getString("message"), rs.getString("time"));
+        } catch (SQLException e) {
+            System.out.println("Error getting a message");
+            System.out.println(e.getMessage());
+        }
+        return msg;
     }
 
     public static void archiveMessage(int idSession, Message msg){
