@@ -13,7 +13,7 @@ public class Main{
         System.out.println(msg.toString());
 
 
-        DatabasemManager db = new DatabaseManager();
+        DatabaseManager db = new DatabaseManager();
     }
 
 }

@@ -1,22 +1,47 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import model.*;
 
+//  https://www.sqlitetutorial.net/sqlite-java/
+// amélioration à faire : demander à user de choisir un id unique à la premiere
+// connexion, puis le sauvegarder dans la bdd locale -> changement d'ip, même user
+
 public class DatabaseManager {
 
+    public static String url = "jdbc:sqlite:sqlite/clac.db";
+
     public DatabaseManager(){
+        createNewDatabase();
         connect();
     }
 
+    // utile ??? 
+    // "When you connect to an SQLite database that does not exist, 
+    // it automatically creates a new database"
+    // connect crée la db ??
+    public static void createNewDatabase() {
+        
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                System.out.println("The driver name is " + meta.getDriverName());
+                System.out.println("A new database has been created.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
     public void connect() {
         Connection conn = null;
         try {
-            // db parameters
-            String url = "jdbc:sqlite:sqlite/clac.db";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
@@ -34,7 +59,23 @@ public class DatabaseManager {
         }
     }
 
-    
+    public static void createNewConvo(String ipOther) {
+        // SQL statement for creating a new table
+        String sql = "CREATE TABLE IF NOT EXISTS '" + ipOther + "' (\n"
+                + "	index integer PRIMARY KEY,\n" // index est l'index du message        
+                + "	sender text NOT NULL,\n" // sender est l'ip de l'envoyeur
+                + "	message text NOT NULL,\n" // message est le message envoyé
+                + "	date text NOT NULL\n" // date est la date de l'envoi
+                + ");";
+        
+        try (Connection conn = DriverManager.getConnection(url);
+            Statement stmt = conn.createStatement()) {
+                // create a new table
+                stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public static void archiveMessage(int idSession, Message msg){
         //BDD(idSession).add(msg); //requête JDBC
