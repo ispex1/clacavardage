@@ -19,6 +19,8 @@ public class DatabaseManager {
     public DatabaseManager(){
         createNewDatabase();
         connect();
+        //createTableConvo("user");
+        createNewTable("user");
     }
 
     // utile ??? 
@@ -59,20 +61,23 @@ public class DatabaseManager {
         }
     }
 
-    public static void createNewConvo(String ipOther) {
+    public static void createNewTable(String ipOther) {
         // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS '" + ipOther + "' (\n"
-                + "	index integer PRIMARY KEY,\n" // index est l'index du message        
-                + "	sender text NOT NULL,\n" // sender est l'ip de l'envoyeur
-                + "	message text NOT NULL,\n" // message est le message envoyé
-                + "	date text NOT NULL\n" // date est la date de l'envoi
-                + ");";
-        
-        try (Connection conn = DriverManager.getConnection(url);
-            Statement stmt = conn.createStatement()) {
+        String sql= "CREATE TABLE IF NOT EXISTS " + ipOther +"(\n"
+                + "	indexMsg integer PRIMARY KEY,\n" // index du message
+                + " sender text NOT NULL, \n" // ip de l'envoyeur
+                + " message text NOT NULL, \n" // message
+                + "	time text NOT NULL"// date et heure
+                + ");"; 
+
+        // SQL statement for creating a new table
+        try (Connection conn = DriverManager.getConnection(url); 
+             Statement  stmt = conn.createStatement()) {
                 // create a new table
                 stmt.execute(sql);
+                System.out.println("A new table has been created with the name : " + ipOther);
         } catch (SQLException e) {
+            System.out.println("Error creating table");
             System.out.println(e.getMessage());
         }
     }
