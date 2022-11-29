@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import model.*;
 
@@ -112,23 +113,24 @@ public class DatabaseManager {
         }
     }
 
-    // the function return the indexMsg of rows that have the data string into it
-    // for the moment, it return the first indexMsg that match
-    public int findMessage(String ipOther, String data){
-        String sql = "SELECT indexMsg FROM " + ipOther + " WHERE message = ?";
-        int index = -1;
+    public ArrayList<Integer> findIndexV2(String ipOther, String data){
+        String sql = "SELECT indexMsg, message FROM " + ipOther;
+        ArrayList<Integer> indexList = new ArrayList<Integer>();
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, data);
-                pstmt.executeQuery();
-                System.out.println("The index of the message is : " + index);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    if(rs.getString("message").indexOf(data) != -1){
+                        indexList.add(rs.getInt("indexMsg"));
+                    }
+                }
         } catch (SQLException e) { 
             System.out.println("Error finding a message");
             System.out.println(e.getMessage());
         }
-        return index;
-    }    
+        return indexList;
+    }
 
     public static void archiveMessage(int idSession, Message msg){
         //BDD(idSession).add(msg); //requête JDBC
