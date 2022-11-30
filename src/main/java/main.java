@@ -12,6 +12,7 @@ public class Main{
 
     public static void main (String[] args){
         Message msg = new Message("petit caca");
+        Message msg2 = new Message();
         User este = new User("este");
         User gaboche = new User("gaboche");
         msg.setSender(este);
@@ -22,8 +23,10 @@ public class Main{
         //db.insertMessage(gaboche.getIP(), msg);
         ArrayList<Integer> list = db.findIndex(gaboche.getIP(), "caca");
         printList(list);
-        for (int i = 1; i < list.size()+1; i++){
-            db.deleteMessage(gaboche.getIP(), i);
+        for (int i = 0; i < list.size(); i++){
+            msg2 = db.getMsg("gaboche", list.get(i));
+            System.out.println(msg2.toString());
+            db.deleteMessage(gaboche.getIP(), list.get(i));
         }
 
     }

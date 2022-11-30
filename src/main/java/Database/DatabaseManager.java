@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.*;
+import model.user.User;
 
 //  https://www.sqlitetutorial.net/sqlite-java/
 // amélioration à faire : demander à user de choisir un id unique à la premiere
@@ -156,14 +157,14 @@ public class DatabaseManager {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, index);
                 ResultSet rs = pstmt.executeQuery();
-                //msg = new Message(rs.getString("sender"), rs.getString("receiver"), rs.getString("message"), rs.getString("time"));
+                msg = new Message(new User(rs.getString("sender")), new User(rs.getString("receiver")), rs.getString("message"), rs.getString("time"));
         } catch (SQLException e) {
             System.out.println("Error getting a message");
             System.out.println(e.getMessage());
         }
         return msg;
     }
-
+    
     public static void archiveMessage(int idSession, Message msg){
         //BDD(idSession).add(msg); //requête JDBC
     }
