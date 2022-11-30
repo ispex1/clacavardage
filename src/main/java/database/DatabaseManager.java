@@ -164,7 +164,7 @@ public class DatabaseManager {
         }
         return msg;
     }
-    
+
     public static void archiveMessage(int idSession, Message msg){
         //BDD(idSession).add(msg); //requête JDBC
     }

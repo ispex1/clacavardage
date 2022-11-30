@@ -1,10 +1,9 @@
 package model;
 
-import model.user.*;
-
 import java.util.ArrayList;
 
 import database.DatabaseManager;
+import model.user.*;
 
 public class Session {
     private static String socket;
