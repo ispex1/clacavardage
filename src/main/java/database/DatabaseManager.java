@@ -116,6 +116,20 @@ public class DatabaseManager {
         }
     }
 
+    public void deleteMessage(String ipOther, int index) {
+        String sql = "DELETE FROM " + ipOther + " WHERE indexMsg = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, index);
+                pstmt.executeUpdate();
+                System.out.println("The message with the index " + index + " has been successfully deleted");
+        } catch (SQLException e) {
+            System.out.println("Error deleting a message");
+            System.out.println(e.getMessage());
+        }
+    }
+    
     public ArrayList<Integer> findIndex(String ipOther, String data){
         String sql = "SELECT indexMsg, message FROM " + ipOther;
         ArrayList<Integer> indexList = new ArrayList<Integer>();
@@ -135,20 +149,6 @@ public class DatabaseManager {
         return indexList;
     }
 
-    public void deleteMessage(String ipOther, int index) {
-        String sql = "DELETE FROM " + ipOther + " WHERE indexMsg = ?";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, index);
-                pstmt.executeUpdate();
-                System.out.println("The message with the index " + index + " has been successfully deleted");
-        } catch (SQLException e) {
-            System.out.println("Error deleting a message");
-            System.out.println(e.getMessage());
-        }
-    }
-
     public Message getMsg(String ipOther, int index) {
         String sql = "SELECT * FROM " + ipOther + " WHERE indexMsg = ?";
         Message msg = null;
@@ -157,7 +157,11 @@ public class DatabaseManager {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, index);
                 ResultSet rs = pstmt.executeQuery();
-                msg = new Message(new User(rs.getString("sender")), new User(rs.getString("receiver")), rs.getString("message"), rs.getString("time"));
+                msg = new Message(new User(rs.getString("sender")), 
+                                  new User(rs.getString("receiver")), 
+                                  rs.getString("message"), 
+                                  rs.getString("time")
+                                  );
         } catch (SQLException e) {
             System.out.println("Error getting a message");
             System.out.println(e.getMessage());

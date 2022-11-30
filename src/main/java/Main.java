@@ -9,7 +9,6 @@ import model.user.*;
 public class Main{
 
     // ip 12:48:42 -> 192.168.56.1
-
     public static void main (String[] args){
         Message msg = new Message("petit caca");
         Message msg2 = new Message();
@@ -20,9 +19,9 @@ public class Main{
         System.out.println(msg.toString());
 
         DatabaseManager db = new DatabaseManager();   
-        //db.insertMessage(gaboche.getIP(), msg);
+        db.insertMessage(gaboche.getIP(), msg);
         ArrayList<Integer> list = db.findIndex(gaboche.getIP(), "caca");
-        printList(list);
+        //printList(list);
         for (int i = 0; i < list.size(); i++){
             msg2 = db.getMsg("gaboche", list.get(i));
             System.out.println(msg2.toString());
@@ -37,5 +36,4 @@ public class Main{
             System.out.println(list.get(i));
         }
     }
-    
 }
