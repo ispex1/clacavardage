@@ -20,10 +20,10 @@ public class Main{
 
         DatabaseManager db = new DatabaseManager();   
         db.insertMessage(gaboche.getIP(), msg);
-        ArrayList<Integer> list = db.findIndex(gaboche.getIP(), "caca");
+        ArrayList<Integer> list = db.findListOfIndex(gaboche.getIP(), "caca");
         //printList(list);
         for (int i = 0; i < list.size(); i++){
-            msg2 = db.getMsg("gaboche", list.get(i));
+            msg2 = db.getMsgFromIndex("gaboche", list.get(i));
             System.out.println(msg2.toString());
             db.deleteMessage(gaboche.getIP(), list.get(i));
         }

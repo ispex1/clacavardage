@@ -6,51 +6,53 @@ import database.DatabaseManager;
 import model.user.*;
 
 public class Session {
-    private static String socket;
-    private static User receiver;
-    private static int idSession;
+    private String socket;
+    private User otherUser;
+    private int idSession;
 
-    public Session(String socket, User receiver, int idSession){
+    public Session(String socket, User otherUser, int idSession){
         this.setSocket(socket);
-        this.setReceiver(receiver);
+        this.setOtherUser(otherUser);
         this.setIdSession(idSession);
     }
 
-    // use to show the history in the frame session
-    // TO DO
-    /*
     public ArrayList<Message> getHistory(){
-        ArrayList<Message> history;
-        return history;
+        return DatabaseManager.getHistory(this.otherUser.getIP());
     }
-    */
 
-    // save message in the bdd
     public void archiveMsg(Message msg){
-        DatabaseManager.archiveMessage(this.idSession, msg);
+        DatabaseManager db = new DatabaseManager();
+        db.insertMessage(this.getOtherUser().getIP(), msg);
+    }
+
+    // delete message in the bdd
+    public void deleteMsg(Message msg){
+        String ipOther = this.otherUser.getIP();
+        int index = DatabaseManager.getIndexFromMsg(ipOther, msg);
+        DatabaseManager.deleteMessage(ipOther, index);
     }
 
 
     // GETTER & SETTER
 
     public void setSocket(String socket) {
-        Session.socket = socket;
+        this.socket = socket;
     }
-    public static String getSocket() {
+    public String getSocket() {
         return socket;
     }
 
     public void setIdSession(int idSession) {
-        Session.idSession = idSession;
+        this.idSession = idSession;
     }
-    public static int getIdSession() {
+    public int getIdSession() {
         return idSession;
     }
 
-    public void setReceiver(User receiver) {
-        Session.receiver = receiver;
+    public void setOtherUser(User otherUser) {
+        this.otherUser = otherUser;
     }
-    public static User getReceiver() {
-        return receiver;
+    public User getOtherUser() {
+        return otherUser;
     }
 }

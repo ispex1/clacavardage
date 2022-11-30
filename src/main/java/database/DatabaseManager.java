@@ -32,7 +32,6 @@ public class DatabaseManager {
     // it automatically creates a new database"
     // connect crée la db ??
     public static void createNewDatabase() {
-        
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
@@ -116,7 +115,7 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteMessage(String ipOther, int index) {
+    public static void deleteMessage(String ipOther, int index) {
         String sql = "DELETE FROM " + ipOther + " WHERE indexMsg = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -130,7 +129,9 @@ public class DatabaseManager {
         }
     }
     
-    public ArrayList<Integer> findIndex(String ipOther, String data){
+    // CTRL + F -> When you search a word, it return you the list of the index where the word appears
+    // Make an other version where it return the list of the message where the word appears ???
+    public ArrayList<Integer> findListOfIndex(String ipOther, String data){
         String sql = "SELECT indexMsg, message FROM " + ipOther;
         ArrayList<Integer> indexList = new ArrayList<Integer>();
 
@@ -143,13 +144,59 @@ public class DatabaseManager {
                     }
                 }
         } catch (SQLException e) { 
-            System.out.println("Error finding a message");
+            System.out.println("Error building the indexList");
             System.out.println(e.getMessage());
         }
         return indexList;
     }
 
-    public Message getMsg(String ipOther, int index) {
+    public ArrayList<Message> findListOfMessage(String ipOther, String data){
+        String sql = "SELECT indexMsg, sender, receiver, message, time FROM " + ipOther;
+        ArrayList<Message> msgList = new ArrayList<Message>();
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    if(rs.getString("message").indexOf(data) != -1){
+                        msgList.add(new Message(new User(rs.getString("sender")), 
+                                                new User(rs.getString("receiver")), 
+                                                rs.getString("message"), 
+                                                rs.getString("time")
+                                                )
+                                    ); 
+                    }
+                }
+        } catch (SQLException e) { 
+            System.out.println("Error building the messageList");
+            System.out.println(e.getMessage());
+        }
+        return msgList;
+    }
+
+    public static int getIndexFromMsg(String ipOther, Message msg){
+        String sql = "SELECT * FROM " + ipOther;
+        int index = -1;
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    if( rs.getString("message").equals(msg.getData()) &&
+                        rs.getString("sender").equals(msg.getSender().getIP()) &&
+                        rs.getString("receiver").equals(msg.getReceiver().getIP()) &&
+                        rs.getString("time").equals(msg.getTime())){
+                        index = rs.getInt("indexMsg");
+                    }
+                }
+        } catch (SQLException e) { 
+            System.out.println("Error finding a message");
+            System.out.println(e.getMessage());
+        }
+        return index;
+    }
+
+    public Message getMsgFromIndex(String ipOther, int index) {
         String sql = "SELECT * FROM " + ipOther + " WHERE indexMsg = ?";
         Message msg = null;
 
@@ -169,8 +216,25 @@ public class DatabaseManager {
         return msg;
     }
 
-    public static void archiveMessage(int idSession, Message msg){
-        //BDD(idSession).add(msg); //requête JDBC
+    public static ArrayList<Message> getHistory(String ipOther) {
+        String sql = "SELECT * FROM " + ipOther;
+        ArrayList<Message> history = new ArrayList<Message>();
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    history.add(new Message(new User(rs.getString("sender")), 
+                                            new User(rs.getString("receiver")), 
+                                            rs.getString("message"), 
+                                            rs.getString("time")
+                                            ));
+                }
+        } catch (SQLException e) {
+            System.out.println("Error getting the history");
+            System.out.println(e.getMessage());
+        }
+        return history;
     }
 
 }
