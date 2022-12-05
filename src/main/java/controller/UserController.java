@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import model.User;
 
+/**
+ * This class represents the user controller.
+ * 
+ */
 public class UserController {
 
     public UserController(ArrayList<User> listUser){

@@ -140,7 +140,6 @@ public class FrameController {
      * Show an error message when the user can't connect to the server
      * @param error
      */
-    //TODO: Change the error message
     public void showConnectionFailed(String error){
         if (error.equals("pseudo")) {
             //TODO: Display the error message "Pseudo already used"

@@ -1,7 +1,17 @@
 package controller;
 
+import model.*;
+import network.*;
+
+/**
+ * This class represents the session controller.
+ * 
+ */
 public class SessionController {
 
+    /**
+     * Constructor
+     */
     public SessionController(){
 
     }
