@@ -4,8 +4,12 @@ import java.util.ArrayList;
 
 import database.DatabaseManager;
 import model.Message;
-import model.user.*;
+import model.User;
 
+/**
+ * This class is the main class of the project.
+ * 
+ */
 public class Main{
 
     // ip 12:48:42 -> 192.168.56.1
@@ -25,7 +29,7 @@ public class Main{
         for (int i = 0; i < list.size(); i++){
             msg2 = db.getMsgFromIndex("gaboche", list.get(i));
             System.out.println(msg2.toString());
-            db.deleteMessage(gaboche.getIP(), list.get(i));
+            //db.deleteMessage(gaboche.getIP(), list.get(i));
         }
 
     }

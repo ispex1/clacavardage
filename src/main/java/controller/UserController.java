@@ -2,7 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
-import model.user.User;
+import model.User;
 
 public class UserController {
 

@@ -6,7 +6,7 @@ public class SessionController {
 
     }
 
-    public void envoiMessage(String message){
+    public void sendMessage(String msg){
 
     }
 
@@ -14,7 +14,7 @@ public class SessionController {
 
     }
 
-    public void receptionMessage() {
+    public void receiveMessage() {
 
     }
 

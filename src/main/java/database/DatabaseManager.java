@@ -11,50 +11,65 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.*;
-import model.user.User;
 
 //  https://www.sqlitetutorial.net/sqlite-java/
 // amélioration à faire : demander à user de choisir un id unique à la premiere
 // connexion, puis le sauvegarder dans la bdd locale -> changement d'ip, même user
 
+/**
+ * This class manages the database using SQLite.
+ * It contains the methods to create the database, to connect to it, to insert
+ * and delete messages.
+ * It also contains the methods to get the history of a conversation and return all
+ * the messages containing a specific word in a conversation.
+ * 
+ */
+
 public class DatabaseManager {
+    public static String url = "jdbc:sqlite:sqlite/clac.db"; // Path to the database
 
-    public static String url = "jdbc:sqlite:sqlite/clac.db";
-
+    /**
+     * Constructor
+     * The constructor creates the database if it does not exist and connects to it.
+     * 
+     */
     public DatabaseManager(){
         createNewDatabase();
         connect();
         createNewConvo("gaboche");
     }
 
-    // utile ??? 
-    // "When you connect to an SQLite database that does not exist, 
-    // it automatically creates a new database"
-    // connect crée la db ??
+    /**
+     * This method creates a new database if it does not exist.
+     *  
+     */
     public static void createNewDatabase() {
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
+                DatabaseMetaData meta = conn.getMetaData(); // Get the metadata of the database
+                System.out.println("The driver name is " + meta.getDriverName()); 
                 System.out.println("A new database has been created.");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
+    /**
+     * This method connects to the database previously created.
+     * 
+     */
     public void connect() {
         Connection conn = null;
         try {
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);
+            conn = DriverManager.getConnection(url); // Connect to the database
             System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
             try {
-                if (conn != null) {
-                    conn.close();
+                if (conn != null) { 
+                    conn.close(); 
                 }
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -62,20 +77,25 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * This method create a new table (conversation) in the database.
+     * The name of the table is the ip of the other user.
+     * 
+     * @param ipOther
+     */
     public static void createNewConvo(String ipOther) {
         // SQL statement for creating a new table
         String sql= "CREATE TABLE IF NOT EXISTS " + ipOther +"(\n"
-                + "	indexMsg integer PRIMARY KEY,\n" // index du message
-                + " sender text NOT NULL, \n" // ip de l'envoyeur
-                + " receiver text NOT NULL, \n" // ip du receveur
-                + " message text NOT NULL, \n" // message
-                + "	time text NOT NULL"// date et heure
+                + "	indexMsg integer PRIMARY KEY,\n" // Index of the message
+                + " sender text NOT NULL, \n" // IP of the sender
+                + " receiver text NOT NULL, \n" // IP of the receiver
+                + " message text NOT NULL, \n" // Text of the message
+                + "	time text NOT NULL"// Time of the message (dd:MM::yyyy HH:mm:ss)
                 + ");"; 
 
         try (Connection conn = DriverManager.getConnection(url); 
              Statement  stmt = conn.createStatement()) {
-                // create a new table
-                stmt.execute(sql);
+                stmt.execute(sql); // Create a new table
                 System.out.println("A new convo has been created with the name : " + ipOther);
         } catch (SQLException e) {
             System.out.println("Error creating table");
@@ -83,14 +103,19 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * This method deletes a table (conversation) in the database if it exists.
+     * The name of the table deleted is the ip of the other user.
+     * 
+     * @param ipOther
+     */
     public static void deleteConvo(String ipOther) {
         // SQL statement for deleting a table
         String sql= "DROP TABLE IF EXISTS " + ipOther; 
 
         try (Connection conn = DriverManager.getConnection(url); 
              Statement  stmt = conn.createStatement()) {
-                // delete the table
-                stmt.executeUpdate(sql);
+                stmt.executeUpdate(sql); // Delete the table
                 System.out.println("The " + ipOther + " table has been successfully deleted");
         } catch (SQLException e) {
             System.out.println("Error deleting table");
@@ -98,7 +123,16 @@ public class DatabaseManager {
         }
     }
 
+
+    /**
+     * This method inserts a message in a conversation.
+     * The message is inserted in the table corresponding to the ip of the other user.
+     * 
+     * @param ipOther
+     * @param msg
+     */
     public void insertMessage(String ipOther, Message msg) {
+        // SQL statement for inserting a new row (message)
         String sql = "INSERT INTO " + ipOther + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -107,7 +141,7 @@ public class DatabaseManager {
                 pstmt.setString(3, msg.getReceiver().getIP());
                 pstmt.setString(4, msg.getData());
                 pstmt.setString(5, msg.getTime());
-                pstmt.executeUpdate();
+                pstmt.executeUpdate(); // Insert a new row (message)
                 System.out.println("A new message has been add to the " + ipOther + " table");
         } catch (SQLException e) {
             System.out.println("Error insert a message");
@@ -115,13 +149,22 @@ public class DatabaseManager {
         }
     }
 
+
+    /**
+     * This method deletes a message in a conversation.
+     * The message is deleted in the table corresponding to the ip of the other user.
+     * 
+     * @param ipOther
+     * @param index
+     */
     public static void deleteMessage(String ipOther, int index) {
+        // SQL statement for deleting a message
         String sql = "DELETE FROM " + ipOther + " WHERE indexMsg = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, index);
-                pstmt.executeUpdate();
+                pstmt.executeUpdate(); // Delete the message
                 System.out.println("The message with the index " + index + " has been successfully deleted");
         } catch (SQLException e) {
             System.out.println("Error deleting a message");
@@ -129,18 +172,25 @@ public class DatabaseManager {
         }
     }
     
-    // CTRL + F -> When you search a word, it return you the list of the index where the word appears
-    // Make an other version where it return the list of the message where the word appears ???
+    /**
+     * This method returns an ArrayList of all the messages's index
+     * where a specific word appears in a conversation.
+     * 
+     * @param ipOther
+     * @param data
+     * @return indexList
+     */
     public ArrayList<Integer> findListOfIndex(String ipOther, String data){
-        String sql = "SELECT indexMsg, message FROM " + ipOther;
+        // SQL statement for selecting data
+        String sql = "SELECT indexMsg, message FROM " + ipOther; 
         ArrayList<Integer> indexList = new ArrayList<Integer>();
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                ResultSet rs = pstmt.executeQuery();
+                ResultSet rs = pstmt.executeQuery(); // Select the index and the text of the message
                 while (rs.next()) {
-                    if(rs.getString("message").indexOf(data) != -1){
-                        indexList.add(rs.getInt("indexMsg"));
+                    if(rs.getString("message").indexOf(data) != -1){ // If the word appears in the message
+                        indexList.add(rs.getInt("indexMsg")); // Add the index of the message to the list
                     }
                 }
         } catch (SQLException e) { 
@@ -150,6 +200,14 @@ public class DatabaseManager {
         return indexList;
     }
 
+    /**
+     * This method returns an ArrayList of Message
+     * where a specific word appears in a conversation.
+     * 
+     * @param ipOther
+     * @param data
+     * @return msgList
+     */
     public ArrayList<Message> findListOfMessage(String ipOther, String data){
         String sql = "SELECT indexMsg, sender, receiver, message, time FROM " + ipOther;
         ArrayList<Message> msgList = new ArrayList<Message>();
@@ -174,19 +232,29 @@ public class DatabaseManager {
         return msgList;
     }
 
+    /**
+     * This method returns the index of a Message in a conversation.
+     * Two (or more) messages can't be the same thanks to the precise time,
+     * so the index is unique.
+     * 
+     * @param ipOther
+     * @param msg
+     * @return index
+     */
     public static int getIndexFromMsg(String ipOther, Message msg){
+        // SQL statement for selecting everything from the table
         String sql = "SELECT * FROM " + ipOther;
         int index = -1;
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                ResultSet rs = pstmt.executeQuery();
-                while (rs.next()) {
+                ResultSet rs = pstmt.executeQuery(); // Select everything from the table
+                while (rs.next()) { // For each row
                     if( rs.getString("message").equals(msg.getData()) &&
                         rs.getString("sender").equals(msg.getSender().getIP()) &&
                         rs.getString("receiver").equals(msg.getReceiver().getIP()) &&
-                        rs.getString("time").equals(msg.getTime())){
-                        index = rs.getInt("indexMsg");
+                        rs.getString("time").equals(msg.getTime())){ // If the exact message is find in the table
+                        index = rs.getInt("indexMsg"); // Get the index of the message
                     }
                 }
         } catch (SQLException e) { 
@@ -196,14 +264,24 @@ public class DatabaseManager {
         return index;
     }
 
+    /**
+     * This method returns a Message from a conversation with a specific index.
+     * 
+     * @param ipOther
+     * @param index
+     * @return msg
+     */
     public Message getMsgFromIndex(String ipOther, int index) {
+        // SQL statement for selecting everything from the table where 
+        // the index of the message is equal to the index given in parameter
         String sql = "SELECT * FROM " + ipOther + " WHERE indexMsg = ?";
         Message msg = null;
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, index);
-                ResultSet rs = pstmt.executeQuery();
+                ResultSet rs = pstmt.executeQuery(); // Select everything from the table
+                // Create a message with the data from the table
                 msg = new Message(new User(rs.getString("sender")), 
                                   new User(rs.getString("receiver")), 
                                   rs.getString("message"), 
@@ -216,6 +294,12 @@ public class DatabaseManager {
         return msg;
     }
 
+    /**
+     * This method returns the history of a conversation into an ArrayList of Message.
+     * 
+     * @param ipOther
+     * @return history
+     */
     public static ArrayList<Message> getHistory(String ipOther) {
         String sql = "SELECT * FROM " + ipOther;
         ArrayList<Message> history = new ArrayList<Message>();
