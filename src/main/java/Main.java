@@ -6,13 +6,12 @@ import java.util.ArrayList;
 
 import database.DatabaseManager;
 import model.Message;
-<<<<<<< HEAD
-import model.user.*;
+
+import model.User;
 import network.UDPListener;
 import network.UDPSender;
-=======
-import model.User;
->>>>>>> c89d8667e09de9bbe85f495628cfd9f440943212
+
+
 
 /**
  * This class is the main class of the project.
