@@ -27,12 +27,11 @@ public class UDPListener extends Thread {
     private int port;
 
     // ** CONSTRUCTOR **
-    public UDPListener(int situation){
-        this.situation = situation;
+    public UDPListener(int situation, int port){
+        setSituation(situation);
+        setPort(port);
         start();
     }
-
-    
 
     // ** METHODS **
     //connexion broadcast validation
@@ -55,6 +54,9 @@ public class UDPListener extends Thread {
                 socket.receive(receivePacket);
                 String data = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 //TODO Appel fonction a traiter en fonction du message recu dans le package model
+                // Just printing the data for now
+                System.out.println(data);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -68,7 +70,7 @@ public class UDPListener extends Thread {
     //run method
     public void run(){
         setRunningState(true);
-        setPort(1234);
+
 
         byte[] buffer = new byte[1000];
         
