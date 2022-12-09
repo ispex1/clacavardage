@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import model.*;
 
+// ADD NEW DB PERSONAL INFORMATIONS (ID, IP, PSEUDO)
+
 //  https://www.sqlitetutorial.net/sqlite-java/
 // amélioration à faire : demander à user de choisir un id unique à la premiere
 // connexion, puis le sauvegarder dans la bdd locale -> changement d'ip, même user
@@ -36,6 +38,7 @@ public class DatabaseManager {
     public DatabaseManager(){
         createNewDatabase();
         connect();
+        createPersonalInfo("este");
         createNewConvo("gaboche");
     }
 
@@ -78,14 +81,74 @@ public class DatabaseManager {
     }
 
     /**
-     * This method create a new table (conversation) in the database.
-     * The name of the table is the ip of the other user.
+     * This method create the table for the personal informations
+     * of the user in the database.
+     * The name of the table is the id of the user. (@MAC)
+     * It will contain the id, the ip and the pseudo of the user.
      * 
-     * @param ipOther
+     * @param idPerso
      */
-    public static void createNewConvo(String ipOther) {
+    public static void createPersonalInfo(String idPerso) {
         // SQL statement for creating a new table
-        String sql= "CREATE TABLE IF NOT EXISTS " + ipOther +"(\n"
+        String sql= "CREATE TABLE IF NOT EXISTS " + idPerso +"(\n"
+                + " index integer PRIMARY KEY,\n" // Index of the row
+                + "	id text NOT NULL,\n" // MAC of the user
+                + " ip text NOT NULL, \n" // IP address of the user
+                + " pseudo text NOT NULL" // Pseudo of the user
+                + ");"; 
+
+        try (Connection conn = DriverManager.getConnection(url); 
+             Statement  stmt = conn.createStatement()) {
+                stmt.execute(sql); // Create a new table
+                System.out.println("The personal table has been created with the name : " + idPerso);
+        } catch (SQLException e) {
+            System.out.println("Error creating table");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /** 
+     * This method update the personal informations of the user in the database.
+     * 
+     * @param idPerso
+     * @param ip
+     * @param pseudo
+     */
+    public static void updatePersonalInfo(String idPerso, String ip, String pseudo) {
+        String sql = "DELETE FROM " + idPerso + " WHERE indexMsg = ?";
+        String sql2 = "INSERT INTO " + idPerso + " (index, id, ip, pseudo) VALUES(?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
+                //Deleting the previous personal informations
+                pstmt.setInt(1, 1);
+                pstmt.executeUpdate(); // Delete the message
+
+                //Inserting the new personal informations
+                pstmt2.setInt(1, 1);
+                pstmt2.setString(2, ip);
+                pstmt2.setString(3, pseudo);
+                pstmt2.setString(4, idPerso);
+                pstmt2.executeUpdate(); // Update the personal informations
+
+                System.out.println("The personal informations have been updated.");
+
+        } catch (SQLException e) {
+            System.out.println("Error updating personal informations");
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * This method create a new table (conversation) in the database.
+     * The name of the table is the id of the other user.
+     * 
+     * @param idOther
+     */
+    public static void createNewConvo(String idOther) {
+        // SQL statement for creating a new table
+        String sql= "CREATE TABLE IF NOT EXISTS " + idOther +"(\n"
                 + "	indexMsg integer PRIMARY KEY,\n" // Index of the message
                 + " sender text NOT NULL, \n" // IP of the sender
                 + " receiver text NOT NULL, \n" // IP of the receiver
@@ -96,7 +159,7 @@ public class DatabaseManager {
         try (Connection conn = DriverManager.getConnection(url); 
              Statement  stmt = conn.createStatement()) {
                 stmt.execute(sql); // Create a new table
-                System.out.println("A new convo has been created with the name : " + ipOther);
+                System.out.println("A new convo has been created with the name : " + idOther);
         } catch (SQLException e) {
             System.out.println("Error creating table");
             System.out.println(e.getMessage());
@@ -105,18 +168,18 @@ public class DatabaseManager {
 
     /**
      * This method deletes a table (conversation) in the database if it exists.
-     * The name of the table deleted is the ip of the other user.
+     * The name of the table deleted is the id of the other user.
      * 
-     * @param ipOther
+     * @param idOther
      */
-    public static void deleteConvo(String ipOther) {
+    public static void deleteConvo(String idOther) {
         // SQL statement for deleting a table
-        String sql= "DROP TABLE IF EXISTS " + ipOther; 
+        String sql= "DROP TABLE IF EXISTS " + idOther; 
 
         try (Connection conn = DriverManager.getConnection(url); 
              Statement  stmt = conn.createStatement()) {
                 stmt.executeUpdate(sql); // Delete the table
-                System.out.println("The " + ipOther + " table has been successfully deleted");
+                System.out.println("The " + idOther + " table has been successfully deleted");
         } catch (SQLException e) {
             System.out.println("Error deleting table");
             System.out.println(e.getMessage());
@@ -128,12 +191,12 @@ public class DatabaseManager {
      * This method inserts a message in a conversation.
      * The message is inserted in the table corresponding to the ip of the other user.
      * 
-     * @param ipOther
+     * @param idOther
      * @param msg
      */
-    public void insertMessage(String ipOther, Message msg) {
+    public void insertMessage(String idOther, Message msg) {
         // SQL statement for inserting a new row (message)
-        String sql = "INSERT INTO " + ipOther + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO " + idOther + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -142,7 +205,7 @@ public class DatabaseManager {
                 pstmt.setString(4, msg.getData());
                 pstmt.setString(5, msg.getTime());
                 pstmt.executeUpdate(); // Insert a new row (message)
-                System.out.println("A new message has been add to the " + ipOther + " table");
+                System.out.println("A new message has been add to the " + idOther + " table");
         } catch (SQLException e) {
             System.out.println("Error insert a message");
             System.out.println(e.getMessage());
@@ -152,14 +215,14 @@ public class DatabaseManager {
 
     /**
      * This method deletes a message in a conversation.
-     * The message is deleted in the table corresponding to the ip of the other user.
+     * The message is deleted in the table corresponding to the id of the other user.
      * 
-     * @param ipOther
+     * @param idOther
      * @param index
      */
-    public static void deleteMessage(String ipOther, int index) {
+    public static void deleteMessage(String idOther, int index) {
         // SQL statement for deleting a message
-        String sql = "DELETE FROM " + ipOther + " WHERE indexMsg = ?";
+        String sql = "DELETE FROM " + idOther + " WHERE indexMsg = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -174,15 +237,15 @@ public class DatabaseManager {
     
     /**
      * This method returns an ArrayList of all the messages's index
-     * where a specific word appears in a conversation.
+     * where a specific word appears in a choosen conversation.
      * 
-     * @param ipOther
+     * @param idOther
      * @param data
      * @return indexList
      */
-    public ArrayList<Integer> findListOfIndex(String ipOther, String data){
+    public ArrayList<Integer> findListOfIndex(String idOther, String data){
         // SQL statement for selecting data
-        String sql = "SELECT indexMsg, message FROM " + ipOther; 
+        String sql = "SELECT indexMsg, message FROM " + idOther; 
         ArrayList<Integer> indexList = new ArrayList<Integer>();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -204,12 +267,12 @@ public class DatabaseManager {
      * This method returns an ArrayList of Message
      * where a specific word appears in a conversation.
      * 
-     * @param ipOther
+     * @param idOther
      * @param data
      * @return msgList
      */
-    public ArrayList<Message> findListOfMessage(String ipOther, String data){
-        String sql = "SELECT indexMsg, sender, receiver, message, time FROM " + ipOther;
+    public ArrayList<Message> findListOfMessage(String idOther, String data){
+        String sql = "SELECT indexMsg, sender, receiver, message, time FROM " + idOther;
         ArrayList<Message> msgList = new ArrayList<Message>();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -297,11 +360,11 @@ public class DatabaseManager {
     /**
      * This method returns the history of a conversation into an ArrayList of Message.
      * 
-     * @param ipOther
+     * @param idOther
      * @return history
      */
-    public static ArrayList<Message> getHistory(String ipOther) {
-        String sql = "SELECT * FROM " + ipOther;
+    public static ArrayList<Message> getHistory(String idOther) {
+        String sql = "SELECT * FROM " + idOther;
         ArrayList<Message> history = new ArrayList<Message>();
 
         try (Connection conn = DriverManager.getConnection(url);

@@ -33,10 +33,11 @@ public class FrameController {
 
     /**
      * Open the main frame of the app
-     * @param pseudo
+     * @param id
      * @param ip
+     * @param pseudo
      */
-    public void openApp(String pseudo, int ip){
+    public void openApp(String id, String ip, String pseudo){
         //TODO: Open the main frame of the app and display the pseudo and the ip of the user
     }
 

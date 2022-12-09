@@ -7,37 +7,46 @@ package model;
  */
 
 public class User {
+    private String id; // MAC of the user
     private String ip; // IP address of the user
     private String pseudo; // Pseudo of the user
-    private int port; // Port of the user
-    private UserState userState; // State of the user
-
-    // Enum of the different user's state possible
-    public enum UserState {
-        CONNECTED, DISCONNECTED, BUSY, WAITING
-    }
 
     /**
      * Constructor
      * @param ip
      */
     public User (String ip){
-        this.ip = ip;
+        this.setIP(ip);
     }
 
     /**
      * Constructor
-     * @param pseudo
+     * @param id
      * @param ip
-     * @param port
-     * @param etatUser
+     * @param pseudo
      */
-    public User (String pseudo, String ip, int port, UserState userState){
-        this.setPseudo(pseudo);
+    public User (String id, String ip, String pseudo){
+        this.setID(id);
         this.setIP(ip);
-        this.setPort(port);
-        this.setUserState(userState);
+        this.setPseudo(pseudo);
     }
+
+    /**
+     * Setter for id
+     * @param id
+     */
+    public void setID(String id){
+        this.id = id;
+    }
+
+    /**
+     * Getter for id
+     * @return id
+     */
+    public String getID(){
+        return this.id;
+    }
+
 
     /**
      * Setter for pseudo
@@ -70,37 +79,4 @@ public class User {
     public String getIP(){
         return this.ip;
     }
-
-    /**
-     * Setter for port
-     * @param port
-     */
-    public void setPort(int port){
-        this.port = port;
-    }
-    
-    /**
-     * Getter for port
-     * @return port
-     */
-    public int getPort(){
-        return this.port;
-    }
-
-    /**
-     * Setter for userState
-     * @param userState
-     */
-    public void setUserState(UserState userState){
-        this.userState = userState;
-    }
-    
-    /**
-     * Getter for userState
-     * @return userState
-     */
-    public UserState getUserState(){
-        return this.userState;
-    }
-
 }

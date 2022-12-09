@@ -4,12 +4,10 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import controller.*;
 import database.DatabaseManager;
-import model.Message;
-
-import model.User;
-import network.UDPListener;
-import network.UDPSender;
+import model.*;
+import network.*;
 
 
 
@@ -21,9 +19,17 @@ public class Main{
 
     // ip 12:48:42 -> 192.168.56.1
     public static void main (String[] args){
-        testUDP();
+        testUserController();
+        //TODO: test the new database + remove the delete in the updatePersonalInfo ?
+        //TODO: Finish the UserController
     }
 
+
+    //test UserController 
+    private static void testUserController(){
+        UserController userController = new UserController();
+        userController.Connect("este");
+    }
 
     //test UDP Sender and Listener
     private static void testUDP(){
