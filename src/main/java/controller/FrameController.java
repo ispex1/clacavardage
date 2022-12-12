@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 import model.*;
 
+//TODO: add a pop-up when someone change his pseudo ??
+
 /**
  * This class represents the frame controller.
  * 
  */
 public class FrameController {
+    private ArrayList<User> listUserDisplay = new ArrayList<User>();
 
     /**
      * Constructor
@@ -66,12 +69,13 @@ public class FrameController {
         //TODO: Close the msgResearch frame
     }
 
+    
+
     /**
      * Update the list of the user connected on the main frame
      * @param listUserOnline
-     * @param listUserDisplay
      */
-    public void updateUserOnline(ArrayList<User> listUserOnline, ArrayList<User> listUserDisplay){
+    public void updateUserOnline(ArrayList<User> listUserOnline){
         // New list of user to conserve the order
         ArrayList<User> listUser = new ArrayList<User>(); 
 

@@ -13,10 +13,10 @@ public class User {
 
     /**
      * Constructor
-     * @param ip
+     * @param id
      */
-    public User (String ip){
-        this.setIP(ip);
+    public User (String id){
+        this.setID(id);
     }
 
     /**
@@ -61,7 +61,7 @@ public class User {
      * @return pseudo
      */
     public String getPseudo(){
-        return this.pseudo;
+        return pseudo;
     }
 
     /**

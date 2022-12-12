@@ -17,18 +17,17 @@ import network.*;
  */
 public class Main{
 
-    // ip 12:48:42 -> 192.168.56.1
     public static void main (String[] args){
         testUserController();
-        //TODO: test the new database + remove the delete in the updatePersonalInfo ?
         //TODO: Finish the UserController
     }
 
-
     //test UserController 
     private static void testUserController(){
-        UserController userController = new UserController();
-        userController.Connect("este");
+        UserController userController = new UserController("iSpeX");
+        userController.connect();
+        userController.getLocalIP();
+        userController.getMacAddress();
     }
 
     //test UDP Sender and Listener
@@ -56,28 +55,26 @@ public class Main{
 
     //test DB Manager function
     private static void testDBManager(){
-        Message msg = new Message("petit caca");
+        Message msg = new Message("testouille");
         Message msg2 = new Message();
-        User este = new User("este");
-        User gaboche = new User("gaboche");
+        User este = new User("MAC_Perso", "IP_Perso", "iSpeX");
+        User gaboche = new User("MAC_gaboche", "IP_gaboche", "bacchus");
         msg.setSender(este);
         msg.setReceiver(gaboche);
         System.out.println(msg.toString());
 
         DatabaseManager db = new DatabaseManager();
-        db.insertMessage(gaboche.getIP(), msg);
-        ArrayList<Integer> list = db.findListOfIndex(gaboche.getIP(), "caca");
+        db.createPersonalInfo("MAC_Perso");
+        db.createNewConvo("MAC_gaboche");
+
+        db.insertMessage(gaboche.getID(), msg);
+        ArrayList<Integer> list = db.findListOfIndex(gaboche.getID(), "test");
         //printList(list);
         for (int i = 0; i < list.size(); i++){
-            msg2 = db.getMsgFromIndex("gaboche", list.get(i));
+            msg2 = db.getMsgFromIndex(gaboche.getID(), list.get(i));
             System.out.println(msg2.toString());
             //db.deleteMessage(gaboche.getIP(), list.get(i));
         }
-    }
-    //print every element of the arrayList
-    public static void printList(ArrayList<Integer> list){
-        for (int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i));
-        }
+        db.updatePersonalInfo(este.getID(), este.getIP(), este.getPseudo());
     }
 }

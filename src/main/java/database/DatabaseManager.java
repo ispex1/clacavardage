@@ -12,12 +12,6 @@ import java.util.ArrayList;
 
 import model.*;
 
-// ADD NEW DB PERSONAL INFORMATIONS (ID, IP, PSEUDO)
-
-//  https://www.sqlitetutorial.net/sqlite-java/
-// amélioration à faire : demander à user de choisir un id unique à la premiere
-// connexion, puis le sauvegarder dans la bdd locale -> changement d'ip, même user
-
 /**
  * This class manages the database using SQLite.
  * It contains the methods to create the database, to connect to it, to insert
@@ -38,8 +32,6 @@ public class DatabaseManager {
     public DatabaseManager(){
         createNewDatabase();
         connect();
-        createPersonalInfo("este");
-        createNewConvo("gaboche");
     }
 
     /**
@@ -91,7 +83,7 @@ public class DatabaseManager {
     public static void createPersonalInfo(String idPerso) {
         // SQL statement for creating a new table
         String sql= "CREATE TABLE IF NOT EXISTS " + idPerso +"(\n"
-                + " index integer PRIMARY KEY,\n" // Index of the row
+                + " ONE integer PRIMARY KEY,\n" // Index of the row
                 + "	id text NOT NULL,\n" // MAC of the user
                 + " ip text NOT NULL, \n" // IP address of the user
                 + " pseudo text NOT NULL" // Pseudo of the user
@@ -115,8 +107,8 @@ public class DatabaseManager {
      * @param pseudo
      */
     public static void updatePersonalInfo(String idPerso, String ip, String pseudo) {
-        String sql = "DELETE FROM " + idPerso + " WHERE indexMsg = ?";
-        String sql2 = "INSERT INTO " + idPerso + " (index, id, ip, pseudo) VALUES(?, ?, ?, ?)";
+        String sql = "DELETE FROM " + idPerso + " WHERE ONE = ?";
+        String sql2 = "INSERT INTO " + idPerso + " (ONE, id, ip, pseudo) VALUES(?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -127,9 +119,9 @@ public class DatabaseManager {
 
                 //Inserting the new personal informations
                 pstmt2.setInt(1, 1);
-                pstmt2.setString(2, ip);
-                pstmt2.setString(3, pseudo);
-                pstmt2.setString(4, idPerso);
+                pstmt2.setString(2, idPerso);
+                pstmt2.setString(3, ip);
+                pstmt2.setString(4, pseudo);
                 pstmt2.executeUpdate(); // Update the personal informations
 
                 System.out.println("The personal informations have been updated.");
@@ -150,8 +142,8 @@ public class DatabaseManager {
         // SQL statement for creating a new table
         String sql= "CREATE TABLE IF NOT EXISTS " + idOther +"(\n"
                 + "	indexMsg integer PRIMARY KEY,\n" // Index of the message
-                + " sender text NOT NULL, \n" // IP of the sender
-                + " receiver text NOT NULL, \n" // IP of the receiver
+                + " sender text NOT NULL, \n" // ID of the sender
+                + " receiver text NOT NULL, \n" // ID of the receiver
                 + " message text NOT NULL, \n" // Text of the message
                 + "	time text NOT NULL"// Time of the message (dd:MM::yyyy HH:mm:ss)
                 + ");"; 
@@ -189,7 +181,7 @@ public class DatabaseManager {
 
     /**
      * This method inserts a message in a conversation.
-     * The message is inserted in the table corresponding to the ip of the other user.
+     * The message is inserted in the table corresponding to the id of the other user.
      * 
      * @param idOther
      * @param msg
@@ -200,8 +192,8 @@ public class DatabaseManager {
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(2, msg.getSender().getIP());
-                pstmt.setString(3, msg.getReceiver().getIP());
+                pstmt.setString(2, msg.getSender().getID());
+                pstmt.setString(3, msg.getReceiver().getID());
                 pstmt.setString(4, msg.getData());
                 pstmt.setString(5, msg.getTime());
                 pstmt.executeUpdate(); // Insert a new row (message)
@@ -300,13 +292,13 @@ public class DatabaseManager {
      * Two (or more) messages can't be the same thanks to the precise time,
      * so the index is unique.
      * 
-     * @param ipOther
+     * @param idOther
      * @param msg
      * @return index
      */
-    public static int getIndexFromMsg(String ipOther, Message msg){
+    public static int getIndexFromMsg(String idOther, Message msg){
         // SQL statement for selecting everything from the table
-        String sql = "SELECT * FROM " + ipOther;
+        String sql = "SELECT * FROM " + idOther;
         int index = -1;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -314,8 +306,8 @@ public class DatabaseManager {
                 ResultSet rs = pstmt.executeQuery(); // Select everything from the table
                 while (rs.next()) { // For each row
                     if( rs.getString("message").equals(msg.getData()) &&
-                        rs.getString("sender").equals(msg.getSender().getIP()) &&
-                        rs.getString("receiver").equals(msg.getReceiver().getIP()) &&
+                        rs.getString("sender").equals(msg.getSender().getID()) &&
+                        rs.getString("receiver").equals(msg.getReceiver().getID()) &&
                         rs.getString("time").equals(msg.getTime())){ // If the exact message is find in the table
                         index = rs.getInt("indexMsg"); // Get the index of the message
                     }
@@ -330,14 +322,14 @@ public class DatabaseManager {
     /**
      * This method returns a Message from a conversation with a specific index.
      * 
-     * @param ipOther
+     * @param idOther
      * @param index
      * @return msg
      */
-    public Message getMsgFromIndex(String ipOther, int index) {
+    public Message getMsgFromIndex(String idOther, int index) {
         // SQL statement for selecting everything from the table where 
         // the index of the message is equal to the index given in parameter
-        String sql = "SELECT * FROM " + ipOther + " WHERE indexMsg = ?";
+        String sql = "SELECT * FROM " + idOther + " WHERE indexMsg = ?";
         Message msg = null;
 
         try (Connection conn = DriverManager.getConnection(url);

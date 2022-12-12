@@ -66,8 +66,8 @@ public class Message {
      */
     @Override 
     public String toString(){
-        return ("Sender : "     + this.getSender().getIP()      + " | "  
-            +   "Receiver : "   + this.getReceiver().getIP()    + " | "  
+        return ("Sender : "     + this.getSender().getID()      + " | "  
+            +   "Receiver : "   + this.getReceiver().getID()    + " | "  
             +   "Message : "    + this.getData()                + " | "  
             +   "Time : "       + this.getTime()                + " | "
             );
