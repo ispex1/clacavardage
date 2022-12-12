@@ -3,12 +3,15 @@ package network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class TCPListener extends Thread {
 
     // ** ATTRIBUTES **
     private boolean isRunning;
     private int port;
+    //table of all the sessions sockets
+    private ArrayList<TCPSession> sessionsList;
 
     /**
      * Constructor of the TCPListener class
@@ -29,8 +32,10 @@ public class TCPListener extends Thread {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             while(isRunning){
+                System.out.println("<Listener | "+ Thread.currentThread().getId() +" > : TCPListener is listening on port " + port);
                 Socket link = serverSocket.accept();
                 TCPSession session = new TCPSession(link);
+                //sessionsList.add(session);
             }
         } catch (IOException e) {
             e.printStackTrace();

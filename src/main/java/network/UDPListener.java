@@ -3,9 +3,7 @@ package network;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.ServerSocket;
 import java.net.SocketException;
-import java.nio.Buffer;
 
 
 /**
@@ -46,25 +44,21 @@ public class UDPListener extends Thread {
 
     //listening UDP messages
     private void listenUDP(byte[] buffer){
-        socket.close();
+        //socket.close();
+        //socket = new DatagramSocket(port);
+        receivePacket = new DatagramPacket(buffer, buffer.length);
         try {
-            socket = new DatagramSocket(port);
-            receivePacket = new DatagramPacket(buffer, buffer.length);
-            try {
-                socket.receive(receivePacket);
-                String data = new String(receivePacket.getData(), 0, receivePacket.getLength());
-                //TODO Appel fonction a traiter en fonction du message recu dans le package model
-                // Just printing the data for now
-                System.out.println(data);
+            socket.receive(receivePacket);
+            String data = new String(receivePacket.getData(), 0, receivePacket.getLength());
+            //TODO Appel fonction a traiter en fonction du message recu dans le package model
+            // Just printing the data for now
+            System.out.println(data);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (SocketException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
+
+
     }
 
     //run method

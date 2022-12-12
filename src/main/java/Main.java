@@ -1,15 +1,14 @@
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
 import database.DatabaseManager;
 import model.Message;
-
 import model.User;
+import network.TCPListener;
+import network.TCPSession;
 import network.UDPListener;
 import network.UDPSender;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
 
 
 
@@ -21,9 +20,30 @@ public class Main{
 
     // ip 12:48:42 -> 192.168.56.1
     public static void main (String[] args){
-        testUDP();
+        testTCP();
     }
 
+
+    //test TCP
+    private static void testTCP() {
+        int port = 6789;
+        TCPListener listener = new TCPListener(port);
+
+        try {
+            Thread.sleep(1000);
+            User userdist = new User("localhost");
+            System.out.println("< MAIN > : START NEW SESSION");
+            TCPSession session = new TCPSession(userdist, port);
+            Thread.sleep(1000);
+            System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION");
+            session.sendMessage("Hello, from session");
+            // on peut bien envoyer des mesage depuis la session session
+            // TODO reste maintenant a gerer la liste de session et la recherche de session par nom/id
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     //test UDP Sender and Listener
     private static void testUDP(){
