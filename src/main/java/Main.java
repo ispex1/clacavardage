@@ -33,6 +33,7 @@ public class Main{
             Thread.sleep(1000);
             User userdist = new User("localhost");
             System.out.println("< MAIN > : START NEW SESSION");
+            //on créé une demande de session a localhost, comme localhost ecoute sur ce port, cela devrait ourvrir un socket
             TCPSession session = new TCPSession(userdist, port);
             Thread.sleep(1000);
             System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION");
@@ -42,6 +43,7 @@ public class Main{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
     }
 

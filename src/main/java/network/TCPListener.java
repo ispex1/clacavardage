@@ -11,7 +11,7 @@ public class TCPListener extends Thread {
     private boolean isRunning;
     private int port;
     //table of all the sessions sockets
-    private ArrayList<TCPSession> sessionsList;
+    public ArrayList<TCPSession> sessionsList;
 
     /**
      * Constructor of the TCPListener class
@@ -35,7 +35,7 @@ public class TCPListener extends Thread {
                 System.out.println("<Listener | "+ Thread.currentThread().getId() +" > : TCPListener is listening on port " + port);
                 Socket link = serverSocket.accept();
                 TCPSession session = new TCPSession(link);
-                //sessionsList.add(session);
+                sessionsList.add(session);
             }
         } catch (IOException e) {
             e.printStackTrace();
