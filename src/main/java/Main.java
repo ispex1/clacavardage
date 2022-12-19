@@ -1,11 +1,9 @@
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
 import controller.*;
 import database.DatabaseManager;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
 import model.*;
 import network.*;
 
@@ -22,6 +20,30 @@ public class Main{
         //TODO: Finish the UserController
     }
 
+
+    //test TCP
+    private static void testTCP() {
+        int port = 6789;
+        TCPListener listener = new TCPListener(port);
+
+        try {
+            Thread.sleep(1000);
+            User userdist = new User("localhost");
+            System.out.println("< MAIN > : START NEW SESSION");
+            //on créé une demande de session a localhost, comme localhost ecoute sur ce port, cela devrait ourvrir un socket
+            TCPSession session = new TCPSession(userdist, port);
+            Thread.sleep(1000);
+            System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION CREATED BY MAIN");
+            session.sendMessage("Hello, from session created by main");
+            Thread.sleep(1000);
+            System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION CREATED BY LISTENER");
+            listener.sessionsList.get(0).sendMessage("Hello, from session created by listener");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
     //test UserController 
     private static void testUserController(){
         UserController userController = new UserController("iSpeX");
