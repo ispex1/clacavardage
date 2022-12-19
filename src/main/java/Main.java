@@ -36,10 +36,11 @@ public class Main{
             //on créé une demande de session a localhost, comme localhost ecoute sur ce port, cela devrait ourvrir un socket
             TCPSession session = new TCPSession(userdist, port);
             Thread.sleep(1000);
-            System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION");
-            session.sendMessage("Hello, from session");
-            // on peut bien envoyer des mesage depuis la session session
-            // TODO reste maintenant a gerer la liste de session et la recherche de session par nom/id
+            System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION CREATED BY MAIN");
+            session.sendMessage("Hello, from session created by main");
+            Thread.sleep(1000);
+            System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION CREATED BY LISTENER");
+            listener.sessionsList.get(0).sendMessage("Hello, from session created by listener");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,10 @@
 package network;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class TCPListener extends Thread {
@@ -10,6 +12,7 @@ public class TCPListener extends Thread {
     // ** ATTRIBUTES **
     private boolean isRunning;
     private int port;
+    private ServerSocket serverSocket;
     //table of all the sessions sockets
     public ArrayList<TCPSession> sessionsList;
 
@@ -20,6 +23,7 @@ public class TCPListener extends Thread {
      */
     public TCPListener(int port){
         setPort(port);
+        sessionsList = new ArrayList<TCPSession>();
         start();
     }
 
@@ -30,10 +34,11 @@ public class TCPListener extends Thread {
         this.isRunning = true;
 
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(port);
             while(isRunning){
                 System.out.println("<Listener | "+ Thread.currentThread().getId() +" > : TCPListener is listening on port " + port);
                 Socket link = serverSocket.accept();
+                System.out.println("<Listener | "+ Thread.currentThread().getId() + " > : Socket printing\n" + link.toString());
                 TCPSession session = new TCPSession(link);
                 sessionsList.add(session);
             }
@@ -41,6 +46,30 @@ public class TCPListener extends Thread {
             e.printStackTrace();
         }
 
+    }
+
+    public void stopListner(){
+        this.isRunning = false;
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public TCPSession getSessionWithAdress(String ipString){
+        InetAddress ip;
+        try {
+            ip = InetAddress.getByName(ipString);
+            for(TCPSession session : sessionsList){
+                if(session.getSocket().getInetAddress().equals(ip)){
+                    return session;
+                }
+            }
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // ** GETTERS AND SETTERS**
@@ -55,5 +84,11 @@ public class TCPListener extends Thread {
     }
     public void setPort(int port) {
         this.port = port;
+    }
+    public ServerSocket getSocket(){
+        return serverSocket;
+    }
+    public void setSocket(ServerSocket serverSocket){
+        this.serverSocket = serverSocket;
     }
 }
