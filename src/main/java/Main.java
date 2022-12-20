@@ -1,11 +1,11 @@
-import controller.*;
-import database.DatabaseManager;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import model.*;
 import network.*;
+import controller.*;
+import database.DatabaseManager;
+
 
 
 
@@ -66,7 +66,7 @@ public class Main{
         try {
             while (true) {
                 //sender.sendBroadcast("Hello Broadcast", port);
-                sender.sendUDP("Hello UDP", port, InetAddress.getLocalHost());
+                sender.sendUDP("Hello UDP", port, InetAddress.getLocalHost().getHostAddress());
                 Thread.sleep(1000);
             }
         } catch (InterruptedException | IOException e) {

@@ -25,8 +25,8 @@ public class UserController {
     /**
      * Constructor
      */
-    public UserController(String Pseudo){
-        setMyUser(Pseudo);
+    public UserController(String pseudo){
+        setMyUser(pseudo);
         //setListOnline(listOnline);
     }
 
@@ -59,8 +59,8 @@ public class UserController {
 
     public void message(String data, User receiver){
         // Generate a String with the type of message, the user informations and the txt wrote by the user
-        String msgToSend = TypeMsg.MESSAGE+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo() + "|Message:" + data;
-        System.out.println(msgToSend);
+        String msg = TypeMsg.MESSAGE+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo() + "|Message:" + data;
+        System.out.println(msg);
 
         //TODO: send the message to the receiver
     }
@@ -70,6 +70,65 @@ public class UserController {
     //TODO: Create only one function to receive all the informations with some cases
 
     //TODO: update listOnline when a user connect or disconnect
+
+    /**
+     * This function is used to receive a message from the network
+     * It split the message and do the right action depending on the type of message
+     * (PSEUDO, CONNECT, DISCONNECT, MESSAGE)
+     * @param msg
+     */
+    public void receiveMsg(String msg){
+        String[] msgSplit = msg.split("\\|");
+        String typeMsg = msgSplit[0];
+        User chatter = new User(msgSplit[1].split(":")[1], 
+                                msgSplit[2].split(":")[1], 
+                                msgSplit[3].split(":")[1]);
+        //String data = msgSplit[4].split(":")[1];
+
+        if(typeMsg.equals("OK")){
+            System.out.println("OK");
+        }
+        else {
+            switch (TypeMsg.valueOf(typeMsg)) {
+
+                case PSEUDO:
+                    System.out.println("PSEUDO");
+                
+                    // I already use this pseudo
+                    if(chatter.getPseudo().equals(myUser.getPseudo())){
+                        try{
+                            System.out.println("PSEUDO already used");
+                            String notOK = "notOK"+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo() + "|Message:";
+                            udpSender.sendUDP(notOK, udpListener.getPort(), chatter.getIP());
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    // I don't use this pseudo
+                    else {
+                        System.out.println("PSEUDO not used");
+                    }
+                
+                    break;
+                
+                case CONNECT:
+                    System.out.println("CONNECT");
+                    break;
+
+                case DISCONNECT:
+                    System.out.println("DISCONNECT");
+                    break;
+
+                case MESSAGE:
+                    System.out.println("MESSAGE");
+                    break;
+                
+                default :
+                    break;
+            }
+        }
+    }
+
 
     /**
      * This method is used to get the local IP address of the computer

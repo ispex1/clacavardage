@@ -25,12 +25,13 @@ public class UDPSender {
      * @throws IOException
      */
 
-    public void sendUDP(String message, int port, InetAddress address) throws IOException {
-        DatagramSocket socket = new DatagramSocket();
-        byte[] buffer = message.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
-        socket.send(packet);
-        socket.close();
+    public void sendUDP(String message, int port, String ipString) throws IOException {
+            InetAddress address = InetAddress.getByName(ipString);
+            DatagramSocket socket = new DatagramSocket();
+            byte[] buffer = message.getBytes();
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+            socket.send(packet);
+            socket.close();
     }
 
 
