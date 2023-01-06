@@ -6,9 +6,6 @@ import network.*;
 import controller.*;
 import database.DatabaseManager;
 
-
-
-
 /**
  * This class is the main class of the project.
  * 
@@ -17,9 +14,15 @@ public class Main{
 
     public static void main (String[] args){
         testUserController();
-        //TODO: Finish the UserController
     }
 
+    //test UserController 
+    private static void testUserController(){
+        UserController userController = new UserController("iSpeX");
+        userController.connect();
+        userController.getLocalIP();
+        userController.getMacAddress();
+    }
 
     //test TCP
     private static void testTCP() {
@@ -43,13 +46,6 @@ public class Main{
         }
 
 
-    }
-    //test UserController 
-    private static void testUserController(){
-        UserController userController = new UserController("iSpeX");
-        userController.connect();
-        userController.getLocalIP();
-        userController.getMacAddress();
     }
 
     //test UDP Sender and Listener

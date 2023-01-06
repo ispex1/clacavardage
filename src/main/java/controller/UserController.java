@@ -19,7 +19,7 @@ public class UserController {
     public static final UDPSender udpSender = new UDPSender() ; //UDPSender
     
     public enum TypeMsg {
-        PSEUDO, CONNECT, DISCONNECT, MESSAGE
+        ASK_PSEUDO, CONNECT, DISCONNECT, PSEUDO_OK, PSEUDO_NOK
     }
 
     /**
@@ -35,34 +35,38 @@ public class UserController {
     public void pseudo(String pseudo){
 
         // Generate a String with the type of message and user informations
-        String msg = TypeMsg.PSEUDO+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
-        System.out.println(msg);
+        String msgToSend = TypeMsg.ASK_PSEUDO+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
+        System.out.println(msgToSend);
 
-        //udpSender.sendBroadcast(msg);
+        try {
+            udpSender.sendBroadcast(msgToSend,udpListener.getPort());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void connect(){
         // Generate a String with the type of message and the user informations
-        String msg = TypeMsg.CONNECT+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        System.out.println(msg);
+        String msgToSend = TypeMsg.CONNECT+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
+        System.out.println(msgToSend);
 
-        //udpSender.sendBroadcast(msg);
+        try {
+            udpSender.sendBroadcast(msgToSend,udpListener.getPort());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void disconnect(){
         // Generate a String with the type of message and the user informations
-        String msg = TypeMsg.DISCONNECT+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        System.out.println(msg);
+        String msgToSend = TypeMsg.DISCONNECT+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
+        System.out.println(msgToSend);
 
-        //udpSender.sendBroadcast(msg);
-    }
-
-    public void message(String data, User receiver){
-        // Generate a String with the type of message, the user informations and the txt wrote by the user
-        String msg = TypeMsg.MESSAGE+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo() + "|Message:" + data;
-        System.out.println(msg);
-
-        //TODO: send the message to the receiver
+        try {
+            udpSender.sendBroadcast(msgToSend,udpListener.getPort());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // RECEIVE INFORMATIONS
@@ -77,55 +81,53 @@ public class UserController {
      * (PSEUDO, CONNECT, DISCONNECT, MESSAGE)
      * @param msg
      */
-    public void receiveMsg(String msg){
-        String[] msgSplit = msg.split("\\|");
-        String typeMsg = msgSplit[0];
-        User chatter = new User(msgSplit[1].split(":")[1], 
+    public void receiveMsg(String msgReceive){
+        String[] msgSplit = msgReceive.split("\\|");
+        TypeMsg typeMsg = TypeMsg.valueOf(msgSplit[0]);
+        User otherUser = new User(msgSplit[1].split(":")[1], 
                                 msgSplit[2].split(":")[1], 
                                 msgSplit[3].split(":")[1]);
-        //String data = msgSplit[4].split(":")[1];
 
-        if(typeMsg.equals("OK")){
-            System.out.println("OK");
-        }
-        else {
-            switch (TypeMsg.valueOf(typeMsg)) {
+        switch (typeMsg) {
 
-                case PSEUDO:
-                    System.out.println("PSEUDO");
-                
+            case PSEUDO_OK:
+                System.out.println("PSEUDO_OK");
+                break;
+
+            case ASK_PSEUDO:
+                System.out.println("PSEUDO");
+            
+                if(otherUser.getID().equals(myUser.getID())){
+                    System.out.println("I'm the sender");
+                }
+                else {
                     // I already use this pseudo
-                    if(chatter.getPseudo().equals(myUser.getPseudo())){
+                    if(otherUser.getPseudo().equals(myUser.getPseudo())){
                         try{
                             System.out.println("PSEUDO already used");
-                            String notOK = "notOK"+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo() + "|Message:";
-                            udpSender.sendUDP(notOK, udpListener.getPort(), chatter.getIP());
+                            String msgToSend = TypeMsg.PSEUDO_NOK+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
+                            udpSender.sendUDP(msgToSend, udpListener.getPort(), otherUser.getIP());
                         }catch(Exception e){
                             e.printStackTrace();
                         }
                     }
                     // I don't use this pseudo
                     else {
-                        System.out.println("PSEUDO not used");
+                        System.out.println("PSEUDO not used yet");
                     }
-                
-                    break;
-                
-                case CONNECT:
-                    System.out.println("CONNECT");
-                    break;
+                }
+                break;
+            
+            case CONNECT:
+                System.out.println("CONNECT");
+                break;
 
-                case DISCONNECT:
-                    System.out.println("DISCONNECT");
-                    break;
-
-                case MESSAGE:
-                    System.out.println("MESSAGE");
-                    break;
-                
-                default :
-                    break;
-            }
+            case DISCONNECT:
+                System.out.println("DISCONNECT");
+                break;
+            
+            default :
+                break;
         }
     }
 
