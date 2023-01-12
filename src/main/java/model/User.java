@@ -10,6 +10,7 @@ public class User {
     private String id; // MAC of the user
     private String ip; // IP address of the user
     private String pseudo; // Pseudo of the user
+    private int port; // Port of the user
 
     /**
      * Constructor
@@ -78,5 +79,21 @@ public class User {
      */
     public String getIP(){
         return this.ip;
+    }
+
+    /**
+     * Setter for port
+     * @param port
+     */
+    public void setPort(int port){
+        this.port = port;
+    }
+
+    /**
+     * Getter for port
+     * @return port
+     */
+    public int getPort(){
+        return this.port;
     }
 }

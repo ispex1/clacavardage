@@ -1,3 +1,14 @@
+/**
+ * =================================================================================================================
+ * 
+ * CLASSE A SUPRIMER
+ * CETTE CLASSE A FUSIONNE AVEC TCP SESSION ET EST DISPONIBLE DESORMAIS DANS LE PACKAGE network
+ * TODO : Avant de supprimer la classe, verifier que toutes les methodes et attributs ont bien ete remplace dans TCPSession
+ * 
+ * 
+ * =================================================================================================================
+ */
+
 package model;
 
 import java.util.ArrayList;

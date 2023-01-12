@@ -1,8 +1,12 @@
 package controller;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import model.User;
 import network.UDPListener;
@@ -10,127 +14,194 @@ import network.UDPSender;
 
 /**
  * This class represents the user controller.
- * 
+ * Controle la reception et l'envoi de message udp  en fonction du besoin
+ * permet egalement d'avoir un attribut static de l'utilisateur utilisant l'application
  */
 public class UserController {
     private static User myUser; //Personal user
-    public ArrayList<User> listOnline = new ArrayList<User>(); //List of all users online
-    public static final UDPListener udpListener = new UDPListener(1,1111); //UDPListener
+    public static List<User> listOnline = Collections.synchronizedList(new ArrayList<User>()); //List of all users online
+    public static final UDPListener udpListener = new UDPListener(1111); //UDPListener
     public static final UDPSender udpSender = new UDPSender() ; //UDPSender
     
+    /**
+     * ASK_PSEUDO : "ASK_PSEUDO|ID:id|IP:ip|PSEUDO:pseudo"
+     * RESPONSE_PSEUDO : "RESPONSE_PSEUDO|ID:id|IP:ip|MyPseudo:pseudo|Pseudo:pseudoVenantDEtreVerifie"
+     * CONNECT : "CONNECT|ID:id|IP:ip|PSEUDO:pseudo"
+     * DISCONNECT : "DISCONNECT|ID:id|IP:ip|PSEUDO:pseudo"
+     */
     public enum TypeMsg {
-        ASK_PSEUDO, CONNECT, DISCONNECT, PSEUDO_OK, PSEUDO_NOK
+        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT
     }
+
 
     /**
      * Constructor
      */
-    public UserController(String pseudo){
-        setMyUser(pseudo);
+    public UserController(String Pseudo){
+        setMyUser(Pseudo);
+        myUser.setPort(1234);//UNIQUE INITIALISATION DU PORT LOCAL
+        myUser.setIP(getLocalIP());
+        myUser.setID(getMacAddress());//TODO : A changer pour avoir l'ID de l'utilisateur, est qu'on garde l'adresse mac ?
         //setListOnline(listOnline);
     }
 
     // SEND INFORMATIONS
 
-    public void pseudo(String pseudo){
+    //pour verifier si tout les pseudos sont dispo: 
+    // 1) on envoie un message en broadcast avec le pseudo + info
+    // 2) on attend jusqu'a recevoir un reponse pseudo
+    // 3) les gens recevant le ask pseudo regarde si le pseudo est dans la liste
+    //      -> si oui reponse reponse NOT OK (tout le monde est sensé renvoyer not ok)
+    //      -> si non reponse OK + son pseudo 
+    // 4) sur reception d'un PSEUDO_OK
+    //      -> cela signifie que le pseudo n'est pas sur le reseau
+    //      -> on ajoute son pseudo en tete de liste(on verifie avant si la liste est vide, pour ne le faire qu'une seule fois)
+    //      -> on ajoute le pseudo recu a la liste (elle va se construire au fur et a mesure de la reception des OK_PSEUDO)
+    //      -> on envoie un message en broadcast pour dire qu'on est connecte
+    // 5) sur reception d'un PSEUDO_NOT_OK
+    //      -> on affiche un message d'erreur, pseudo deja pris, recommencer
+
+
+    /**
+     * Public function to use to start to ask if the pseudo is available
+     * @param pseudo
+     */
+    public static void askPseudo(String pseudo){
+        udpListener.run();
+        sendPseudo(pseudo);
+    }
+
+    /**
+     * Send a broadcast message to ask if the pseudo is available
+     * @param pseudo
+     * @throws SocketException
+     */
+    private static void sendPseudo(String pseudo){
 
         // Generate a String with the type of message and user informations
-        String msgToSend = TypeMsg.ASK_PSEUDO+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
-        System.out.println(msgToSend);
-
+        String msg = TypeMsg.ASK_PSEUDO+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
+        //System.out.println(msg);
         try {
-            udpSender.sendBroadcast(msgToSend,udpListener.getPort());
-        } catch (Exception e) {
+            udpSender.sendBroadcast(msg,myUser.getPort());
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public void connect(){
+    //TODO : Observer la coherence des public private static etc sur l'ensemble du code
+    private static void sendPseudoResponse(String pseudo, String ip, Boolean isValid){
+        String msg;
+        if (isValid){
+            msg = TypeMsg.PSEUDO_OK+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() +"|MyPseudo:"+getMyUser().getPseudo()+"|Pseudo:" + pseudo;
+        }else{
+            msg = TypeMsg.PSEUDO_NOT_OK+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() +"|MyPseudo:" +getMyUser().getPseudo()+"|Pseudo:" + pseudo;
+            
+        }
+        System.out.println(msg);
+
+    
+        try {
+            udpSender.sendUDP(msg,myUser.getPort(),ip);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+    }
+
+    private static void sendConnect(){
         // Generate a String with the type of message and the user informations
-        String msgToSend = TypeMsg.CONNECT+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        System.out.println(msgToSend);
+        String msg = TypeMsg.CONNECT+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
+        System.out.println(msg);
 
         try {
-            udpSender.sendBroadcast(msgToSend,udpListener.getPort());
-        } catch (Exception e) {
+            udpSender.sendBroadcast(msg, myUser.getPort());
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public void disconnect(){
+    public static void sendDisconnect(){
         // Generate a String with the type of message and the user informations
-        String msgToSend = TypeMsg.DISCONNECT+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        System.out.println(msgToSend);
+        String msg = TypeMsg.DISCONNECT+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
+        System.out.println(msg);
 
         try {
-            udpSender.sendBroadcast(msgToSend,udpListener.getPort());
-        } catch (Exception e) {
+            udpSender.sendBroadcast(msg, myUser.getPort());
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+
+    
 
     // RECEIVE INFORMATIONS
     
     //TODO: Create only one function to receive all the informations with some cases
 
-    //TODO: update listOnline when a user connect or disconnect
+    public static void informationTreatment(String msg){
+        String[] splitedMsg = msg.split("|");
+        String type = splitedMsg[0];
+        String fullID = splitedMsg[1];
+        String ID = fullID.split(":")[1];
+        String fullIP = splitedMsg[2];
+        String IP = fullIP.split(":")[1];
+        String fullPseudo = splitedMsg[3];
+        String pseudo = fullPseudo.split(":")[1];
 
-    /**
-     * This function is used to receive a message from the network
-     * It split the message and do the right action depending on the type of message
-     * (PSEUDO, CONNECT, DISCONNECT, MESSAGE)
-     * @param msg
-     */
-    public void receiveMsg(String msgReceive){
-        String[] msgSplit = msgReceive.split("\\|");
-        TypeMsg typeMsg = TypeMsg.valueOf(msgSplit[0]);
-        User otherUser = new User(msgSplit[1].split(":")[1], 
-                                msgSplit[2].split(":")[1], 
-                                msgSplit[3].split(":")[1]);
+        switch(type){
+            case "ASK_PSEUDO":
 
-        switch (typeMsg) {
+                boolean isPseudoValid=true;
+                for (User user : listOnline){
+                    if (user.getPseudo().equals(pseudo)){
+                        isPseudoValid=false;
+                        sendPseudoResponse(pseudo, IP, false);
+                        break;
+                    }
+                }
+                if (isPseudoValid){    
+                    sendPseudoResponse(pseudo,IP, true);
+                }           
 
-            case PSEUDO_OK:
+                break;
+            
+            case "PSEUDO_OK":
                 System.out.println("PSEUDO_OK");
+                if (listOnline.isEmpty()){
+                    listOnline.add(0,new User(ID,IP,getMyUser().getPseudo()));//On s'ajoute en tête de liste
+                }
+                listOnline.add(new User(ID,IP,pseudo));
+                sendConnect();
+                //TODO : ouvrir la fenetre de discussion via le FrameController
                 break;
 
-            case ASK_PSEUDO:
-                System.out.println("PSEUDO");
-            
-                if(otherUser.getID().equals(myUser.getID())){
-                    System.out.println("I'm the sender");
-                }
-                else {
-                    // I already use this pseudo
-                    if(otherUser.getPseudo().equals(myUser.getPseudo())){
-                        try{
-                            System.out.println("PSEUDO already used");
-                            String msgToSend = TypeMsg.PSEUDO_NOK+"|ID:" + myUser.getID() + "|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-                            udpSender.sendUDP(msgToSend, udpListener.getPort(), otherUser.getIP());
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                    // I don't use this pseudo
-                    else {
-                        System.out.println("PSEUDO not used yet");
-                    }
-                }
-                break;
-            
-            case CONNECT:
-                System.out.println("CONNECT");
+            case "PSEUDO_NOT_OK":
+                System.out.println("PSEUDO_NOT_OK");
+                udpListener.closeSocket();
+                //TODO: afficher un message d'erreur via le FrameController, pseudo deja pris, recommencer
+
                 break;
 
-            case DISCONNECT:
-                System.out.println("DISCONNECT");
+            //TODO: update listOnline when a user connect or disconnect
+            case "CONNECT":
+                if (!listOnline.contains(new User(ID,IP,pseudo))){
+                    listOnline.add(new User(ID,IP,pseudo));
+                }
                 break;
-            
-            default :
+            case "DISCONNECT":
+                if (listOnline.contains(new User(ID,IP,pseudo))){
+                    listOnline.remove(new User(ID,IP,pseudo));
+                }
+                break;
+            default:
                 break;
         }
-    }
 
+    }
 
     /**
      * This method is used to get the local IP address of the computer
@@ -198,7 +269,7 @@ public class UserController {
      * Getter for listOnline
      * @return listOnline
      */
-    public ArrayList<User> getListOnline(){
+    public List<User> getListOnline(){
         return this.listOnline;
     }
 

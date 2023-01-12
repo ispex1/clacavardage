@@ -50,7 +50,7 @@ public class Main{
 
     //test UDP Sender and Listener
     private static void testUDP(){
-        int port =1234;
+        int port=1234;
 
         //Creating a UDP Listener, should open a new thread
         UDPListener listener = new UDPListener(1, port);

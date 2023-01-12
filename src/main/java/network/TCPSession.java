@@ -1,10 +1,19 @@
 package network;
 
 import model.User;
+import model.Message;
+import model.Session;
+import controller.FrameController;
+import controller.SessionController;
+import controller.UserController;
 
 import java.io.*;
+import java.lang.ModuleLayer.Controller;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TCPSession extends Thread{
 
@@ -15,13 +24,16 @@ public class TCPSession extends Thread{
     private boolean isRunning;
     private PrintWriter writer;
     private BufferedReader bufferedReader;
-    //TODO mettre des attributs avec les communicants des deux utilisateurs
+    private User userDist;
+    private User myUser = UserController.getMyUser();
+    
     /**
      * Constructor of the TCPSession when a use start a session with us
      * @param link
      */
-    public TCPSession(Socket link) {
+    public TCPSession(Socket link, User userDist) {
         setSocket(link);
+        this.userDist = userDist;
         try {
             setInputStream(link.getInputStream());
             setOutputStream(link.getOutputStream());
@@ -42,6 +54,7 @@ public class TCPSession extends Thread{
      * Constructor of the TCPSession when we start a session with a user
      */
     public TCPSession(User userdist, int port) {
+        this.userDist = userdist;
         try {
             setSocket(new Socket(InetAddress.getByName(userdist.getIP()), port));
 
@@ -51,6 +64,7 @@ public class TCPSession extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         //Input buffer setup
         InputStreamReader reader = new InputStreamReader(inputStream);
         bufferedReader = new BufferedReader(reader);
@@ -63,9 +77,11 @@ public class TCPSession extends Thread{
 
     }
 
-    public void sendMessage(String message){
-        System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + message);
-        writer.println(message);
+    public void sendMessage(String data){
+        Message msg = new Message(myUser, userDist, data);//TODO : ajouter le temps au message
+        SessionController.archiveMsg(msg, userDist);
+        System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + msg.getData());
+        writer.println(msg.getData());
     }
 
     /**
@@ -74,14 +90,22 @@ public class TCPSession extends Thread{
      */
     public void run(){
         setRunning(true);
-        String message;
+        String data = null;
+        Message msg = new Message();
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is running, a connection has been established");
         while(isRunning){
             try {
-                message = bufferedReader.readLine();
-                //TODO Appel fonction pour afficher le message dans la fenetre
-                // Just printing the data for now
-                System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + message);
+                data = bufferedReader.readLine();
+
+                msg.setData(data);
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+                LocalDateTime now = LocalDateTime.now();  
+                msg.setTime(dtf.format(now));
+                msg.setSender(userDist);
+                msg.setReceiver(myUser);
+                SessionController.archiveMsg(msg, userDist);
+                // To printin the data in Terminal
+                System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
             } catch (IOException e) {
                 e.printStackTrace();
             }
