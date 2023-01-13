@@ -1,17 +1,13 @@
 package network;
 
-import model.User;
-import model.Message;
-import model.Session;
-import controller.FrameController;
 import controller.SessionController;
 import controller.UserController;
+import model.Message;
+import model.User;
 
 import java.io.*;
-import java.lang.ModuleLayer.Controller;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -79,6 +75,7 @@ public class TCPSession extends Thread{
 
     public void sendMessage(String data){
         Message msg = new Message(myUser, userDist, data);//TODO : ajouter le temps au message
+        //System.out.println(msg.toString());
         SessionController.archiveMsg(msg, userDist);
         System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + msg.getData());
         writer.println(msg.getData());
