@@ -1,5 +1,9 @@
 package controller;
 
+import model.User;
+import network.UDPListener;
+import network.UDPSender;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -8,10 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import model.User;
-import network.UDPListener;
-import network.UDPSender;
-
 /**
  * This class represents the user controller.
  * Controle la reception et l'envoi de message udp  en fonction du besoin
@@ -19,15 +19,16 @@ import network.UDPSender;
  */
 public class UserController {
     private static User myUser; //Personal user
-    public static List<User> listOnline = Collections.synchronizedList(new ArrayList<User>()); //List of all users online
-    public static final UDPListener udpListener = new UDPListener(1111); //UDPListener
+    private static List<User> listOnline = Collections.synchronizedList(new ArrayList<User>()); //List of all users online
+    public static UDPListener udpListener; //UDPListener
     public static final UDPSender udpSender = new UDPSender() ; //UDPSender
     
     /**
-     * ASK_PSEUDO : "ASK_PSEUDO|ID:id|IP:ip|PSEUDO:pseudo"
-     * RESPONSE_PSEUDO : "RESPONSE_PSEUDO|ID:id|IP:ip|MyPseudo:pseudo|Pseudo:pseudoVenantDEtreVerifie"
-     * CONNECT : "CONNECT|ID:id|IP:ip|PSEUDO:pseudo"
-     * DISCONNECT : "DISCONNECT|ID:id|IP:ip|PSEUDO:pseudo"
+     * ASK_PSEUDO : "ASK_PSEUDO|ID:id|IP:ip|Pseudo:pseudo"
+     * PSEUDO_OK :  "PSEUDO_OK|ID:id|IP:ip|MyPseudo:pseudo|Pseudo:pseudoVenantDEtreVerifie"
+     * PSEUDO_OK :  "PSEUDO_OK|ID:id|IP:ip|MyPseudo:pseudo|Pseudo:pseudoVenantDEtreVerifie"
+     * CONNECT :    "CONNECT|ID:id|IP:ip|Pseudo:pseudo"
+     * DISCONNECT : "DISCONNECT|ID:id|IP:ip|Pseudo:pseudo"
      */
     public enum TypeMsg {
         ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT
@@ -42,6 +43,7 @@ public class UserController {
         myUser.setPort(1234);//UNIQUE INITIALISATION DU PORT LOCAL
         myUser.setIP(getLocalIP());
         myUser.setID(getMacAddress());//TODO : A changer pour avoir l'ID de l'utilisateur, est qu'on garde l'adresse mac ?
+        udpListener = new UDPListener(myUser.getPort());
         //setListOnline(listOnline);
     }
 
@@ -143,17 +145,22 @@ public class UserController {
     //TODO: Create only one function to receive all the informations with some cases
 
     public static void informationTreatment(String msg){
-        String[] splitedMsg = msg.split("|");
+        String[] splitedMsg = msg.split("\\|");
         String type = splitedMsg[0];
-        String fullID = splitedMsg[1];
-        String ID = fullID.split(":")[1];
-        String fullIP = splitedMsg[2];
-        String IP = fullIP.split(":")[1];
-        String fullPseudo = splitedMsg[3];
-        String pseudo = fullPseudo.split(":")[1];
+        String fullID;
+        String ID;
+        String fullIP;
+        String IP;
+        String fullPseudo;
+        String pseudo;
+
 
         switch(type){
             case "ASK_PSEUDO":
+                fullIP = splitedMsg[2];
+                IP = fullIP.split(":")[1];
+                fullPseudo = splitedMsg[3];
+                pseudo = fullPseudo.split(":")[1];
 
                 boolean isPseudoValid=true;
                 for (User user : listOnline){
@@ -170,13 +177,22 @@ public class UserController {
                 break;
             
             case "PSEUDO_OK":
+                fullID = splitedMsg[1];
+                ID = fullID.split(":")[1];
+                fullIP = splitedMsg[2];
+                IP = fullIP.split(":")[1];
+                fullPseudo = splitedMsg[3];
+                pseudo = fullPseudo.split(":")[1];
                 System.out.println("PSEUDO_OK");
                 if (listOnline.isEmpty()){
                     listOnline.add(0,new User(ID,IP,getMyUser().getPseudo()));//On s'ajoute en tête de liste
+                    sendConnect();
+                    System.out.println("Connecté");
+                    //TODO : ouvrir la fenetre de discussion via le FrameController
                 }
                 listOnline.add(new User(ID,IP,pseudo));
-                sendConnect();
-                //TODO : ouvrir la fenetre de discussion via le FrameController
+                System.out.println(listOnline);
+
                 break;
 
             case "PSEUDO_NOT_OK":
@@ -188,14 +204,28 @@ public class UserController {
 
             //TODO: update listOnline when a user connect or disconnect
             case "CONNECT":
+                fullID = splitedMsg[1];
+                ID = fullID.split(":")[1];
+                fullIP = splitedMsg[2];
+                IP = fullIP.split(":")[1];
+                fullPseudo = splitedMsg[3];
+                pseudo = fullPseudo.split(":")[1];
                 if (!listOnline.contains(new User(ID,IP,pseudo))){
                     listOnline.add(new User(ID,IP,pseudo));
                 }
+                //TODO: update the list of online users via the FrameController
                 break;
             case "DISCONNECT":
+                fullID = splitedMsg[1];
+                ID = fullID.split(":")[1];
+                fullIP = splitedMsg[2];
+                IP = fullIP.split(":")[1];
+                fullPseudo = splitedMsg[3];
+                pseudo = fullPseudo.split(":")[1];
                 if (listOnline.contains(new User(ID,IP,pseudo))){
                     listOnline.remove(new User(ID,IP,pseudo));
                 }
+                //TODO: update the list of online users via the FrameController
                 break;
             default:
                 break;
@@ -223,6 +253,7 @@ public class UserController {
      * This method is used to get the MAC address of the computer
      * @return String macAddress
      */
+    //TODO :Remove MAC adress and change DB
     public static String getMacAddress(){
         String macAddress = null;
         try {
@@ -230,10 +261,16 @@ public class UserController {
             NetworkInterface networkInterface = NetworkInterface.getByInetAddress(localHost);
             byte[] mac = networkInterface.getHardwareAddress();
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < mac.length; i++) {
-                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            if (mac != null) {
+                for (int i = 0; i < mac.length; i++) {
+                    sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+                }
+                macAddress = sb.toString();
             }
-            macAddress = sb.toString();
+            else{
+                macAddress = "00-00-00-00-00-00";
+            }
+
             System.out.println("MAC address of my system is "+macAddress);
         } catch (Exception e) {
             e.printStackTrace();
