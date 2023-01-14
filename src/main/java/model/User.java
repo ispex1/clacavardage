@@ -3,13 +3,14 @@ package model;
 /**
  * This class represents a user.
  * It contains the user's IP, pseudo, id, port and state.
- * 
+ *
  */
 
 public class User {
     private String id; // MAC of the user
     private String ip; // IP address of the user
     private String pseudo; // Pseudo of the user
+    private int port; // Port of the user
 
     /**
      * Constructor
@@ -71,12 +72,28 @@ public class User {
     public void setIP(String ip){
         this.ip = ip ;
     }
-    
+
     /**
      * Getter for ip
      * @return ip
      */
     public String getIP(){
         return this.ip;
+    }
+
+    /**
+     * Setter for port
+     * @param port
+     */
+    public void setPort(int port){
+        this.port = port;
+    }
+
+    /**
+     * Getter for port
+     * @return port
+     */
+    public int getPort(){
+        return this.port;
     }
 }

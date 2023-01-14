@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * This class represents a message.
  * It contains the text, the time, the sender and the receiver.
- * 
+ *
  */
 
 public class Message {
@@ -29,7 +29,7 @@ public class Message {
     public Message(String msg){
         this.setData(msg);
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-		this.setTime(sdf.format(new Date()));
+        this.setTime(sdf.format(new Date()));
     }
 
     /**
@@ -64,13 +64,14 @@ public class Message {
      * This method returns the message in a string format
      * @return String
      */
-    @Override 
+    //TODO: resolve error Method threw 'java.lang.NullPointerException' exception. Cannot evaluate model.Message.toString()
+
     public String toString(){
-        return ("Sender : "     + this.getSender().getID()      + " | "  
-            +   "Receiver : "   + this.getReceiver().getID()    + " | "  
-            +   "Message : "    + this.getData()                + " | "  
-            +   "Time : "       + this.getTime()                + " | "
-            );
+        return ("Sender : "     + this.getSender().getID()      + " | "
+                +   "Receiver : "   + this.getReceiver().getID()    + " | "
+                +   "Message : "    + this.getData()                + " | "
+                +   "Time : "       + this.getTime()                + " | "
+        );
     }
 
     /**

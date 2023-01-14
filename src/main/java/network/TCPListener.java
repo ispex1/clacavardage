@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import controller.UserController;
+
 public class TCPListener extends Thread {
 
     // ** ATTRIBUTES **
@@ -39,7 +41,7 @@ public class TCPListener extends Thread {
                 System.out.println("<Listener | "+ Thread.currentThread().getId() +" > : TCPListener is listening on port " + port);
                 Socket link = serverSocket.accept();
                 System.out.println("<Listener | "+ Thread.currentThread().getId() + " > : Socket printing\n" + link.toString());
-                TCPSession session = new TCPSession(link);
+                TCPSession session = new TCPSession(link, UserController.getMyUser());
                 sessionsList.add(session);
             }
         } catch (IOException e) {

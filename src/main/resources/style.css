@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
+
+
+/* ################################## LOGIN & PARAMETERS ################################## */
+
+.login_param {
+    -fx-background-image:url('/images/background_login.jpg');
+}
+
+.field_pseudo{
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 30px;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 40px;
+    -fx-prompt-text-fill: #989898;
+}
+
+.txt_pseudo{
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 40px;
+}
+
+.btn_connect_pseudo{
+    -fx-background-radius: 49.5px;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-background-color: #DFF53A;
+    -fx-font-size: 40px;
+    -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
+}
+
+.btn_disconnect {
+    -fx-background-radius: 49.5px;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-background-color: #DCDCDC;
+    -fx-font-size: 25px;
+    -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
+}
+
+/* ################################## MAIN ################################## */
+
+.main {
+    -fx-background-image: url('/images/background_main.jpg');
+}
+
+.pseudo{
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 125px;
+}
+
+.id{
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 32px;
+}
+
+
+
+
+
+
+
+
+

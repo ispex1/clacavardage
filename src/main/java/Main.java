@@ -1,27 +1,43 @@
+import controller.UserController;
+import database.DatabaseManager;
+import model.Message;
+import model.User;
+import network.TCPListener;
+import network.TCPSession;
+import network.UDPListener;
+import network.UDPSender;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import model.*;
-import network.*;
-import controller.*;
-import database.DatabaseManager;
 
 /**
  * This class is the main class of the project.
- * 
+ *
  */
 public class Main{
 
     public static void main (String[] args){
-        testUserController();
+
+        testTCP();
+
     }
 
-    //test UserController 
+    //test UserController
     private static void testUserController(){
         UserController userController = new UserController("iSpeX");
-        userController.connect();
-        userController.getLocalIP();
-        userController.getMacAddress();
+        System.out.println("My user : " + userController.getMyUser().getPseudo());
+        userController.askPseudo(userController.getMyUser().getPseudo());
+
+        while(true){
+            try {
+                Thread.sleep(2000);
+                System.out.println("User list : " + userController.getListOnline());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     //test TCP
@@ -50,10 +66,10 @@ public class Main{
 
     //test UDP Sender and Listener
     private static void testUDP(){
-        int port =1234;
+        int port=1234;
 
         //Creating a UDP Listener, should open a new thread
-        UDPListener listener = new UDPListener(1, port);
+        UDPListener listener = new UDPListener(port);
 
         // Creating a UDP Sender
         UDPSender sender = new UDPSender();

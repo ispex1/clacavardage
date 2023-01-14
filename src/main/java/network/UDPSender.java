@@ -26,12 +26,12 @@ public class UDPSender {
      */
 
     public void sendUDP(String message, int port, String ipString) throws IOException {
-            InetAddress address = InetAddress.getByName(ipString);
-            DatagramSocket socket = new DatagramSocket();
-            byte[] buffer = message.getBytes();
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
-            socket.send(packet);
-            socket.close();
+        InetAddress address = InetAddress.getByName(ipString);
+        DatagramSocket socket = new DatagramSocket();
+        byte[] buffer = message.getBytes();
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+        socket.send(packet);
+        socket.close();
     }
 
 
@@ -64,7 +64,7 @@ public class UDPSender {
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
         for (NetworkInterface networkInterface : Collections.list(interfaces)) {
             addresses.add(networkInterface.getInetAddresses().nextElement());
-            }
+        }
         return addresses;
     }
 

@@ -1,3 +1,14 @@
+/**
+ * =================================================================================================================
+ *
+ * CLASSE A SUPRIMER
+ * CETTE CLASSE A FUSIONNE AVEC TCP SESSION ET EST DISPONIBLE DESORMAIS DANS LE PACKAGE network
+ * TODO : Avant de supprimer la classe, verifier que toutes les methodes et attributs ont bien ete remplace dans TCPSession
+ *
+ *
+ * =================================================================================================================
+ */
+
 package model;
 
 import java.util.ArrayList;
@@ -8,7 +19,7 @@ import database.DatabaseManager;
  * This class represents a session.
  * A session is created for each conversation between two users connected.
  * It contains the socket, the other user and the id of the session.
- * 
+ *
  */
 
 public class Session {
@@ -31,7 +42,7 @@ public class Session {
     /**
      * This method is using the getHistory method from the DatabaseManager class.
      * It returns the history of the conversation between the two users into an ArrayList of Message.
-     * 
+     *
      * @return history
      */
     public ArrayList<Message> getHistory(){
@@ -41,7 +52,7 @@ public class Session {
     /**
      * This method is using the insertMessage method from the DatabaseManager class.
      * It inserts the message in the database.
-     * 
+     *
      * @param msg
      */
     public void archiveMsg(Message msg){
@@ -52,7 +63,7 @@ public class Session {
     /**
      * This method is using the deleteMessage method from the DatabaseManager class.
      * It deletes the message in the database.
-     * 
+     *
      * @param msg
      */
     public void deleteMsg(Message msg){
