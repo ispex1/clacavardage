@@ -1,11 +1,20 @@
 /**
  * =================================================================================================================
+<<<<<<< HEAD
  *
  * CLASSE A SUPRIMER
  * CETTE CLASSE A FUSIONNE AVEC TCP SESSION ET EST DISPONIBLE DESORMAIS DANS LE PACKAGE network
  * TODO : Avant de supprimer la classe, verifier que toutes les methodes et attributs ont bien ete remplace dans TCPSession
  *
  *
+=======
+ * 
+ * CLASSE A SUPRIMER
+ * CETTE CLASSE A FUSIONNE AVEC TCP SESSION ET EST DISPONIBLE DESORMAIS DANS LE PACKAGE network
+ * TODO : Avant de supprimer la classe, verifier que toutes les methodes et attributs ont bien ete remplace dans TCPSession
+ * 
+ * 
+>>>>>>> 441eb797adb2cef241148bb8dd136b13dd2b261e
  * =================================================================================================================
  */
 
