@@ -7,6 +7,8 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+import static controller.UserController.*;
+
 
 public class LoginFrame {
     @FXML
@@ -14,7 +16,7 @@ public class LoginFrame {
     @FXML
     private Text textPseudoNotValid;
 
-    public void connectSubmitClick(ActionEvent event) throws IOException {
+    public void connectClick(ActionEvent event) throws IOException {
         SceneController.pseudoValid(event, textFieldPseudo, textPseudoNotValid);
     }
 

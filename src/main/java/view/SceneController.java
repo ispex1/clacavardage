@@ -25,6 +25,8 @@ public class SceneController extends Application {
     protected static Parent root;
 
     public static void main(String[] args){
+        //TODO: remove this line, just for testing
+        if (listOnline.isEmpty()) testListOnline(); showListOnline();
         launch(args);
     }
 
@@ -50,20 +52,28 @@ public class SceneController extends Application {
 
     public static void pseudoValid(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
         boolean pseudoValid = true;
-        String pseudo = textFieldPseudo.getText();
+        String pseudo = textFieldPseudo.getText().toUpperCase();
 
-        if (pseudo.isEmpty()) textPseudoNotValid.setText("Please enter a pseudo");
+        if (myUser!=null && pseudo.equals(myUser.getPseudo())) {
+            SceneController.switchToMainScene(event.getSource());
+            System.out.println("Pseudo non modifié");
+        }
         else {
-            for (User user : listOnline) {
-                if (user.getPseudo().equals(pseudo)) {
-                    pseudoValid = false;
-                    break;
+            if (pseudo.isEmpty()) textPseudoNotValid.setText("Please enter a pseudo");
+            else if (pseudo.length() > 19) textPseudoNotValid.setText("This pseudo is too long");
+            else if (pseudo.contains(" ")) textPseudoNotValid.setText("Pseudo can't contain spaces");
+            else {
+                for (User user : listOnline) {
+                    if (user.getPseudo().equals(pseudo)) {
+                        pseudoValid = false;
+                        break;
+                    }
                 }
+                if (pseudoValid) {
+                    setMyUser(pseudo);
+                    SceneController.switchToMainScene(event.getSource());
+                } else textPseudoNotValid.setText("This pseudo is already taken");
             }
-            if (pseudoValid) {
-                setMyUser(pseudo);
-                SceneController.switchToMainScene(event.getSource());
-            } else textPseudoNotValid.setText("This pseudo is already taken");
         }
     }
 

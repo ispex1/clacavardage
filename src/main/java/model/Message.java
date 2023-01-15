@@ -67,8 +67,8 @@ public class Message {
     //TODO: resolve error Method threw 'java.lang.NullPointerException' exception. Cannot evaluate model.Message.toString()
 
     public String toString(){
-        return ("Sender : "     + this.getSender().getID()      + " | "
-                +   "Receiver : "   + this.getReceiver().getID()    + " | "
+        return ("Sender : "     + this.getSender().getIP()      + " | "
+                +   "Receiver : "   + this.getReceiver().getIP()    + " | "
                 +   "Message : "    + this.getData()                + " | "
                 +   "Time : "       + this.getTime()                + " | "
         );

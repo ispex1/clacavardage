@@ -84,8 +84,7 @@ public class DatabaseManager {
         // SQL statement for creating a new table
         String sql= "CREATE TABLE IF NOT EXISTS " + idPerso +"(\n"
                 + " ONE integer PRIMARY KEY,\n" // Index of the row
-                + "	id text NOT NULL,\n" // MAC of the user
-                + " ip text NOT NULL, \n" // IP address of the user
+                + " id text NOT NULL, \n" // IP address of the user
                 + " pseudo text NOT NULL" // Pseudo of the user
                 + ");"; 
 
@@ -95,39 +94,6 @@ public class DatabaseManager {
                 System.out.println("The personal table has been created with the name : " + idPerso);
         } catch (SQLException e) {
             System.out.println("Error creating table");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /** 
-     * This method update the personal informations of the user in the database.
-     * 
-     * @param idPerso
-     * @param ip
-     * @param pseudo
-     */
-    public static void updatePersonalInfo(String idPerso, String ip, String pseudo) {
-        String sql = "DELETE FROM " + idPerso + " WHERE ONE = ?";
-        String sql2 = "INSERT INTO " + idPerso + " (ONE, id, ip, pseudo) VALUES(?, ?, ?, ?)";
-
-        try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
-                //Deleting the previous personal informations
-                pstmt.setInt(1, 1);
-                pstmt.executeUpdate(); // Delete the message
-
-                //Inserting the new personal informations
-                pstmt2.setInt(1, 1);
-                pstmt2.setString(2, idPerso);
-                pstmt2.setString(3, ip);
-                pstmt2.setString(4, pseudo);
-                pstmt2.executeUpdate(); // Update the personal informations
-
-                System.out.println("The personal informations have been updated.");
-
-        } catch (SQLException e) {
-            System.out.println("Error updating personal informations");
             System.out.println(e.getMessage());
         }
     }
@@ -192,8 +158,8 @@ public class DatabaseManager {
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(2, msg.getSender().getID());
-                pstmt.setString(3, msg.getReceiver().getID());
+                pstmt.setString(2, msg.getSender().getIP());
+                pstmt.setString(3, msg.getReceiver().getIP());
                 pstmt.setString(4, msg.getData());
                 pstmt.setString(5, msg.getTime());
                 pstmt.executeUpdate(); // Insert a new row (message)
@@ -306,8 +272,8 @@ public class DatabaseManager {
                 ResultSet rs = pstmt.executeQuery(); // Select everything from the table
                 while (rs.next()) { // For each row
                     if( rs.getString("message").equals(msg.getData()) &&
-                        rs.getString("sender").equals(msg.getSender().getID()) &&
-                        rs.getString("receiver").equals(msg.getReceiver().getID()) &&
+                        rs.getString("sender").equals(msg.getSender().getIP()) &&
+                        rs.getString("receiver").equals(msg.getReceiver().getIP()) &&
                         rs.getString("time").equals(msg.getTime())){ // If the exact message is find in the table
                         index = rs.getInt("indexMsg"); // Get the index of the message
                     }
