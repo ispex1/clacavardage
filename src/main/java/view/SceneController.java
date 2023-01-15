@@ -51,7 +51,6 @@ public class SceneController extends Application {
     }
 
     public static void pseudoValid(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
-        boolean pseudoValid = true;
         String pseudo = textFieldPseudo.getText().toUpperCase();
 
         if (myUser!=null && pseudo.equals(myUser.getPseudo())) {
@@ -63,6 +62,7 @@ public class SceneController extends Application {
             else if (pseudo.length() > 19) textPseudoNotValid.setText("This pseudo is too long");
             else if (pseudo.contains(" ")) textPseudoNotValid.setText("Pseudo can't contain spaces");
             else {
+                boolean pseudoValid = true;
                 for (User user : listOnline) {
                     if (user.getPseudo().equals(pseudo)) {
                         pseudoValid = false;
@@ -105,6 +105,20 @@ public class SceneController extends Application {
         root = FXMLLoader.load(Objects.requireNonNull(LoginFrame.class.getResource("/loginFrame.fxml")));
         switchScene(eventSource);
         stage.setTitle("Clac Chat - Login");
+    }
+
+    /**
+     * This method is used to open the chat window with a specific user.
+     * If the conversation is in the list of conversations in , it will be opened.
+     * If not, a new conversation will be created and opened.
+     * @param eventSource
+     * @param user
+     * @throws IOException
+     */
+    public static void switchToChatScene(Object eventSource, User user) throws IOException {
+        root = FXMLLoader.load(Objects.requireNonNull(ChatFrame.class.getResource("/chatFrame.fxml")));
+        switchScene(eventSource);
+        stage.setTitle("Clac Chat - Chat");
     }
 
 }

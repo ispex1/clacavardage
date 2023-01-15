@@ -1,5 +1,6 @@
 package view;
 
+import controller.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -26,6 +27,7 @@ public class ParametersFrame {
     }
 
     public void disconnectClick(ActionEvent event) throws IOException {
+        UserController.sendDisconnect();
         SceneController.switchToLoginScene(event.getSource());
     }
 

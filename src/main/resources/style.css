@@ -58,6 +58,15 @@
     -fx-font-size: 32px;
 }
 
+.list_users{
+    -fx-background-color: #DCDCDC;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 40px;
+    -fx-border-color: #000000;
+    -fx-border-width: 2px;
+}
+
 
 
 

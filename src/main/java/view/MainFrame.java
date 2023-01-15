@@ -10,7 +10,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
 import model.User;
+import controller.UserController;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,7 +22,7 @@ import java.util.Scanner;
 import static controller.UserController.*;
 import static view.SceneController.*;
 
-public class MainFrame{
+public class MainFrame {
     @FXML
     private Label myPseudo;
     @FXML
@@ -31,9 +33,9 @@ public class MainFrame{
     private ImageView imgCat;
 
     public void initialize() {
-       myPseudo.setText(myUser.getPseudo());
-       myIP.setText("IP : " + myUser.getIP());
-       updateUsersList();
+        myPseudo.setText(myUser.getPseudo());
+        myIP.setText("IP : " + myUser.getIP());
+        updateUsersList();
     }
 
     public void updateUsersList() {
@@ -55,7 +57,7 @@ public class MainFrame{
         alert.setTitle("The Clac Jokey");
         alert.setHeaderText(null);
 
-        try{
+        try {
             alert.setContentText(findAJoke());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -81,5 +83,29 @@ public class MainFrame{
 
         return scan.nextLine();
     }
+
+    /**
+     * Select a user in the UsersList and open a chat with him
+     *
+     * @param mouseEvent
+     */
+    public void openChat(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) {
+            String pseudo = UsersList.getSelectionModel().getSelectedItem();
+            if (pseudo != null) {
+                User user = UserController.findUser(pseudo);
+                if (user != null) {
+                    System.out.println("Open chat with " + user.getPseudo());
+                    /*try {
+                        switchToChatScene(mouseEvent.getSource(), user);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+            }
+        }
+    }
+
+
 
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,34 +20,38 @@
       </Label>
          </children>
       </Pane>
-      <Pane layoutX="53.0" layoutY="124.0" prefHeight="626.0" prefWidth="276.0">
-         <children>
-            <ListView fx:id="UsersList" fixedCellSize="75.0" layoutX="10.0" layoutY="3.0" prefHeight="626.0" prefWidth="256.0" styleClass="list_users" stylesheets="style.css"></ListView>
-            <Separator layoutX="38.0" layoutY="75.0" prefWidth="200.0" />
-            <Separator layoutX="38.0" layoutY="150.0" prefWidth="200.0" />
-            <Separator layoutX="38.0" layoutY="225.0" prefWidth="200.0" />
-            <Separator layoutX="38.0" layoutY="300.0" prefWidth="200.0" />
-            <Separator layoutX="38.0" layoutY="375.0" prefWidth="200.0" />
-            <Separator layoutX="38.0" layoutY="450.0" prefWidth="200.0" />
-            <Separator layoutX="38.0" layoutY="525.0" prefWidth="200.0" />
-            <Separator layoutX="38.0" layoutY="600.0" prefWidth="200.0" />
-         </children>
-      </Pane>
-      <ImageView fitHeight="329.03" fitWidth="336.11" layoutX="46.7" layoutY="716.74" pickOnBounds="true" preserveRatio="true">
+      <ListView fx:id="UsersList" fixedCellSize="75.0" layoutX="63.0" layoutY="124.0" onMouseClicked="#openChat" prefHeight="626.0" prefWidth="256.0" styleClass="list_users" stylesheets="style.css">
+         <opaqueInsets>
+            <Insets bottom="100.0" />
+         </opaqueInsets>
+      </ListView>
+      <ImageView disable="true" fitHeight="329.03" fitWidth="336.11" focusTraversable="true" layoutX="46.7" layoutY="716.74" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/parameters.png" />
          </image>
       </ImageView>
-      <Button layoutX="124.0" layoutY="807.0" mnemonicParsing="false" onAction="#parametersClick" opacity="0.0" prefHeight="128.0" prefWidth="157.0" />
+      <Button layoutX="124.0" layoutY="807.0" mnemonicParsing="false" onAction="#parametersClick" opacity="0.0" prefHeight="128.0" prefWidth="157.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
       <ImageView fx:id="imgCat1" fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/chat.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
       </ImageView>
       <ImageView fx:id="imgCat" fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/chat.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
       </ImageView>
    </children>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
 </AnchorPane>

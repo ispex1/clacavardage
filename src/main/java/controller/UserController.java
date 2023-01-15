@@ -225,6 +225,19 @@ public class UserController {
     }
 
     /**
+     * Find the user in the listOnline with the pseudo
+     * @param pseudo
+     */
+    public static User findUser(String pseudo) {
+        for (User user : listOnline) {
+            if (user.getPseudo().equals(pseudo)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    /**
      * This method is used to get the local IP address of the computer
      * @return String localIP
      */
@@ -264,6 +277,8 @@ public class UserController {
         this.listOnline = listOnline;
     }
 
+
+
     /**
      * Getter for listOnline
      * @return listOnline
@@ -274,7 +289,7 @@ public class UserController {
 
     //TODO: Just for test, to delete
     public static void testListOnline() {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 15; i++) {
             listOnline.add(new User("192.168.1." + i, "PSEUDO-" + i));
         }
     }
