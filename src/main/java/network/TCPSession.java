@@ -2,16 +2,12 @@ package network;
 
 import model.User;
 import model.Message;
-import model.Session;
-import controller.FrameController;
 import controller.SessionController;
 import controller.UserController;
 
 import java.io.*;
-import java.lang.ModuleLayer.Controller;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,12 +24,12 @@ public class TCPSession extends Thread{
     private User myUser = UserController.getMyUser();
 
     /**
-     * Constructor of the TCPSession when a use start a session with us
+     * Constructor of the TCPSession when a user start a session with us
      * @param link
      */
-    public TCPSession(Socket link, User userDist) {
+    public TCPSession(Socket link) {
         setSocket(link);
-        this.userDist = userDist;
+        this.userDist = UserController.getUserByIP(link.getInetAddress().getHostAddress());
         try {
             setInputStream(link.getInputStream());
             setOutputStream(link.getOutputStream());
@@ -53,12 +49,10 @@ public class TCPSession extends Thread{
     /**
      * Constructor of the TCPSession when we start a session with a user
      */
-    public TCPSession(User userdist, int port) {
+    public TCPSession(User userdist) {
         this.userDist = userdist;
         try {
-            setSocket(new Socket(InetAddress.getByName(userdist.getIP()), port));
-
-            //le code bloque ici
+            setSocket(new Socket(InetAddress.getByName(userdist.getIP()), SessionController.PORT));
             setInputStream(socket.getInputStream());
             setOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -70,7 +64,7 @@ public class TCPSession extends Thread{
         bufferedReader = new BufferedReader(reader);
         //Output buffer setup
         writer = new PrintWriter(outputStream, true);
-        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + port);
+        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + SessionController.PORT);
 
         //starting the thread
         start();
@@ -78,7 +72,7 @@ public class TCPSession extends Thread{
     }
 
     public void sendMessage(String data){
-        Message msg = new Message(myUser, userDist, data);//TODO : ajouter le temps au message
+        Message msg = new Message(myUser, userDist, data);
         SessionController.archiveMsg(msg, userDist);
         System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + msg.getData());
         writer.println(msg.getData());
@@ -112,6 +106,15 @@ public class TCPSession extends Thread{
         }
     }
 
+    public void closeSession(){
+        this.isRunning = false;
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // ** GETTERS AND SETTERS **
     public Socket getSocket() {
         return socket;
@@ -136,5 +139,8 @@ public class TCPSession extends Thread{
     }
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
+    }
+    public User getOtherUser() {
+        return userDist;
     }
 }

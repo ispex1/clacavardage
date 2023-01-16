@@ -1,5 +1,8 @@
 package controller;
 
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import database.DatabaseManager;
@@ -12,23 +15,62 @@ import network.*;
  */
 public class SessionController {
 
-    public static ArrayList<User> sessionList = new ArrayList<User>();
+    public static final int PORT = 6789;
+    private static TCPListener tcpListener;
+    //table of all the sessions sockets
+    public static ArrayList<TCPSession> sessionsList;
 
     /**
      * Constructor
      */
     public SessionController(){
 
+        
+    }
+    
+    /**
+     * Initialise le controller et crée un listener TCP qui va permettre de créer des sessions TCP.
+     * A appeler lorsqu'on passe a l'ecran de chat.
+     */
+    public static void initialize(){
+        //start TCP listener
+        tcpListener = new TCPListener(PORT);
+        sessionsList = new ArrayList<TCPSession>();
+    }
+    /**
+     * Create a new TCP session with the other user.
+     * A appeler lorsque l'on clique sur un utilisateur de la liste.
+     * Un thread va etre lancé pour ecouter les messages de l'autre utilisateur a partir de la classe TCPSession.
+     * Called by FrameController.
+     * @param userDist
+     */
+    public static void createSession(User userDist){
+        
+        if(UserController.getListOnline().contains(userDist)){
+            TCPSession session = new TCPSession(userDist);
+            sessionsList.add(session);
+        }
+        else{
+            System.out.println("User not online");
+        }
     }
 
-    public static boolean isSessionWith(User user) {
-        return sessionList.contains(user);
+    /**
+     * This method is called when a new session is created with us by another user.
+     * Called by the TCPListener class.
+     * @param link
+     */
+    public static void sessionCreated(Socket link){
+        TCPSession session = new TCPSession(link);
+        sessionsList.add(session);
     }
+
 
     /**
      * This method is using the getHistory method from the DatabaseManager class.
      * It returns the history of the conversation between the two users into an ArrayList of Message.
-     *
+     * 
+     * @param otherUser
      * @return history
      */
     public ArrayList<Message> getHistory(User otherUser){
@@ -42,8 +84,7 @@ public class SessionController {
      * @param msg
      */
     public static void archiveMsg(Message msg, User otherUser){
-        DatabaseManager db = new DatabaseManager();
-        db.insertMessage(otherUser.getIP(), msg);
+        DatabaseManager.insertMessage(otherUser.getIP(), msg);
     }
 
     /**
@@ -58,23 +99,62 @@ public class SessionController {
         DatabaseManager.deleteMessage(ipOther, index);
     }
 
-    public void sendMessage(String msg){
-
+    /**
+     * This method is used to get a session from the Session list with the IP address of the other user.
+     * @param ipString
+     */
+    public TCPSession getSessionWithAdress(String ipString){
+        InetAddress ip;
+        try {
+            ip = InetAddress.getByName(ipString);
+            for(TCPSession session : sessionsList){
+                if(session.getSocket().getInetAddress().equals(ip)){
+                    return session;
+                }
+            }
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public void messageNotSend(){
-
+    /**
+     * This method is used to get a session from the Session list with the pseudo of the other user.
+     * @param pseudo
+     */
+    public TCPSession getSessionWithPseudo(String pseudo){
+        for(TCPSession session : sessionsList){
+            if(session.getOtherUser().getPseudo().equals(pseudo)){
+                return session;
+            }
+        }
+        return null;
     }
 
-    public void receiveMessage() {
-
+    public static boolean isSessionWith(User userdist){
+        for(TCPSession session : sessionsList){
+            if(session.getOtherUser().equals(userdist)){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void newSession(){
-
+    public static void closeSession(TCPSession session){
+        session.closeSession();
+        sessionsList.remove(session);
     }
 
-    public void archiveMsg(){
-
+    public static void closeAllSessions(){
+        for(TCPSession session : sessionsList){
+            session.closeSession();
+        }
+        sessionsList.clear();
     }
+
+    public static void close(){
+        closeAllSessions();
+        tcpListener.closeListner();
+    }
+
 }

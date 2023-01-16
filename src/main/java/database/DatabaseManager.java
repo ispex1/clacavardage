@@ -26,10 +26,16 @@ public class DatabaseManager {
 
     /**
      * Constructor
-     * The constructor creates the database if it does not exist and connects to it.
-     * 
+     * Static class
      */
-    public DatabaseManager(){
+    private DatabaseManager(){
+    }
+    
+    /**
+     * This method is used to initialize the database.
+     * It creates a new database if it does not exist and connects to it.
+     */
+    public static void intitialize(){
         createNewDatabase();
         connect();
     }
@@ -38,7 +44,7 @@ public class DatabaseManager {
      * This method creates a new database if it does not exist.
      *  
      */
-    public static void createNewDatabase() {
+    private static void createNewDatabase() {
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData(); // Get the metadata of the database
@@ -54,7 +60,7 @@ public class DatabaseManager {
      * This method connects to the database previously created.
      * 
      */
-    public void connect() {
+    private static void connect() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url); // Connect to the database
@@ -72,31 +78,6 @@ public class DatabaseManager {
         }
     }
 
-    /**
-     * This method create the table for the personal informations
-     * of the user in the database.
-     * The name of the table is the id of the user. (@MAC)
-     * It will contain the id, the ip and the pseudo of the user.
-     * 
-     * @param idPerso
-     */
-    public static void createPersonalInfo(String idPerso) {
-        // SQL statement for creating a new table
-        String sql= "CREATE TABLE IF NOT EXISTS " + idPerso +"(\n"
-                + " ONE integer PRIMARY KEY,\n" // Index of the row
-                + " id text NOT NULL, \n" // IP address of the user
-                + " pseudo text NOT NULL" // Pseudo of the user
-                + ");"; 
-
-        try (Connection conn = DriverManager.getConnection(url); 
-             Statement  stmt = conn.createStatement()) {
-                stmt.execute(sql); // Create a new table
-                System.out.println("The personal table has been created with the name : " + idPerso);
-        } catch (SQLException e) {
-            System.out.println("Error creating table");
-            System.out.println(e.getMessage());
-        }
-    }
 
     /**
      * This method create a new table (conversation) in the database.
@@ -152,7 +133,7 @@ public class DatabaseManager {
      * @param idOther
      * @param msg
      */
-    public void insertMessage(String idOther, Message msg) {
+    public static void insertMessage(String idOther, Message msg) {
         // SQL statement for inserting a new row (message)
         String sql = "INSERT INTO " + idOther + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
 
@@ -201,7 +182,7 @@ public class DatabaseManager {
      * @param data
      * @return indexList
      */
-    public ArrayList<Integer> findListOfIndex(String idOther, String data){
+    public static ArrayList<Integer> findListOfIndex(String idOther, String data){
         // SQL statement for selecting data
         String sql = "SELECT indexMsg, message FROM " + idOther; 
         ArrayList<Integer> indexList = new ArrayList<Integer>();
@@ -229,7 +210,7 @@ public class DatabaseManager {
      * @param data
      * @return msgList
      */
-    public ArrayList<Message> findListOfMessage(String idOther, String data){
+    public static ArrayList<Message> findListOfMessage(String idOther, String data){
         String sql = "SELECT indexMsg, sender, receiver, message, time FROM " + idOther;
         ArrayList<Message> msgList = new ArrayList<Message>();
 
@@ -292,7 +273,7 @@ public class DatabaseManager {
      * @param index
      * @return msg
      */
-    public Message getMsgFromIndex(String idOther, int index) {
+    public static Message getMsgFromIndex(String idOther, int index) {
         // SQL statement for selecting everything from the table where 
         // the index of the message is equal to the index given in parameter
         String sql = "SELECT * FROM " + idOther + " WHERE indexMsg = ?";
