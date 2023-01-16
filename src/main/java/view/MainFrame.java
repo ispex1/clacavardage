@@ -122,7 +122,7 @@ public class MainFrame {
     public void initializeChatPane() throws IOException {
         FXMLLoader close = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/closedChatFrame.fxml")));
         closedPane = close.load();
-        mainPane.getChildren().setAll(closedPane);
+        mainPane.getChildren().add(closedPane);
         closedPane.setLayoutX(407);
         closedPane.setLayoutY(142);
         closedChatController = close.getController();
