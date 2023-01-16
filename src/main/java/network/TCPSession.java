@@ -2,7 +2,6 @@ package network;
 
 import model.User;
 import model.Message;
-import model.Session;
 import controller.FrameController;
 import controller.SessionController;
 import controller.UserController;
@@ -76,7 +75,7 @@ public class TCPSession extends Thread{
     }
 
     public void sendMessage(String data){
-        Message msg = new Message(myUser, userDist, data);//TODO : ajouter le temps au message
+        Message msg = new Message(myUser, userDist, data);
         SessionController.archiveMsg(msg, userDist);
         System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + msg.getData());
         writer.println(msg.getData());
@@ -110,6 +109,15 @@ public class TCPSession extends Thread{
         }
     }
 
+    public void closeSession(){
+        this.isRunning = false;
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // ** GETTERS AND SETTERS **
     public Socket getSocket() {
         return socket;
@@ -134,5 +142,8 @@ public class TCPSession extends Thread{
     }
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
+    }
+    public User getOtherUser() {
+        return userDist;
     }
 }

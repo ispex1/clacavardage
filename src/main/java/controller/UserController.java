@@ -6,10 +6,8 @@ import network.UDPSender;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -85,7 +83,6 @@ public class UserController {
         try {
             udpSender.sendBroadcast(msg,myUser.getPort());
         } catch (SocketException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -105,7 +102,6 @@ public class UserController {
         try {
             udpSender.sendUDP(msg,myUser.getPort(),ip);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -119,7 +115,6 @@ public class UserController {
         try {
             udpSender.sendBroadcast(msg, myUser.getPort());
         } catch (SocketException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -132,7 +127,6 @@ public class UserController {
         try {
             udpSender.sendBroadcast(msg, myUser.getPort());
         } catch (SocketException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -141,19 +135,17 @@ public class UserController {
 
     // RECEIVE INFORMATIONS
 
-    //TODO: Create only one function to receive all the informations with some cases
-
+    //TODO : A tester
     public static void informationTreatment(String msg){
         String[] splitedMsg = msg.split("\\|");
-        String type = splitedMsg[0];
+        TypeMsg type = TypeMsg.valueOf(splitedMsg[0]);
         String fullIP;
         String IP;
         String fullPseudo;
         String pseudo;
 
-        //TODO:change type
         switch(type){
-            case "ASK_PSEUDO":
+            case ASK_PSEUDO:
                 fullIP = splitedMsg[1];
                 IP = fullIP.split(":")[1];
                 fullPseudo = splitedMsg[2];
@@ -173,7 +165,7 @@ public class UserController {
 
                 break;
 
-            case "PSEUDO_OK":
+            case PSEUDO_OK:
                 fullIP = splitedMsg[1];
                 IP = fullIP.split(":")[1];
                 fullPseudo = splitedMsg[2];
@@ -190,15 +182,14 @@ public class UserController {
 
                 break;
 
-            case "PSEUDO_NOT_OK":
+            case PSEUDO_NOT_OK:
                 System.out.println("PSEUDO_NOT_OK");
                 udpListener.closeSocket();
-                //TODO: afficher un message d'erreur via le FrameController, pseudo deja pris, recommencer
+                //TODO : afficher un message d'erreur via le FrameController, pseudo deja pris, recommencer
 
                 break;
 
-            //TODO: update listOnline when a user connect or disconnect
-            case "CONNECT":
+            case CONNECT:
                 fullIP = splitedMsg[1];
                 IP = fullIP.split(":")[1];
                 fullPseudo = splitedMsg[2];
@@ -206,9 +197,9 @@ public class UserController {
                 if (!listOnline.contains(new User(IP,pseudo))){
                     listOnline.add(new User(IP,pseudo));
                 }
-                //TODO: update the list of online users via the FrameController
+                //TODO : update the list of online users via the FrameController
                 break;
-            case "DISCONNECT":
+            case DISCONNECT:
                 fullIP = splitedMsg[1];
                 IP = fullIP.split(":")[1];
                 fullPseudo = splitedMsg[2];
@@ -216,7 +207,7 @@ public class UserController {
                 if (listOnline.contains(new User(IP,pseudo))){
                     listOnline.remove(new User(IP,pseudo));
                 }
-                //TODO: update the list of online users via the FrameController
+                //TODO : update the list of online users via the FrameController
                 break;
             default:
                 break;
@@ -300,13 +291,13 @@ public class UserController {
         return listOnline;
     }
 
-    //TODO: Just for test, to delete
+    //TODO : Just for test, to delete
     public static void testListOnline() {
         for (int i = 0; i < 15; i++) {
             listOnline.add(new User("192.168.1." + i, "PSEUDO-" + i));
         }
     }
-    //TODO: Just for test, to delete
+    //TODO : Just for test, to delete
     public static void showListOnline(){
         for (User user : listOnline){
             System.out.println(user.getPseudo() + " " + user.getIP());

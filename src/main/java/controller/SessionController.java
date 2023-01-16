@@ -66,7 +66,6 @@ public class SessionController {
     }
 
 
-    //TODO : 3 fonctions ci dessous a revoir
     /**
      * This method is using the getHistory method from the DatabaseManager class.
      * It returns the history of the conversation between the two users into an ArrayList of Message.
@@ -85,8 +84,7 @@ public class SessionController {
      * @param msg
      */
     public static void archiveMsg(Message msg, User otherUser){
-        DatabaseManager db = new DatabaseManager();
-        db.insertMessage(otherUser.getIP(), msg);
+        DatabaseManager.insertMessage(otherUser.getIP(), msg);
     }
 
     /**
@@ -101,6 +99,10 @@ public class SessionController {
         DatabaseManager.deleteMessage(ipOther, index);
     }
 
+    /**
+     * This method is used to get a session from the Session list with the IP address of the other user.
+     * @param ipString
+     */
     public TCPSession getSessionWithAdress(String ipString){
         InetAddress ip;
         try {
@@ -115,20 +117,44 @@ public class SessionController {
         }
         return null;
     }
-    
-    public void sendMessage(String msg){
 
+    /**
+     * This method is used to get a session from the Session list with the pseudo of the other user.
+     * @param pseudo
+     */
+    public TCPSession getSessionWithPseudo(String pseudo){
+        for(TCPSession session : sessionsList){
+            if(session.getOtherUser().getPseudo().equals(pseudo)){
+                return session;
+            }
+        }
+        return null;
     }
 
-    public void messageNotSend(){
-
+    public static boolean isSessionWith(User userdist){
+        for(TCPSession session : sessionsList){
+            if(session.getOtherUser().equals(userdist)){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void receiveMessage() {
-
+    public static void closeSession(TCPSession session){
+        session.closeSession();
+        sessionsList.remove(session);
     }
 
-    
+    public static void closeAllSessions(){
+        for(TCPSession session : sessionsList){
+            session.closeSession();
+        }
+        sessionsList.clear();
+    }
 
-    
+    public static void close(){
+        closeAllSessions();
+        tcpListener.closeListner();
+    }
+
 }
