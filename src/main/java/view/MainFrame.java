@@ -49,14 +49,14 @@ public class MainFrame {
     public ClosedChatFrame closedChatController;
 
     public void initialize() {
-        myPseudo.setText(myUser.getPseudo());
-        myIP.setText("IP : " + myUser.getIP());
+        myPseudo.setText(getMyUser().getPseudo());
+        myIP.setText("IP : " + getMyUser().getIP());
         updateUsersList();
     }
 
     public void updateUsersList() {
         UsersList.getItems().clear();
-        for (User user : listOnline) {
+        for (User user : getListOnline()) {
             UsersList.getItems().add(user.getPseudo());
         }
     }
