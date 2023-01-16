@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.Objects;
 
-import static controller.UserController.myUser;
+import static controller.UserController.getMyUser;
 import static view.SceneController.pseudoValid;
 
 public class ParametersFrame {
@@ -20,7 +20,7 @@ public class ParametersFrame {
     private Text textPseudoNotValid;
 
     public void initialize() {
-        textFieldPseudo.setPromptText(myUser.getPseudo());
+        textFieldPseudo.setPromptText(getMyUser().getPseudo());
     }
 
     public void changePseudoClick(ActionEvent event) throws IOException {
