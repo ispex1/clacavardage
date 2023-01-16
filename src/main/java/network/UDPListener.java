@@ -41,7 +41,7 @@ public class UDPListener extends Thread {
                     String data = new String(receivePacket.getData(), 0, receivePacket.getLength());
                     UserController.informationTreatment(data);
 
-                    System.out.println(data);
+                    System.out.println("Brut Data : " + data);
 
                 } catch (IOException e) {
                     e.printStackTrace();

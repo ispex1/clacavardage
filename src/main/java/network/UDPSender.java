@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Objects;
 
 /**
  * UDPSender class is used to send UDP packets
@@ -71,25 +72,56 @@ public class UDPSender {
             e1.printStackTrace();
         }
         byte[] buffer = message.getBytes();
-        for (InetAddress address : getBroadcastAddresses()) {
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+
+        //send a packet to the broadcast address
+
+        DatagramPacket packet = null;
+        try {
+            packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("192.168.1.255"), port);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Sending packet to broadcast" );
             try {
                 socket.send(packet);
             } catch (IOException e) {
                 System.out.println("Packet sending error");
                 e.printStackTrace();
             }
-        }
         socket.close();
     }
+
+
 
     /**
      * getBroadcastAddresses get every addresses of the network and put them in an array
      * @return array of addresses
      *
      */
+    // FONCTION INUTILE, IL SUFFISAIT SIMPLEMENT D'ENVOYER UN MESSAGE A L'ADRESSE BROADCAST :')
+    /*private static ArrayList<InetAddress> getBroadcastAddresses() {
+        ArrayList<InetAddress> broadcastList = new ArrayList<InetAddress>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
 
-    public static ArrayList<InetAddress> getBroadcastAddresses() {
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                    continue;
+                }
+
+                networkInterface.getInterfaceAddresses().stream()
+                        .map(a -> a.getBroadcast())
+                        .filter(Objects::nonNull)
+                        .forEach(broadcastList::add);
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return broadcastList;
+    }*/
+
+    public static ArrayList<InetAddress> getBroadcastAddresses2() {
         ArrayList <InetAddress> addresses = new ArrayList<InetAddress>();
         Enumeration<NetworkInterface> interfaces;
         try {

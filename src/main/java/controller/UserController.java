@@ -29,7 +29,7 @@ public class UserController {
      * DISCONNECT : "DISCONNECT|ID:id|IP:ip|Pseudo:pseudo"
      */
     public enum TypeMsg {
-        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT
+        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT, TEST
     }
 
 
@@ -196,7 +196,14 @@ public class UserController {
                 }
                 //TODO : update the list of online users via the FrameController
                 break;
+
+            case TEST:
+                System.out.println("TEST Message received");
+                System.out.println(msg);
+                break;
             default:
+                System.out.println("Type de message non reconnu");
+                System.out.println(msg);
                 break;
         }
 
@@ -312,6 +319,7 @@ public class UserController {
             listOnline.add(new User("192.168.1." + i, "PSEUDO-" + i));
         }
     }
+
     //TODO : Just for test, to delete
     public static void showListOnline(){
         for (User user : listOnline){
