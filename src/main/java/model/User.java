@@ -3,49 +3,46 @@ package model;
 /**
  * This class represents a user.
  * It contains the user's IP, pseudo, id, port and state.
- * 
+ *
  */
 
 public class User {
-    private String id; // MAC of the user
     private String ip; // IP address of the user
     private String pseudo; // Pseudo of the user
     private int port; // Port of the user
 
     /**
      * Constructor
-     * @param id
+     * @param ip
      */
-    public User (String id){
-        this.setID(id);
+    public User (String ip){
+        this.setIP(ip);
     }
 
     /**
      * Constructor
-     * @param id
      * @param ip
      * @param pseudo
      */
-    public User (String id, String ip, String pseudo){
-        this.setID(id);
+    public User (String ip, String pseudo){
         this.setIP(ip);
         this.setPseudo(pseudo);
     }
 
     /**
-     * Setter for id
-     * @param id
+     * Setter for ip
+     * @param ip
      */
-    public void setID(String id){
-        this.id = id;
+    public void setIP(String ip){
+        this.ip = ip ;
     }
 
     /**
-     * Getter for id
-     * @return id
+     * Getter for ip
+     * @return ip
      */
-    public String getID(){
-        return this.id;
+    public String getIP(){
+        return this.ip;
     }
 
 
@@ -63,22 +60,6 @@ public class User {
      */
     public String getPseudo(){
         return pseudo;
-    }
-
-    /**
-     * Setter for ip
-     * @param ip
-     */
-    public void setIP(String ip){
-        this.ip = ip ;
-    }
-    
-    /**
-     * Getter for ip
-     * @return ip
-     */
-    public String getIP(){
-        return this.ip;
     }
 
     /**

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 /**
  * This class is the main class of the project.
- * 
+ *
  */
 public class Main{
 
@@ -23,7 +23,7 @@ public class Main{
 
     }
 
-    //test UserController 
+    //test UserController
     private static void testUserController(){
         UserController userController = new UserController("iSpeX");
         System.out.println("My user : " + userController.getMyUser().getPseudo());
@@ -91,8 +91,8 @@ public class Main{
     private static void testDBManager(){
         Message msg = new Message("testouille");
         Message msg2 = new Message();
-        User este = new User("MAC_Perso", "IP_Perso", "iSpeX");
-        User gaboche = new User("MAC_gaboche", "IP_gaboche", "bacchus");
+        User este = new User("IP_Perso", "iSpeX");
+        User gaboche = new User("IP_gaboche", "bacchus");
         msg.setSender(este);
         msg.setReceiver(gaboche);
         System.out.println(msg.toString());
@@ -101,14 +101,13 @@ public class Main{
         db.createPersonalInfo("MAC_Perso");
         db.createNewConvo("MAC_gaboche");
 
-        db.insertMessage(gaboche.getID(), msg);
-        ArrayList<Integer> list = db.findListOfIndex(gaboche.getID(), "test");
+        db.insertMessage(gaboche.getIP(), msg);
+        ArrayList<Integer> list = db.findListOfIndex(gaboche.getIP(), "test");
         //printList(list);
         for (int i = 0; i < list.size(); i++){
-            msg2 = db.getMsgFromIndex(gaboche.getID(), list.get(i));
+            msg2 = db.getMsgFromIndex(gaboche.getIP(), list.get(i));
             System.out.println(msg2.toString());
             //db.deleteMessage(gaboche.getIP(), list.get(i));
         }
-        db.updatePersonalInfo(este.getID(), este.getIP(), este.getPseudo());
     }
 }

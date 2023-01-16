@@ -8,7 +8,7 @@ import model.*;
 
 /**
  * This class represents the frame controller.
- * 
+ *
  */
 public class FrameController {
     private ArrayList<User> listUserDisplay = new ArrayList<User>();
@@ -69,7 +69,7 @@ public class FrameController {
         //TODO: Close the msgResearch frame
     }
 
-    
+
 
     /**
      * Update the list of the user connected on the main frame
@@ -77,7 +77,7 @@ public class FrameController {
      */
     public void updateUserOnline(ArrayList<User> listUserOnline){
         // New list of user to conserve the order
-        ArrayList<User> listUser = new ArrayList<User>(); 
+        ArrayList<User> listUser = new ArrayList<User>();
 
         // If the user display is online, we add it to the update list
         for (User user : listUserDisplay) {

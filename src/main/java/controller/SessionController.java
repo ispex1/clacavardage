@@ -11,7 +11,7 @@ import network.*;
 
 /**
  * This class represents the session controller.
- * 
+ *
  */
 public class SessionController {
 
@@ -66,7 +66,7 @@ public class SessionController {
     }
 
 
-     /**
+    /**
      * This method is using the getHistory method from the DatabaseManager class.
      * It returns the history of the conversation between the two users into an ArrayList of Message.
      * 
@@ -80,7 +80,7 @@ public class SessionController {
     /**
      * This method is using the insertMessage method from the DatabaseManager class.
      * It inserts the message in the database.
-     * 
+     *
      * @param msg
      */
     public static void archiveMsg(Message msg, User otherUser){
@@ -91,7 +91,7 @@ public class SessionController {
     /**
      * This method is using the deleteMessage method from the DatabaseManager class.
      * It deletes the message in the database.
-     * 
+     *
      * @param msg
      */
     public void deleteMsg(Message msg, User otherUser){

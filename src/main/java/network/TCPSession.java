@@ -26,7 +26,7 @@ public class TCPSession extends Thread{
     private BufferedReader bufferedReader;
     private User userDist;
     private User myUser = UserController.getMyUser();
-    
+
     /**
      * Constructor of the TCPSession when a user start a session with us
      * @param link
@@ -96,8 +96,8 @@ public class TCPSession extends Thread{
                 data = bufferedReader.readLine();
 
                 msg.setData(data);
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-                LocalDateTime now = LocalDateTime.now();  
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
                 msg.setTime(dtf.format(now));
                 msg.setSender(userDist);
                 msg.setReceiver(myUser);
