@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Objects;
 
 /**
  * UDPSender class is used to send UDP packets
@@ -88,8 +89,29 @@ public class UDPSender {
      * @return array of addresses
      *
      */
+    private static ArrayList<InetAddress> getBroadcastAddresses() {
+        ArrayList<InetAddress> broadcastList = new ArrayList<InetAddress>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
 
-    public static ArrayList<InetAddress> getBroadcastAddresses() {
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                    continue;
+                }
+
+                networkInterface.getInterfaceAddresses().stream()
+                        .map(a -> a.getBroadcast())
+                        .filter(Objects::nonNull)
+                        .forEach(broadcastList::add);
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return broadcastList;
+    }
+
+    public static ArrayList<InetAddress> getBroadcastAddresses2() {
         ArrayList <InetAddress> addresses = new ArrayList<InetAddress>();
         Enumeration<NetworkInterface> interfaces;
         try {

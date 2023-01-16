@@ -59,15 +59,19 @@ public class Main{
 
         //Creating a UDP Listener, should open a new thread
         UDPListener listener = new UDPListener(port);
-        
+        System.out.println("UDP Listener created");
+        listener.start();
+        int i = 0;
         //Sending messages
         while(true){
             if(type == 0){
-                UDPSender.sendBroadcast("Hello Broadcast", port);
+                System.out.println("Broadcast sent");
+                UDPSender.sendBroadcast("TEST|Hello Broadcast "+i, port);
+
             }
             else if(type == 1){    
                 try {
-                    UDPSender.sendUDP("Hello UDP", port, InetAddress.getLocalHost().getHostAddress());
+                    UDPSender.sendUDP("TEST|Hello UDP"+i, port, InetAddress.getLocalHost().getHostAddress());
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
@@ -75,6 +79,7 @@ public class Main{
             else{
                 System.out.println("Wrong type");
             }
+            i++;
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
