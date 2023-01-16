@@ -1,6 +1,5 @@
 package view;
 
-import controller.UserController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -56,7 +55,7 @@ public class SceneController extends Application {
     public static void pseudoValid(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
         String pseudo = textFieldPseudo.getText().toUpperCase();
 
-        if (getMyUser() !=null && pseudo.equals(getMyUser().getPseudo())) {
+        if (getMyUser()!=null && pseudo.equals(getMyUser().getPseudo())) {
             SceneController.switchToMainScene(event.getSource());
             System.out.println("Pseudo non modifié");
         }
