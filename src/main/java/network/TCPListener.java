@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.SessionController;
-import controller.UserController;
 
 public class TCPListener extends Thread {
 

@@ -9,6 +9,7 @@ import network.UDPSender;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 /**
@@ -19,29 +20,16 @@ public class Main{
 
     public static void main (String[] args){
 
-        testTCP();
+        testUDPSender(0);
 
     }
 
-    //test UserController
-    private static void testUserController(){
-        UserController userController = new UserController("iSpeX");
-        System.out.println("My user : " + userController.getMyUser().getPseudo());
-        UserController.askPseudo(UserController.getMyUser().getPseudo());
+    // test UserController
 
-        while(true){
-            try {
-                Thread.sleep(2000);
-                System.out.println("User list : " + userController.getListOnline());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    // test SessionController
 
-    }
-
-    //test TCP
-    private static void testTCP() {
+    //ACNCIEN test TCP
+    /* private static void testTCP() {
         int port = 6789;
         TCPListener listener = new TCPListener(port);
 
@@ -62,10 +50,40 @@ public class Main{
         }
 
 
-    }
+    } */
 
-    //test UDP Sender and Listener
-    private static void testUDP(){
+    //test UDP
+    private static void testUDPSender(int type){
+        // type : 0 = broadcast, 1 = unicast
+        int port=1234;
+
+        //Creating a UDP Listener, should open a new thread
+        UDPListener listener = new UDPListener(port);
+        
+        //Sending messages
+        while(true){
+            if(type == 0){
+                UDPSender.sendBroadcast("Hello Broadcast", port);
+            }
+            else if(type == 1){    
+                try {
+                    UDPSender.sendUDP("Hello UDP", port, InetAddress.getLocalHost().getHostAddress());
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                System.out.println("Wrong type");
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    // ANCIEN test UDP Sender and Listener
+    /* private static void testUDP(){
         int port=1234;
 
         //Creating a UDP Listener, should open a new thread
@@ -84,11 +102,11 @@ public class Main{
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
-    }
+    } */
 
 
-    //test DB Manager function
-    private static void testDBManager(){
+    //ANCIEN test DB Manager function
+    /* private static void testDBManager(){
         Message msg = new Message("testouille");
         Message msg2 = new Message();
         User este = new User("IP_Perso", "iSpeX");
@@ -109,5 +127,5 @@ public class Main{
             System.out.println(msg2.toString());
             //db.deleteMessage(gaboche.getIP(), list.get(i));
         }
-    }
+    } */
 }

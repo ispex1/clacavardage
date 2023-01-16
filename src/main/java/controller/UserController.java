@@ -4,7 +4,6 @@ import model.User;
 import network.UDPListener;
 import network.UDPSender;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -16,11 +15,9 @@ import java.util.List;
  * permet egalement d'avoir un attribut static de l'utilisateur utilisant l'application
  */
 public class UserController {
-    private static User myUser; //Personal user
+    private static User myUser = new User(getLocalIP()); //Personal user
     private static ArrayList<User> listOnline = new ArrayList<User>(); //List of all users online
     public static UDPListener udpListener; //UDPListener
-    public static final UDPSender udpSender = new UDPSender() ; //UDPSender
-
     /**
      * ASK_PSEUDO : "ASK_PSEUDO|ID:id|IP:ip|Pseudo:pseudo"
      * PSEUDO_OK :  "PSEUDO_OK|ID:id|IP:ip|MyPseudo:pseudo|Pseudo:pseudoVenantDEtreVerifie"
@@ -36,12 +33,18 @@ public class UserController {
     /**
      * Constructor
      */
-    public UserController(String Pseudo){
-        setMyUser(Pseudo);
+    //TODO : passer en statique avec un initialize
+    private UserController(){
+    }
+
+    /**
+     * Initialize the user controller
+     * @param Pseudo
+     */
+    public static void initialize(){
         myUser.setPort(1234);//UNIQUE INITIALISATION DU PORT LOCAL
-        myUser.setIP(getLocalIP());
         udpListener = new UDPListener(myUser.getPort());
-        //setListOnline(listOnline);
+        udpListener.start();
     }
 
     // SEND INFORMATIONS
@@ -66,7 +69,7 @@ public class UserController {
      * @param pseudo
      */
     public static void askPseudo(String pseudo){
-        udpListener.run();
+        setMyUser(pseudo);
         sendPseudo(pseudo);
     }
 
@@ -80,11 +83,9 @@ public class UserController {
         // Generate a String with the type of message and user informations
         String msg = TypeMsg.ASK_PSEUDO+"|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
         //System.out.println(msg);
-        try {
-            udpSender.sendBroadcast(msg,myUser.getPort());
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
+        
+        UDPSender.sendBroadcast(msg,myUser.getPort());
+        
     }
 
     //TODO : Observer la coherence des public private static etc sur l'ensemble du code
@@ -97,13 +98,8 @@ public class UserController {
 
         }
         System.out.println(msg);
-
-
-        try {
-            udpSender.sendUDP(msg,myUser.getPort(),ip);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        UDPSender.sendUDP(msg,myUser.getPort(),ip);
+        
 
     }
 
@@ -111,25 +107,15 @@ public class UserController {
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.CONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
         System.out.println(msg);
-
-        try {
-            udpSender.sendBroadcast(msg, myUser.getPort());
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
+        UDPSender.sendBroadcast(msg, myUser.getPort());   
     }
 
     public static void sendDisconnect(){
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.DISCONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
         System.out.println(msg);
-
-        try {
-            udpSender.sendBroadcast(msg, myUser.getPort());
-        } catch (SocketException e) {
-            e.printStackTrace();
+        UDPSender.sendBroadcast(msg, myUser.getPort());
         }
-    }
 
 
 
@@ -184,7 +170,6 @@ public class UserController {
 
             case PSEUDO_NOT_OK:
                 System.out.println("PSEUDO_NOT_OK");
-                udpListener.closeSocket();
                 //TODO : afficher un message d'erreur via le FrameController, pseudo deja pris, recommencer
 
                 break;
@@ -245,7 +230,7 @@ public class UserController {
     }
 
     /**
-     * Get 
+     * Get a user from the listOnline with his IP
      * @param String ip
      */
     public static User getUserByIP(String ip){
@@ -256,6 +241,16 @@ public class UserController {
         }    
         return null;
     }
+
+    public static void close(){
+        sendDisconnect();
+        udpListener.closeSocket();
+        //pas besoin de fermer le socket udpSender, il est fermé automatiquement apres un envoi de message
+    }
+
+    // ===========================
+    // GETTERS AND SETTERS
+    // ===========================
 
     /**
      * Setter for myUser
