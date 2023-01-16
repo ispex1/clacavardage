@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static controller.UserController.*;
+import controller.SessionController;
 
 public class SceneController extends Application {
     protected static Stage stage;
@@ -32,7 +34,7 @@ public class SceneController extends Application {
 
     public void start(Stage stage){
         try {
-            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/loginFrame.fxml")));
+            root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/loginFrame.fxml")));
 
             scene = new Scene(root);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
@@ -90,35 +92,26 @@ public class SceneController extends Application {
     }
 
     public static void switchToMainScene(Object eventSource) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(MainFrame.class.getResource("/mainFrame.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(MainFrame.class.getResource("/fxml/mainFrame.fxml")));
         switchScene(eventSource);
         stage.setTitle("Clac Chat - Main Page");
     }
 
     public static void switchToParametersScene(Object eventSource) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(ParametersFrame.class.getResource("/parametersFrame.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(ParametersFrame.class.getResource("/fxml/parametersFrame.fxml")));
         switchScene(eventSource);
         stage.setTitle("Clac Chat - Parameters");
     }
 
     public static void switchToLoginScene(Object eventSource) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(LoginFrame.class.getResource("/loginFrame.fxml")));
+        root = FXMLLoader.load(Objects.requireNonNull(LoginFrame.class.getResource("/fxml/loginFrame.fxml")));
         switchScene(eventSource);
         stage.setTitle("Clac Chat - Login");
     }
 
-    /**
-     * This method is used to open the chat window with a specific user.
-     * If the conversation is in the list of conversations in , it will be opened.
-     * If not, a new conversation will be created and opened.
-     * @param eventSource
-     * @param user
-     * @throws IOException
-     */
-    public static void switchToChatScene(Object eventSource, User user) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(ChatFrame.class.getResource("/chatFrame.fxml")));
+    public static void switchToTestScene(Object eventSource) throws IOException {
+        root = FXMLLoader.load(Objects.requireNonNull(LoginFrame.class.getResource("/fxml/testBorderPane.fxml")));
         switchScene(eventSource);
-        stage.setTitle("Clac Chat - Chat");
+        stage.setTitle("Clac Chat - Test");
     }
-
 }

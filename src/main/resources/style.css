@@ -58,18 +58,30 @@
     -fx-font-size: 32px;
 }
 
-.list_users{
+.list_users {
     -fx-background-color: #DCDCDC;
-    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-family: 'Jomhuria', 'cursive';
     -fx-font-style: normal;
     -fx-font-size: 40px;
-    -fx-border-color: #000000;
-    -fx-border-width: 2px;
 }
 
+.list-cell:selected{
+    -fx-background-color: #DFF53A;
+    -fx-text-fill: #000000;
+}
 
+.list-cell{
+    -fx-background-color: #FFFFFF;
+}
 
-
+.btn_open_chat{
+    -fx-background-radius: 49.5px;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-background-color: #DFF53A;
+    -fx-font-size: 40px;
+    -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
+}
 
 
 

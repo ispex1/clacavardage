@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static controller.UserController.myUser;
 import static view.SceneController.pseudoValid;
@@ -27,8 +28,13 @@ public class ParametersFrame {
     }
 
     public void disconnectClick(ActionEvent event) throws IOException {
+        SceneController.switchToTestScene(event.getSource());
+        //TODO: remove the commentaries when the tests will be over
+        /*
         UserController.sendDisconnect();
         SceneController.switchToLoginScene(event.getSource());
+        */
     }
+
 
 }

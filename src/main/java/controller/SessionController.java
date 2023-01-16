@@ -12,11 +12,17 @@ import network.*;
  */
 public class SessionController {
 
+    public static ArrayList<User> sessionList = new ArrayList<User>();
+
     /**
      * Constructor
      */
     public SessionController(){
 
+    }
+
+    public static boolean isSessionWith(User user) {
+        return sessionList.contains(user);
     }
 
     /**

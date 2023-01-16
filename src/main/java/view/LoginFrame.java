@@ -19,6 +19,9 @@ public class LoginFrame {
     public void connectClick(ActionEvent event) throws IOException {
         SceneController.pseudoValid(event, textFieldPseudo, textPseudoNotValid);
     }
+
+
+
 }
 
 
