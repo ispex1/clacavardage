@@ -72,24 +72,34 @@ public class UDPSender {
             e1.printStackTrace();
         }
         byte[] buffer = message.getBytes();
-        for (InetAddress address : getBroadcastAddresses()) {
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+
+        //send a packet to the broadcast address
+
+        DatagramPacket packet = null;
+        try {
+            packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("192.168.1.255"), port);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Sending packet to broadcast" );
             try {
                 socket.send(packet);
             } catch (IOException e) {
                 System.out.println("Packet sending error");
                 e.printStackTrace();
             }
-        }
         socket.close();
     }
+
+
 
     /**
      * getBroadcastAddresses get every addresses of the network and put them in an array
      * @return array of addresses
      *
      */
-    private static ArrayList<InetAddress> getBroadcastAddresses() {
+    // FONCTION INUTILE, IL SUFFISAIT SIMPLEMENT D'ENVOYER UN MESSAGE A L'ADRESSE BROADCAST :')
+    /*private static ArrayList<InetAddress> getBroadcastAddresses() {
         ArrayList<InetAddress> broadcastList = new ArrayList<InetAddress>();
         try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -109,7 +119,7 @@ public class UDPSender {
             e.printStackTrace();
         }
         return broadcastList;
-    }
+    }*/
 
     public static ArrayList<InetAddress> getBroadcastAddresses2() {
         ArrayList <InetAddress> addresses = new ArrayList<InetAddress>();
