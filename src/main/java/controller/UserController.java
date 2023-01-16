@@ -4,9 +4,12 @@ import model.User;
 import network.UDPListener;
 import network.UDPSender;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -39,7 +42,6 @@ public class UserController {
 
     /**
      * Initialize the user controller
-     * @param Pseudo
      */
     public static void initialize(){
         myUser.setPort(1234);//UNIQUE INITIALISATION DU PORT LOCAL
@@ -220,11 +222,28 @@ public class UserController {
     public static String getLocalIP(){
         String localIP = null;
         try {
-            InetAddress localHost = InetAddress.getLocalHost();
-            localIP = localHost.getHostAddress();
-            //System.out.println("IP of my system is "+localIP);
-        } catch (Exception e) {
-            e.printStackTrace();
+            //I want the ip adress of the computer on the network so the others can connect to me
+            //I don't want the loopback address or the virtual address
+            //I don't want the address of the virtualbox
+            //I don't want the address of the network card
+
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface current = interfaces.nextElement();
+                if (!current.isUp() || current.isLoopback() || current.isVirtual()) continue;
+                Enumeration<InetAddress> addresses = current.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress current_addr = addresses.nextElement();
+                    if (current_addr.isLoopbackAddress()) continue;
+                    localIP = current_addr.getHostAddress();
+                    if (localIP.contains("192.168.56.")) continue;
+                    if (localIP.contains(":")) continue;
+                    System.out.println(localIP);
+                    return localIP;
+                }
+            }
+        } catch (SocketException e) {
+            throw new RuntimeException(e);
         }
         return localIP;
     }
@@ -288,6 +307,7 @@ public class UserController {
 
     //TODO : Just for test, to delete
     public static void testListOnline() {
+        listOnline.add(new User(getLocalIP(), "ISPEX"));
         for (int i = 0; i < 15; i++) {
             listOnline.add(new User("192.168.1." + i, "PSEUDO-" + i));
         }

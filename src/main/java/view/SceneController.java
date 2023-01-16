@@ -61,7 +61,7 @@ public class SceneController extends Application {
         }
         else {
             if (pseudo.isEmpty()) textPseudoNotValid.setText("Please enter a pseudo");
-            else if (pseudo.length() > 19) textPseudoNotValid.setText("This pseudo is too long");
+            else if (pseudo.length() > 15) textPseudoNotValid.setText("This pseudo is too long");
             else if (pseudo.contains(" ")) textPseudoNotValid.setText("Pseudo can't contain spaces");
             else {
                 boolean pseudoValid = true;
@@ -107,11 +107,5 @@ public class SceneController extends Application {
         root = FXMLLoader.load(Objects.requireNonNull(LoginFrame.class.getResource("/fxml/loginFrame.fxml")));
         switchScene(eventSource);
         stage.setTitle("Clac Chat - Login");
-    }
-
-    public static void switchToTestScene(Object eventSource) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(LoginFrame.class.getResource("/fxml/testBorderPane.fxml")));
-        switchScene(eventSource);
-        stage.setTitle("Clac Chat - Test");
     }
 }

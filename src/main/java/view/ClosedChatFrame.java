@@ -6,10 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.User;
 import controller.SessionController;
 
+import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 import static com.sun.javafx.reflect.ConstructorUtil.getConstructor;
 import static view.MainFrame.chatter;
@@ -30,22 +37,18 @@ public class ClosedChatFrame extends AnchorPane {
     }
 
     public void hideChatPane() {
-        System.out.println("hide chat pane");
         parentController.hideChatPane();
-        System.out.println("test");
     }
 
-    public void openChatSession(){
-        //TODO: openSession with the SessionController
+    public void openChatSession() throws IOException {
+         parentController.openChatSession();
          System.out.println("Opening chat session with " + MainFrame.chatter.getPseudo());
-        /*
-        try{
+    }
 
-            //MainFrame.updateChatPane();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-     */
+    public void easterEgg(MouseEvent mouseEvent) {
+        //print the path of the chaaris.wav file in the resource folder
+        AudioClip audioClip = new AudioClip(getClass().getResource("resources/chaaris.wav").toString());
+        audioClip.play(100);
+        System.out.println("Playing sound");
     }
 }

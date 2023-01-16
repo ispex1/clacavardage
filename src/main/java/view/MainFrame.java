@@ -1,31 +1,27 @@
 package view;
 
 import controller.SessionController;
+import controller.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import model.User;
-import controller.UserController;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static controller.UserController.*;
-import static view.SceneController.*;
+import static controller.UserController.getListOnline;
+import static controller.UserController.getMyUser;
+import static view.SceneController.switchToParametersScene;
 
 public class MainFrame {
 
@@ -42,16 +38,16 @@ public class MainFrame {
     private Pane mainPane;
     @FXML
     private Pane chatPane;
-    @FXML
-    private Pane closedPane;
 
     @FXML
     public ClosedChatFrame closedChatController;
+    @FXML OpenedChatFrame openedChatController;
 
     public void initialize() {
         myPseudo.setText(getMyUser().getPseudo());
         myIP.setText("IP : " + getMyUser().getIP());
         updateUsersList();
+        SessionController.initialize();
     }
 
     public void updateUsersList() {
@@ -111,55 +107,46 @@ public class MainFrame {
             if (user != null) {
                 if (user != chatter) {
                     chatter = user;
-                    //updatePseudo(pseudo);
-                    //updateChatPane();
-                    initializeChatPane();
+                    updateChatPane();
                 }
             }
         }
     }
 
-    public void initializeChatPane() throws IOException {
-        FXMLLoader close = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/closedChatFrame.fxml")));
-        closedPane = close.load();
-        mainPane.getChildren().add(closedPane);
-        closedPane.setLayoutX(407);
-        closedPane.setLayoutY(142);
-        closedChatController = close.getController();
-        closedChatController.setParentController(this);
-    }
-
     public void updateChatPane() throws IOException {
-        String fxmlPath;
+        FXMLLoader chat;
+        if (chatPane != null) mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
 
-        if (SessionController.isSessionWith(chatter)) fxmlPath = "/fxml/openedChatFrame.fxml";
-        else fxmlPath = "/fxml/closedChatFrame.fxml";
+        if (SessionController.isSessionWith(chatter)) {
+            chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/openedChatFrame.fxml")));
+            chatPane = chat.load();
+            chatPane.setDisable(false);
+            mainPane.getChildren().add(chatPane);
+            openedChatController = chat.getController();
+            openedChatController.setParentController(this);
+        }
+        else {
+            chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/closedChatFrame.fxml")));
+            chatPane = chat.load();
+            chatPane.setDisable(false);
+            mainPane.getChildren().add(chatPane);
+            closedChatController = chat.getController();
+            closedChatController.setParentController(this);
+        }
 
-        if (chatPane != null) mainPane.getChildren().remove(chatPane);
-
-        chatPane =  FXMLLoader.load(Objects.requireNonNull(MainFrame.class.getResource(fxmlPath)));
         chatPane.setLayoutX(407);
         chatPane.setLayoutY(142);
-        chatPane.setId("closedChatPane");
-
-        mainPane.getChildren().add(chatPane);
     }
 
     public void hideChatPane() {
-        mainPane.getChildren().remove("closedChatFrame");
-        //mainPane.getChildren().remove(chatPane);
-        System.out.println("ChatPane removed");
+        mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
         chatter = null;
     }
 
-    public void openChatSession(){
-        //TODO: openSession with the SessionController
 
-        try{
-            updateChatPane();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void openChatSession() throws IOException {
+        SessionController.createSession(chatter);
+        updateChatPane();
     }
 
 }

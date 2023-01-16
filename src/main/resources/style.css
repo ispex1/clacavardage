@@ -83,6 +83,11 @@
     -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
 }
 
+.label_pseudo {
+    -fx-font-family: 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 64px;
+}
 
 
 
