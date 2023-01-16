@@ -18,13 +18,8 @@ import java.util.List;
  * permet egalement d'avoir un attribut static de l'utilisateur utilisant l'application
  */
 public class UserController {
-<<<<<<< HEAD
     private static User myUser; //Personal user
     private static ArrayList<User> listOnline = new ArrayList<User>(); //List of all users online
-=======
-    public static User myUser; //Personal user
-    public static List<User> listOnline = Collections.synchronizedList(new ArrayList<User>()); //List of all users online
->>>>>>> 2c11419313b1e38782a36ce12d7d3d77db15c08e
     public static UDPListener udpListener; //UDPListener
     public static final UDPSender udpSender = new UDPSender() ; //UDPSender
 
@@ -156,7 +151,7 @@ public class UserController {
         String fullPseudo;
         String pseudo;
 
-
+        //TODO:change type
         switch(type){
             case "ASK_PSEUDO":
                 fullIP = splitedMsg[1];
@@ -256,6 +251,19 @@ public class UserController {
             e.printStackTrace();
         }
         return localIP;
+    }
+
+    /**
+     * Get 
+     * @param String ip
+     */
+    public static User getUserByIP(String ip){
+        for (User user : listOnline){
+            if (user.getIP().equals(ip)){
+                return user;
+            }
+        }    
+        return null;
     }
 
     /**

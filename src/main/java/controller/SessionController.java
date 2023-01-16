@@ -66,6 +66,7 @@ public class SessionController {
     }
 
 
+    //TODO : 3 fonctions ci dessous a revoir
     /**
      * This method is using the getHistory method from the DatabaseManager class.
      * It returns the history of the conversation between the two users into an ArrayList of Message.
