@@ -28,12 +28,12 @@ public class TCPSession extends Thread{
     private User myUser = UserController.getMyUser();
     
     /**
-     * Constructor of the TCPSession when a use start a session with us
+     * Constructor of the TCPSession when a user start a session with us
      * @param link
      */
-    public TCPSession(Socket link, User userDist) {
+    public TCPSession(Socket link) {
         setSocket(link);
-        this.userDist = userDist;
+        this.userDist = UserController.getUserByIP(link.getInetAddress().getHostAddress());
         try {
             setInputStream(link.getInputStream());
             setOutputStream(link.getOutputStream());
@@ -53,12 +53,10 @@ public class TCPSession extends Thread{
     /**
      * Constructor of the TCPSession when we start a session with a user
      */
-    public TCPSession(User userdist, int port) {
+    public TCPSession(User userdist) {
         this.userDist = userdist;
         try {
-            setSocket(new Socket(InetAddress.getByName(userdist.getIP()), port));
-
-            //le code bloque ici
+            setSocket(new Socket(InetAddress.getByName(userdist.getIP()), SessionController.PORT));
             setInputStream(socket.getInputStream());
             setOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -70,7 +68,7 @@ public class TCPSession extends Thread{
         bufferedReader = new BufferedReader(reader);
         //Output buffer setup
         writer = new PrintWriter(outputStream, true);
-        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + port);
+        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + SessionController.PORT);
 
         //starting the thread
         start();

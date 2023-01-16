@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class UserController {
     private static User myUser; //Personal user
-    private static List<User> listOnline = Collections.synchronizedList(new ArrayList<User>()); //List of all users online
+    private static ArrayList<User> listOnline = new ArrayList<User>(); //List of all users online
     public static UDPListener udpListener; //UDPListener
     public static final UDPSender udpSender = new UDPSender() ; //UDPSender
     
@@ -298,16 +298,16 @@ public class UserController {
      * Setter for listOnline
      * @param listOnline
      */
-    public void setListOnline(ArrayList<User> listOnline){
-        this.listOnline = listOnline;
+    public void setListOnline(ArrayList<User> list){
+        listOnline = list;
     }
 
     /**
      * Getter for listOnline
      * @return listOnline
      */
-    public List<User> getListOnline(){
-        return this.listOnline;
+    public static List<User> getListOnline(){
+        return listOnline;
     }
 
 }

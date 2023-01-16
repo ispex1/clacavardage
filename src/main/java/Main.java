@@ -27,7 +27,7 @@ public class Main{
     private static void testUserController(){
         UserController userController = new UserController("iSpeX");
         System.out.println("My user : " + userController.getMyUser().getPseudo());
-        userController.askPseudo(userController.getMyUser().getPseudo());
+        UserController.askPseudo(UserController.getMyUser().getPseudo());
 
         while(true){
             try {
