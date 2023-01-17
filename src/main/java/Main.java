@@ -23,7 +23,7 @@ public class Main{
         testUserController();
 
     }
-
+    //TODO : harmoniser le code, static au bon endroit, private public, get set, nom de fonction etc
     // test UserController
 
     // test SessionController
@@ -118,7 +118,6 @@ public class Main{
             System.out.println("IP : " + user.getIP());
         });
         System.out.println();
-        //TODO : empecher le fait de se repondre un pseudo ok a soi meme, comme le broadcast envoi aussi un message a nous meme, on repondra automatiquement pseudo ok car la liste est initialement vide
         //TODO :recuperer la liste de tous les utilisateurs connectés (je crois que je le fais a aucune moment ??)
     }
     // ANCIEN test UDP Sender and Listener
