@@ -32,8 +32,19 @@ public class Main{
 
     // test UserController
 
-    // test SessionController
 
+
+    // test Network
+    private static void testNetwork(){
+        //test UDP
+        UserController.initialize();
+        UDPSender.sendBroadcast("TEST_HELLOWORLD",UserController.getMyUser().getPort());
+
+        SessionController.initialize();
+
+    }
+
+    // test SessionController
     private static void testSessionController() {
         SessionController.initialize();
         UserController.initialize();

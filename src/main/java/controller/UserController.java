@@ -30,7 +30,7 @@ public class UserController {
      * DISCONNECT : "DISCONNECT|ID:id|IP:ip|Pseudo:pseudo"
      */
     public enum TypeMsg {
-        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT, USER_LIST, TEST
+        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT,ASK_USER_LIST, USER_LIST, TEST
     }
     //TODO AJOUTER UN TYPE DE MESSAGE USER_LIST, ELLE SERA ENVOYE EN REPONSE DE ASKPSEUDO SI LE PSEUDO EST OK, A LACCEPTATION DUN DE CES MESSAGE, SI LA LISTONLINE CONTINENT PLUS D'UN ELEMENT (MYUSER), REJET DU MESSAGE CAR LA LISTE A DEJA ETE INITIALISE
 
@@ -70,17 +70,17 @@ public class UserController {
     /**
      * Public function to use to start to ask if the pseudo is available
      * @param pseudo
-     */
+     *//*
     public static void askPseudo(String pseudo){
         setMyUser(pseudo);
         sendPseudo(pseudo);
     }
 
-    /**
+    *//**
      * Send a broadcast message to ask if the pseudo is available
      * @param pseudo
      * @throws SocketException
-     */
+     *//*
     private static void sendPseudo(String pseudo){
 
         // Generate a String with the type of message and user informations
@@ -101,7 +101,7 @@ public class UserController {
         System.out.println("Envoi de la reponse au pseudo : "+pseudo+" avec le type est valide : "+isValid);
         UDPSender.sendUDP(msg,myUser.getPort(),ip);
 
-    }
+    }*/
 
     private static void sendConnect(){
         // Generate a String with the type of message and the user informations
@@ -117,13 +117,20 @@ public class UserController {
         UDPSender.sendBroadcast(msg, myUser.getPort());
         }
 
+    public static void askUserList() {
+        // Generate a String with the type of message and the user informations
+        String msg = TypeMsg.ASK_USER_LIST+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
+        //System.out.println(msg);
+        UDPSender.sendBroadcast(msg, myUser.getPort());
+    }
+
     public static void sendUserList(String ip){
         String msg = TypeMsg.USER_LIST+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
         for (User user : listOnline){
             msg += "|" + user.getIP() + ":" + user.getPseudo();
         }
         System.out.println("Envoi de la Userlist : " + msg);
-        UDPSender.sendUDP(msg, myUser.getPort(), ip);
+        UDPSender.sendBroadcast(msg, myUser.getPort(), ip);
     }
 
     // RECEIVE INFORMATIONS
@@ -153,7 +160,7 @@ public class UserController {
 //        }
 
         switch(type){
-            case ASK_PSEUDO:
+            /*case ASK_PSEUDO:
 
                 if (pseudoNotPresent(pseudo)){
                     sendPseudoResponse(pseudo, IP, true);
@@ -161,7 +168,6 @@ public class UserController {
                 }else{
                     sendPseudoResponse(pseudo, IP, false);
                 }
-
 
                 break;
 
@@ -174,6 +180,9 @@ public class UserController {
                 System.out.println();
                 System.out.println("Connecté");
                 System.out.println();
+
+                SessionController.initialize();
+                //TODO : change frame to chat
 
                 System.out.println(listOnline);
                 UserController.getListOnline().forEach((user) -> {
@@ -188,7 +197,7 @@ public class UserController {
                 System.out.println("PSEUDO_NOT_OK");
                 //TODO : afficher un message d'erreur via le FrameController, pseudo deja pris, recommencer
 
-                break;
+                break;*/
 
             case CONNECT:
 
@@ -207,6 +216,10 @@ public class UserController {
                     listOnline.remove(new User(IP,pseudo));
                 }
                 //TODO : update the list of online users via the FrameController
+                break;
+                
+            case ASK_USER_LIST:
+                sendUserList(IP);
                 break;
 
             case USER_LIST:
