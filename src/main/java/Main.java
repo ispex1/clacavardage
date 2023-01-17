@@ -24,7 +24,7 @@ public class Main{
 
     public static void main (String[] args){
 
-        testSessionController();
+        testUserController();
 
     }
     //TODO : harmoniser le code, static au bon endroit, private public, get set, nom de fonction etc
@@ -51,29 +51,6 @@ public class Main{
         SessionController.sendMessage(new Message(UserController.getMyUser(), UserController.getListOnline().get(0), "Gros shlingueur toi nn ??"), UserController.getListOnline().get(0) );
     }
 
-    //ACNCIEN test TCP
-    /* private static void testTCP() {
-        int port = 6789;
-        TCPListener listener = new TCPListener(port);
-
-        try {
-            Thread.sleep(1000);
-            User userdist = new User("localhost");
-            System.out.println("< MAIN > : START NEW SESSION");
-            //on créé une demande de session a localhost, comme localhost ecoute sur ce port, cela devrait ourvrir un socket
-            TCPSession session = new TCPSession(userdist, port);
-            Thread.sleep(1000);
-            System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION CREATED BY MAIN");
-            session.sendMessage("Hello, from session created by main");
-            Thread.sleep(1000);
-            System.out.println("< MAIN > : SENDING MESSAGE FROM SESSION CREATED BY LISTENER");
-            listener.sessionsList.get(0).sendMessage("Hello, from session created by listener");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-    } */
 
     //test UDP
     //TODO : A tester le unicast sur un autre pc
@@ -117,6 +94,9 @@ public class Main{
     public static void testUserController(){
         UserController.initialize();
         UserController.getListOnline().add(new User("10.10.10.10","gaboche"));
+        UserController.getListOnline().add(new User(UserController.getMyUser().getIP(),"bacchus"));
+        UserController.getListOnline().add(new User(UserController.getMyUser().getIP(), "estebite"));
+        UserController.getListOnline().add(new User(UserController.getMyUser().getIP(), "paul"));
 
         System.out.println();
         System.out.println("Liste des utilisateurs connectés :");

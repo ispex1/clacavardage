@@ -98,7 +98,7 @@ public class UserController {
             msg = TypeMsg.PSEUDO_NOT_OK+"|IP:" + myUser.getIP() +"|MyPseudo:" +getMyUser().getPseudo()+"|Pseudo:" + pseudo;
 
         }
-        //System.out.println(msg);
+        System.out.println("Envoi de la reponse au pseudo : "+pseudo+" avec le type est valide : "+isValid);
         UDPSender.sendUDP(msg,myUser.getPort(),ip);
 
     }
@@ -133,7 +133,7 @@ public class UserController {
         String[] splitedMsg = msg.split("\\|");
 
         // Filtrage des messages recu et ejection des messages non conformes
-        String[] typeMsgString = {"ASK_PSEUDO","PSEUDO_OK","PSEUDO_NOT_OK","CONNECT","DISCONNECT","TEST"};
+        String[] typeMsgString = {"ASK_PSEUDO","PSEUDO_OK","PSEUDO_NOT_OK","CONNECT","DISCONNECT","USER_LIST","TEST"};
         if (!Arrays.asList(typeMsgString).contains(splitedMsg[0])){
             System.out.println("Message non conforme");
             System.out.println("Message recu : " + msg);
@@ -154,34 +154,27 @@ public class UserController {
 
         switch(type){
             case ASK_PSEUDO:
-                boolean isPseudoValid=true;
 
-                for (User user : listOnline){
-                    if (user.getPseudo().equals(pseudo)){
-                        isPseudoValid=false;
-                        sendPseudoResponse(pseudo, IP, false);
-                        break;
-                    }
-                }
-                if (isPseudoValid){
-                    sendPseudoResponse(pseudo,IP, true);
+                if (pseudoNotPresent(pseudo)){
+                    sendPseudoResponse(pseudo, IP, true);
                     sendUserList(IP);
+                }else{
+                    sendPseudoResponse(pseudo, IP, false);
                 }
+
 
                 break;
 
             case PSEUDO_OK:
-                if (listOnline.isEmpty()){
-                    listOnline.add(0,myUser);//On s'ajoute en tête de liste
-                    sendConnect();
-                    System.out.println("Connecté");
-                    break;
-                    //TODO : ouvrir la fenetre de discussion via le FrameController observer
-                }
+                listOnline.add(0,myUser);
                 System.out.println("Pseudo ajouté : " + pseudo);
                 System.out.println("IP ajouté : " + IP);
-                listOnline.add(0,myUser);
+
                 sendConnect();
+                System.out.println();
+                System.out.println("Connecté");
+                System.out.println();
+
                 System.out.println(listOnline);
                 UserController.getListOnline().forEach((user) -> {
                     System.out.println("User : " + user);
@@ -198,14 +191,8 @@ public class UserController {
                 break;
 
             case CONNECT:
-                boolean isPseudoAlreadyOnList=false;
-                for (User user : listOnline){
-                    if (user.getPseudo().equals(pseudo)){
-                        isPseudoAlreadyOnList=true;
-                        break;
-                    }
-                }
-                if (!isPseudoAlreadyOnList){
+
+                if (pseudoNotPresent(pseudo)){
                     listOnline.add(new User(IP,pseudo));
                     //TODO : update the list of online users via the FrameController
                 }else{
@@ -223,7 +210,13 @@ public class UserController {
                 break;
 
             case USER_LIST:
-
+                for (int i = 3; i < splitedMsg.length; i++){
+                    String[] user = splitedMsg[i].split(":");
+                    if (pseudoNotPresent(user[1])){
+                        listOnline.add(new User(user[0],user[1]));
+                    }
+                }
+                //TODO : update the list of online users via the FrameController
                 break;
 
             case TEST:
@@ -236,6 +229,15 @@ public class UserController {
                 break;
         }
 
+    }
+
+    private static boolean pseudoNotPresent(String pseudo){
+        for (User user : listOnline){
+            if (user.getPseudo().equals(pseudo)){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
