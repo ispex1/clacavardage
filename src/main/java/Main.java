@@ -118,7 +118,7 @@ public class Main{
         });
         System.out.println();
 
-        UserController.askPseudo("gabocheur");
+        //UserController.askPseudo("gabocheur");
 
         try {
             Thread.sleep(1000);

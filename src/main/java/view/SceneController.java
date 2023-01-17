@@ -31,9 +31,8 @@ public class SceneController extends Application {
     public static void main(String[] args){
         DatabaseManager.initialize();
         UserController.initialize();
-        SessionController.initialize();
         //TODO: remove this line, just for testing
-        //if (getListOnline().isEmpty()) testListOnline(); showListOnline();
+        if (getListOnline().isEmpty()) testListOnline(); showListOnline();
         launch(args);
     }
 
@@ -60,6 +59,8 @@ public class SceneController extends Application {
     public static void pseudoValid(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
         String pseudo = textFieldPseudo.getText().toUpperCase().trim();
 
+        if(UserController.getListOnline()==null) UserController.askUserList();
+
         if (getMyUser()!=null && pseudo.equals(getMyUser().getPseudo())) {
             SceneController.switchToMainScene(event.getSource());
             System.out.println("Pseudo non modifié");
@@ -73,11 +74,13 @@ public class SceneController extends Application {
                 for (User user : getListOnline()) {
                     if (user.getPseudo().equals(pseudo)) {
                         pseudoValid = false;
+                        if (getMyUser()==null) getListOnline().clear();
                         break;
                     }
                 }
                 if (pseudoValid) {
                     setMyUser(pseudo);
+                    UserController.addMyUser();
                     SceneController.switchToMainScene(event.getSource());
                 } else textPseudoNotValid.setText("This pseudo is already taken");
             }

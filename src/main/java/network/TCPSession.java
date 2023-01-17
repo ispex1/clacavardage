@@ -1,6 +1,7 @@
 package network;
 
 import database.DatabaseManager;
+import javafx.collections.ObservableList;
 import model.User;
 import model.Message;
 import controller.SessionController;
@@ -154,7 +155,7 @@ public class TCPSession extends Thread{
     public User getUserDist() {
         return userDist;
     }
-    public ArrayList<Message> getHistory() {
-        return DatabaseManager.getHistory(userDist.getIP());
+    public ObservableList<Message> getHistory() {
+        return (ObservableList<Message>) DatabaseManager.getHistory(userDist.getIP());
     }
 }

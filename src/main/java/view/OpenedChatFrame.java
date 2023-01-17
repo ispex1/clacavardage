@@ -65,7 +65,16 @@ public class OpenedChatFrame extends AnchorPane {
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
-        //everytime the TCP session receive a message, it will add it to the history
+        SessionController.getSessionWithUser(chatter).getHistory().addListener((ListChangeListener<Message>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    for (Message m : c.getAddedSubList()) {
+                        receiveMessage(m);
+                    }
+                }
+            }
+        });
+
         updateChat();
     }
 
