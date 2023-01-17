@@ -2,6 +2,13 @@ package view;
 
 import com.sun.tools.javac.Main;
 import controller.UserController;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
@@ -47,6 +54,7 @@ public class OpenedChatFrame extends AnchorPane {
     private boolean searchMode = false;
 
     private ArrayList<Message> history = new ArrayList<>();
+    private ObservableList<Message> observableHistory = FXCollections.observableArrayList();
 
 
     public void setParentController(MainFrame parentController) {
@@ -54,13 +62,16 @@ public class OpenedChatFrame extends AnchorPane {
     }
 
     public void initialize(){
-        System.out.println("OpenedChatFrame initialized");
-        fieldMessage.requestFocus();
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
+        setHistory();
+        vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
+        //everytime the TCP session receive a message, it will add it to the history
+        updateChat();
+    }
+
+    public void setHistory() {
         history = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
-        vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
-        updateChat();
     }
 
     public void updateChat(){

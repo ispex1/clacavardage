@@ -6,11 +6,13 @@ import model.Message;
 import controller.SessionController;
 import controller.UserController;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class TCPSession extends Thread{
 
@@ -23,6 +25,8 @@ public class TCPSession extends Thread{
     private BufferedReader bufferedReader;
     private User userDist;
     private User myUser = UserController.getMyUser();
+    private ArrayList<Message> history = new ArrayList<>();
+
 
     /**
      * Constructor of the TCPSession when a user start a session with us
@@ -47,6 +51,8 @@ public class TCPSession extends Thread{
 
         //creating a table in the DB, SQL will check if the table already exists
         DatabaseManager.createNewConvo(userDist.getIP());
+        //loading the history of the conversation
+        history = DatabaseManager.getHistory(userDist.getIP());
         start();
     }
 
@@ -72,7 +78,6 @@ public class TCPSession extends Thread{
 
         //on creer une table dans la BDD, c'est le code SQL qui se charge de verifier si la table existe deja
         DatabaseManager.createNewConvo(userdist.getIP());
-
         //starting the thread
         start();
 
@@ -148,5 +153,8 @@ public class TCPSession extends Thread{
     }
     public User getUserDist() {
         return userDist;
+    }
+    public ArrayList<Message> getHistory() {
+        return DatabaseManager.getHistory(userDist.getIP());
     }
 }
