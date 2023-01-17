@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static controller.SessionController.closeSession;
+import static controller.SessionController.createSession;
 import static controller.UserController.getListOnline;
 import static controller.UserController.getMyUser;
 import static view.SceneController.switchToParametersScene;
@@ -145,8 +147,13 @@ public class MainFrame {
 
 
     public void openChatSession() throws IOException {
-        SessionController.createSession(chatter);
+        createSession(chatter);
         updateChatPane();
+    }
+
+    public void closeChatSession(){
+        closeSession(chatter);
+        hideChatPane();
     }
 
 }
