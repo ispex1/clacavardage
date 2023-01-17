@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
@@ -20,16 +21,27 @@
             <Image url="@../images/background_chat.png" />
          </image>
       </ImageView>
-      <Rectangle fill="#dff53a" height="56.0" layoutX="3.0" layoutY="3.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="1351.0" />
+      <Rectangle fill="#dff53a" height="56.0" layoutX="3.0" layoutY="3.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="1354.0" />
       <Circle fill="#f88cd7" layoutX="1326.0" layoutY="30.0" onMouseClicked="#closeChatSession" radius="22.0" stroke="BLACK" strokeType="INSIDE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Circle>
-      <Line endX="1216.0" endY="-1.0" layoutX="138.0" layoutY="60.0" startX="-135.0" startY="-1.0" />
+      <Line endX="1219.25" endY="-1.0" layoutX="138.0" layoutY="60.0" startX="-135.0" startY="-1.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88cd7" height="10.0" layoutX="1237.0" layoutY="40.0" onMouseClicked="#hideChatPane" stroke="BLACK" strokeType="INSIDE" width="50.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Rectangle>
+      <Button cancelButton="true" layoutX="1236.0" layoutY="39.0" mnemonicParsing="false" opacity="0.02" prefHeight="12.0" prefWidth="52.0">
+         <font>
+            <Font size="3.0" />
+         </font>
+      </Button>
+      <VBox layoutX="3.0" layoutY="60.0" prefHeight="565.0" prefWidth="1354.0" />
+      <Label fx:id="labelTest" alignment="CENTER" layoutX="352.0" layoutY="11.0" prefHeight="44.0" prefWidth="656.0">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
       <Pane layoutX="12.0" layoutY="11.0" prefHeight="40.0" prefWidth="193.0">
          <children>
             <ImageView fitHeight="40.0" fitWidth="192.0" pickOnBounds="true" preserveRatio="true">
@@ -55,10 +67,11 @@
             </Button>
          </children>
       </Pane>
-      <Label fx:id="labelTest" alignment="CENTER" layoutX="347.0" layoutY="294.0" prefHeight="138.0" prefWidth="656.0">
-         <font>
-            <Font size="29.0" />
-         </font>
-      </Label>
+      <TextField fx:id="fieldMessage" layoutX="26.0" layoutY="656.0" prefHeight="65.0" prefWidth="1179.0" promptText="Envoyer un message à " styleClass="field_message" stylesheets="@../style.css" />
+      <ImageView fitHeight="88.0" fitWidth="104.0" layoutX="1241.0" layoutY="644.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/send.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

@@ -33,6 +33,8 @@ public class OpenedChatFrame extends AnchorPane {
     private Button btnCross;
     @FXML
     private Label labelTest;
+    @FXML
+    private TextField fieldMessage;
 
     private boolean searchMode = false;
 
@@ -45,6 +47,8 @@ public class OpenedChatFrame extends AnchorPane {
 
     public void initialize(){
         System.out.println("OpenedChatFrame initialized");
+        fieldMessage.requestFocus();
+        fieldMessage.setPromptText("Send your message to " + chatter.getPseudo());
         //history = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
         updateChat();

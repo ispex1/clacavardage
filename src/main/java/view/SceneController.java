@@ -53,7 +53,7 @@ public class SceneController extends Application {
     }
 
     public static void pseudoValid(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
-        String pseudo = textFieldPseudo.getText().toUpperCase();
+        String pseudo = textFieldPseudo.getText().toUpperCase().trim();
 
         if (getMyUser()!=null && pseudo.equals(getMyUser().getPseudo())) {
             SceneController.switchToMainScene(event.getSource());

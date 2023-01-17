@@ -26,7 +26,7 @@
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </ImageView>
-      <Button layoutX="517.0" layoutY="537.0" mnemonicParsing="false" onAction="#openChatSession" prefHeight="99.0" prefWidth="360.0" styleClass="btn_open_chat" stylesheets="@../style.css" text="OPEN CHAT SESSION">
+      <Button defaultButton="true" layoutX="517.0" layoutY="537.0" mnemonicParsing="false" onAction="#openChatSession" prefHeight="99.0" prefWidth="360.0" styleClass="btn_open_chat" stylesheets="@../style.css" text="OPEN CHAT SESSION">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>

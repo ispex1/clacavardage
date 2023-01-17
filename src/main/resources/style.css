@@ -97,6 +97,19 @@
     -fx-prompt-text-fill: #333333;
 }
 
+.field_message {
+    /*-fx-background-color: #DCDCDD;*/
+    -fx-background-radius: 20px;
+    -fx-font-size: 30px;
+    -fx-prompt-text-fill: #989898;
+}
+
+.btn_send{
+    -fx-background-radius: 20px;
+    -fx-background-color: #DFF53A;
+    -fx-font-size: 30px;
+}
+
 
 
 
