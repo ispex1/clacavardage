@@ -1,5 +1,5 @@
 import controller.UserController;
-import database.DatabaseManager.*;
+import database.DatabaseManager;
 import model.Message;
 import model.User;
 import network.TCPListener;
@@ -12,9 +12,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import static database.DatabaseManager.*;
-
-
 /**
  * This class is the main class of the project.
  *
@@ -23,7 +20,7 @@ public class Main{
 
     public static void main (String[] args){
 
-        testDBManager();
+        testUserController();
 
     }
     //TODO : harmoniser le code, static au bon endroit, private public, get set, nom de fonction etc
@@ -127,7 +124,9 @@ public class Main{
         //TODO :recuperer la liste de tous les utilisateurs connectés (je crois que je le fais a aucune moment ??)
     }
 
-    private static void testDBManager() {
+
+    //ANCIEN test DB Manager function
+    /* private static void testDBManager(){
         Message msg = new Message("testouille");
         Message msg2 = new Message();
         User este = new User("IP_Perso", "iSpeX");
@@ -136,16 +135,17 @@ public class Main{
         msg.setReceiver(gaboche);
         System.out.println(msg.toString());
 
-        initialize();
-        createNewConvo("IP_gaboche");
+        DatabaseManager db = new DatabaseManager();
+        db.createPersonalInfo("MAC_Perso");
+        db.createNewConvo("MAC_gaboche");
 
-        insertMessage(gaboche.getIP(), msg);
-        ArrayList<Integer> list = findListOfIndex(gaboche.getIP(), "test");
+        db.insertMessage(gaboche.getIP(), msg);
+        ArrayList<Integer> list = db.findListOfIndex(gaboche.getIP(), "test");
         //printList(list);
-        for (int i = 0; i < list.size(); i++) {
-            msg2 = getMsgFromIndex(gaboche.getIP(), list.get(i));
+        for (int i = 0; i < list.size(); i++){
+            msg2 = db.getMsgFromIndex(gaboche.getIP(), list.get(i));
             System.out.println(msg2.toString());
             //db.deleteMessage(gaboche.getIP(), list.get(i));
         }
-    }
+    } */
 }
