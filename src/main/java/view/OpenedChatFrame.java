@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import model.Message;
 import model.User;
 import controller.SessionController;
+import network.TCPSession;
 import view.MainFrame.*;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class OpenedChatFrame extends AnchorPane {
     private boolean searchMode = false;
 
     private ArrayList<Message> history = new ArrayList<>();
-    private ObservableList<Message> observableHistory = FXCollections.observableArrayList();
+    public ObservableList<Message> observableHistory = FXCollections.observableArrayList(SessionController.getSessionWithUser(chatter).getHistory());
 
 
     public void setParentController(MainFrame parentController) {
@@ -65,9 +66,9 @@ public class OpenedChatFrame extends AnchorPane {
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
-        //I want to update the the history when I receive a message from TCPSession
+        //I want to update the history when I receive a message from TCPSession
 
-        /*SessionController.getSessionWithUser(chatter).getHistory().addListener((ListChangeListener<Message>) c -> {
+        observableHistory.addListener((ListChangeListener<Message>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
                     for (Message m : c.getAddedSubList()) {
@@ -75,7 +76,7 @@ public class OpenedChatFrame extends AnchorPane {
                     }
                 }
             }
-        });*/
+        });
 
         updateChat();
     }
@@ -97,7 +98,6 @@ public class OpenedChatFrame extends AnchorPane {
     }
 
     public void addMessageToChat(Message message, Boolean sender){
-        System.out.println("addMessageToChat called");
         Label label = new Label(message.toString());
         if(sender){
             label.getStyleClass().add("labelMessageSender");

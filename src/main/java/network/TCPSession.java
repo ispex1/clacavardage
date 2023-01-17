@@ -52,8 +52,6 @@ public class TCPSession extends Thread{
 
         //creating a table in the DB, SQL will check if the table already exists
         DatabaseManager.createNewConvo(userDist.getIP());
-        //loading the history of the conversation
-        history = DatabaseManager.getHistory(userDist.getIP());
         start();
     }
 
@@ -103,14 +101,17 @@ public class TCPSession extends Thread{
             try {
                 data = bufferedReader.readLine();
 
+                msg.setData((data.split("|")[2]).split(":")[1]);
 
-                msg.setData(data);
+
+                //msg.setData(data);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 LocalDateTime now = LocalDateTime.now();
                 msg.setTime(dtf.format(now));
                 msg.setSender(userDist);
                 msg.setReceiver(myUser);
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
+                history = DatabaseManager.getHistory(userDist.getIP());
                 // To printin the data in Terminal
                 System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
             } catch (IOException e) {
@@ -156,7 +157,7 @@ public class TCPSession extends Thread{
     public User getUserDist() {
         return userDist;
     }
-    public ObservableList<Message> getHistory() {
-        return (ObservableList<Message>) DatabaseManager.getHistory(userDist.getIP());
+    public ArrayList<Message> getHistory() {
+        return history;
     }
 }
