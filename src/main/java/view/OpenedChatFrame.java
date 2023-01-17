@@ -1,5 +1,6 @@
 package view;
 
+import controller.UserController;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
@@ -35,6 +36,8 @@ public class OpenedChatFrame extends AnchorPane {
     private Label labelTest;
     @FXML
     private TextField fieldMessage;
+    @FXML
+    private Button btnSend;
 
     private boolean searchMode = false;
 
@@ -48,7 +51,7 @@ public class OpenedChatFrame extends AnchorPane {
     public void initialize(){
         System.out.println("OpenedChatFrame initialized");
         fieldMessage.requestFocus();
-        fieldMessage.setPromptText("Send your message to " + chatter.getPseudo());
+        fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         //history = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
         updateChat();
@@ -56,6 +59,16 @@ public class OpenedChatFrame extends AnchorPane {
 
     public void updateChat(){
         //TODO : add the history of the chat
+    }
+
+    public void sendMessage(ActionEvent event) throws IOException {
+        String message = fieldMessage.getText().trim();
+        if(!message.equals("")){
+            Message msg = new Message(UserController.getMyUser(), chatter, message);
+            SessionController.sendMessage(msg);
+            fieldMessage.clear();
+            fieldMessage.requestFocus();
+        }
     }
 
     public void hideChatPane() {

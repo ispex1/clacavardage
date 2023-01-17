@@ -31,10 +31,13 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Rectangle>
-      <Button cancelButton="true" layoutX="1236.0" layoutY="39.0" mnemonicParsing="false" opacity="0.02" prefHeight="12.0" prefWidth="52.0">
+      <Button cancelButton="true" layoutX="1236.0" layoutY="39.0" mnemonicParsing="false" onAction="#hideChatPane" opacity="0.02" prefHeight="12.0" prefWidth="52.0">
          <font>
             <Font size="3.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
       <VBox layoutX="3.0" layoutY="60.0" prefHeight="565.0" prefWidth="1354.0" />
       <Label fx:id="labelTest" alignment="CENTER" layoutX="352.0" layoutY="11.0" prefHeight="44.0" prefWidth="656.0">
@@ -67,10 +70,21 @@
             </Button>
          </children>
       </Pane>
-      <TextField fx:id="fieldMessage" layoutX="26.0" layoutY="656.0" prefHeight="65.0" prefWidth="1179.0" promptText="Envoyer un message à " styleClass="field_message" stylesheets="@../style.css" />
-      <ImageView fitHeight="88.0" fitWidth="104.0" layoutX="1241.0" layoutY="644.0" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="fieldMessage" layoutX="33.0" layoutY="651.0" prefHeight="65.0" prefWidth="1202.0" promptText="Envoyer un message à " styleClass="field_message" stylesheets="@../style.css" />
+      <Circle fill="#f88cd7" layoutX="1294.0" layoutY="683.0" radius="41.0" stroke="BLACK" strokeType="INSIDE" />
+      <ImageView fitHeight="76.0" fitWidth="60.0" layoutX="1264.0" layoutY="650.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
          <image>
             <Image url="@../images/send.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnSend" defaultButton="true" layoutX="1252.0" layoutY="639.0" mnemonicParsing="false" opacity="0.0" prefHeight="88.0" prefWidth="82.0" text="Button">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <ImageView disable="true" fitHeight="66.0" fitWidth="1203.0" layoutX="33.0" layoutY="651.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/oblonged.png" />
          </image>
       </ImageView>
    </children>
