@@ -103,7 +103,7 @@ public class UserController {
 
     }*/
 
-    private static void sendConnect(){
+    public static void sendConnect(){
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.CONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
         //System.out.println(msg);

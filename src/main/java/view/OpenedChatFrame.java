@@ -65,7 +65,7 @@ public class OpenedChatFrame extends AnchorPane {
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
-        SessionController.getSessionWithUser(chatter).getHistory().addListener((ListChangeListener<Message>) c -> {
+        /*SessionController.getSessionWithUser(chatter).getHistory().addListener((ListChangeListener<Message>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
                     for (Message m : c.getAddedSubList()) {
@@ -73,7 +73,7 @@ public class OpenedChatFrame extends AnchorPane {
                     }
                 }
             }
-        });
+        });*/
 
         updateChat();
     }
