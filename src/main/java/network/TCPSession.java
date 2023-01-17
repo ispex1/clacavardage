@@ -101,7 +101,7 @@ public class TCPSession extends Thread{
             try {
                 data = bufferedReader.readLine();
 
-                msg.setData((data.split("|")[2]).split(":")[1]);
+                msg.setData(data);
 
 
                 //msg.setData(data);
