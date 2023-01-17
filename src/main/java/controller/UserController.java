@@ -130,7 +130,7 @@ public class UserController {
             msg += "|" + user.getIP() + ":" + user.getPseudo();
         }
         System.out.println("Envoi de la Userlist : " + msg);
-        UDPSender.sendBroadcast(msg, myUser.getPort(), ip);
+        UDPSender.sendBroadcast(msg, myUser.getPort());
     }
 
     // RECEIVE INFORMATIONS
@@ -217,7 +217,7 @@ public class UserController {
                 }
                 //TODO : update the list of online users via the FrameController
                 break;
-                
+
             case ASK_USER_LIST:
                 sendUserList(IP);
                 break;
@@ -310,6 +310,10 @@ public class UserController {
             }
         }
         return null;
+    }
+
+    public static void addMyUser(){
+        listOnline.add(0,myUser);
     }
 
     public static void close(){
