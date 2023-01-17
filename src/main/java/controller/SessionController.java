@@ -99,11 +99,20 @@ public class SessionController {
         DatabaseManager.deleteMessage(ipOther, index);
     }
 
+    public static TCPSession getSessionWithUser(User userDist){
+        for(TCPSession session : sessionsList){
+            if(session.getOtherUser().equals(userDist)){
+                return session;
+            }
+        }
+        return null;
+    }
+
     /**
      * This method is used to get a session from the Session list with the IP address of the other user.
      * @param ipString
      */
-    public TCPSession getSessionWithAdress(String ipString){
+    public static TCPSession getSessionWithAdress(String ipString){
         InetAddress ip;
         try {
             ip = InetAddress.getByName(ipString);
@@ -131,11 +140,9 @@ public class SessionController {
         return null;
     }
 
-    public static boolean isSessionWith(User userdist){
-        for(TCPSession session : sessionsList){
-            if(session.getOtherUser().equals(userdist)){
-                return true;
-            }
+    public static boolean isSessionWith(User userDist){
+        if (getSessionWithUser(userDist) != null){
+            return true;
         }
         return false;
     }
