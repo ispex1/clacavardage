@@ -65,27 +65,15 @@ public class SessionController {
         sessionsList.add(session);
     }
 
-
-    /**
-     * This method is using the getHistory method from the DatabaseManager class.
-     * It returns the history of the conversation between the two users into an ArrayList of Message.
-     * 
-     * @param otherUser
-     * @return history
-     */
-    public ArrayList<Message> getHistory(User otherUser){
-        return DatabaseManager.getHistory(otherUser.getIP());
+    public static void sendMessage(Message message,User user){
+        for(TCPSession session : sessionsList){
+            if(session.getUserDist().equals(user)){
+                session.sendMessage(message.toString());
+                DatabaseManager.insertMessage(user.getIP(), message);
+            }
+        }
     }
 
-    /**
-     * This method is using the insertMessage method from the DatabaseManager class.
-     * It inserts the message in the database.
-     *
-     * @param msg
-     */
-    public static void archiveMsg(Message msg, User otherUser){
-        DatabaseManager.insertMessage(otherUser.getIP(), msg);
-    }
 
     /**
      * This method is using the deleteMessage method from the DatabaseManager class.
@@ -101,7 +89,7 @@ public class SessionController {
 
     public static TCPSession getSessionWithUser(User userDist){
         for(TCPSession session : sessionsList){
-            if(session.getOtherUser().equals(userDist)){
+            if(session.getUserDist().equals(userDist)){
                 return session;
             }
         }
@@ -133,7 +121,7 @@ public class SessionController {
      */
     public static TCPSession getSessionWithPseudo(String pseudo){
         for(TCPSession session : sessionsList){
-            if(session.getOtherUser().getPseudo().equals(pseudo)){
+            if(session.getUserDist().getPseudo().equals(pseudo)){
                 return session;
             }
         }
