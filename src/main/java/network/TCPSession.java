@@ -103,6 +103,7 @@ public class TCPSession extends Thread{
             try {
                 data = bufferedReader.readLine();
 
+
                 msg.setData(data);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 LocalDateTime now = LocalDateTime.now();

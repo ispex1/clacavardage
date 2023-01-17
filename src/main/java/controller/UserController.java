@@ -219,7 +219,9 @@ public class UserController {
                 break;
 
             case ASK_USER_LIST:
-                sendUserList(IP);
+                if(myUser.getPseudo() != null) {
+                    sendUserList(IP);
+                }
                 break;
 
             case USER_LIST:
