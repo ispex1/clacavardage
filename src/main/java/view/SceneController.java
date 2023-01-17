@@ -1,5 +1,6 @@
 package view;
 
+import controller.UserController;
 import database.DatabaseManager;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -29,8 +30,10 @@ public class SceneController extends Application {
 
     public static void main(String[] args){
         DatabaseManager.initialize();
+        UserController.initialize();
+        SessionController.initialize();
         //TODO: remove this line, just for testing
-        if (getListOnline().isEmpty()) testListOnline(); showListOnline();
+        //if (getListOnline().isEmpty()) testListOnline(); showListOnline();
         launch(args);
     }
 
