@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -39,7 +40,7 @@ public class OpenedChatFrame extends AnchorPane {
     @FXML
     private TextField fieldMessage;
     @FXML
-    private Button btnSend;
+    private ScrollPane scrollPane;
     @FXML
     private VBox vboxChat;
 
@@ -58,6 +59,7 @@ public class OpenedChatFrame extends AnchorPane {
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         history = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
+        vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
         updateChat();
     }
 
@@ -71,7 +73,6 @@ public class OpenedChatFrame extends AnchorPane {
                 addMessageToChat(message, false);
             }
         }
-        vboxChat.getChildren().add(new Label("History of " + chatter.getPseudo() + " generated"));
     }
 
     public void addMessageToChat(Message message, Boolean sender){
@@ -83,18 +84,27 @@ public class OpenedChatFrame extends AnchorPane {
             label.getStyleClass().add("labelMessageReceiver");
         }
         vboxChat.getChildren().add(label);
+        scrollPane.setVvalue(1.0);
     }
 
-    public void sendMessage(ActionEvent event){
+    public void sendMessage(){
         String message = fieldMessage.getText().trim();
         if(!message.equals("")){
+            fieldMessage.clear();
             Message msg = new Message(UserController.getMyUser(), chatter, message);
             SessionController.sendMessage(msg,chatter);
-            history = getHistory(chatter.getIP());
-            fieldMessage.clear();
-            fieldMessage.requestFocus();
-            updateChat();
+            if(!searchMode){
+                addMessageToChat(msg, true);
+            }
+            else{
+                history.add(msg);
+                searchMessage();
+            }
         }
+    }
+
+    public void receiveMessage(Message message){
+        if(!searchMode) addMessageToChat(message, false);
     }
 
     public void hideChatPane() {
