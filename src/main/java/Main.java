@@ -1,3 +1,4 @@
+import controller.SessionController;
 import controller.UserController;
 import database.DatabaseManager.*;
 import model.Message;
@@ -23,7 +24,7 @@ public class Main{
 
     public static void main (String[] args){
 
-        testDBManager();
+        testSessionController();
 
     }
     //TODO : harmoniser le code, static au bon endroit, private public, get set, nom de fonction etc
@@ -33,7 +34,23 @@ public class Main{
 
     // test SessionController
 
-    
+    private static void testSessionController() {
+        SessionController.initialize();
+        UserController.initialize();
+
+        UserController.getListOnline().add(new User(UserController.getMyUser().getIP(), "bacchus"));
+
+        SessionController.createSession(UserController.getListOnline().get(0));
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        SessionController.sendMessage(new Message(UserController.getMyUser(), UserController.getListOnline().get(0), "Gros shlingueur toi nn ??"), UserController.getListOnline().get(0) );
+    }
+
     //ACNCIEN test TCP
     /* private static void testTCP() {
         int port = 6789;

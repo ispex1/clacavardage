@@ -49,6 +49,7 @@ public class SessionController {
         if(UserController.getListOnline().contains(userDist)){
             TCPSession session = new TCPSession(userDist);
             sessionsList.add(session);
+            System.out.println("< SESSION CONTROLLER > : SESSION CREATED WITH " + userDist.getPseudo());
         }
         else{
             System.out.println("User not online");

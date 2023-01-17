@@ -38,7 +38,6 @@ public class UserController {
     /**
      * Constructor
      */
-    //TODO : passer en statique avec un initialize
     private UserController(){
     }
 
@@ -91,7 +90,6 @@ public class UserController {
 
     }
 
-    //TODO : Observer la coherence des public private static etc sur l'ensemble du code
     private static void sendPseudoResponse(String pseudo, String ip, Boolean isValid){
         String msg;
         if (isValid){
@@ -120,7 +118,7 @@ public class UserController {
         }
 
     public static void sendUserList(String ip){
-        String msg = TypeMsg.USER_LIST+"|IP:";
+        String msg = TypeMsg.USER_LIST+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
         for (User user : listOnline){
             msg += "|" + user.getIP() + ":" + user.getPseudo();
         }
@@ -167,6 +165,7 @@ public class UserController {
                 }
                 if (isPseudoValid){
                     sendPseudoResponse(pseudo,IP, true);
+                    sendUserList(IP);
                 }
 
                 break;
@@ -312,7 +311,7 @@ public class UserController {
      * Setter for myUser
      * @param pseudo
      */
-    //TODO : enlever le new
+
     public static void setMyUser(String pseudo){
         myUser.setPseudo(pseudo);
     }
