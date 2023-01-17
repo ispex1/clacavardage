@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.tools.javac.Main;
 import controller.UserController;
 import javafx.event.ActionEvent;
 import javafx.event.EventTarget;
@@ -11,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import model.Message;
 import model.User;
 import controller.SessionController;
@@ -38,6 +40,8 @@ public class OpenedChatFrame extends AnchorPane {
     private TextField fieldMessage;
     @FXML
     private Button btnSend;
+    @FXML
+    private VBox vboxChat;
 
     private boolean searchMode = false;
 
@@ -59,15 +63,35 @@ public class OpenedChatFrame extends AnchorPane {
 
     public void updateChat(){
         //TODO : add the history of the chat
+        for(Message message : history) {
+            if (message.getSender().equals(UserController.getMyUser())) {
+                addMessageToChat(message, true);
+            } else {
+                addMessageToChat(message, false);
+            }
+        }
+        vboxChat.getChildren().add(new Label("History of " + chatter.getPseudo() + " generated"));
     }
 
-    public void sendMessage(ActionEvent event) throws IOException {
+    public void addMessageToChat(Message message, Boolean sender){
+        Label label = new Label(message.toString());
+        if(sender){
+            label.getStyleClass().add("labelMessageSender");
+        } else {
+            label.getStyleClass().add("labelMessageReceiver");
+        }
+        vboxChat.getChildren().add(label);
+    }
+
+    public void sendMessage(ActionEvent event){
         String message = fieldMessage.getText().trim();
         if(!message.equals("")){
             Message msg = new Message(UserController.getMyUser(), chatter, message);
-            SessionController.sendMessage(msg);
+            //SessionController.sendMessage(msg,chatter);
+            history = getHistory(chatter.getIP());
             fieldMessage.clear();
             fieldMessage.requestFocus();
+            updateChat();
         }
     }
 
@@ -100,7 +124,7 @@ public class OpenedChatFrame extends AnchorPane {
         searchMode = false;
         imgCross.setVisible(false);
         btnCross.setDisable(true);
-        fieldSearch.setText("");
+        fieldSearch.clear();
         //history = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
         updateChat();

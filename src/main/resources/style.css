@@ -104,6 +104,20 @@
     -fx-prompt-text-fill: #333333;
 }
 
+.labelMessageSender {
+    -fx-fill: #F88CD7;
+    -fx-font-family: 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 30px;
+}
+
+.labelMessageReceiver {
+    -fx-fill: #000000;
+    -fx-font-family: 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 30px;
+}
+
 
 
 
