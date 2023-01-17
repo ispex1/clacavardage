@@ -1,5 +1,6 @@
 package view;
 
+import database.DatabaseManager;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ public class SceneController extends Application {
     protected static Parent root;
 
     public static void main(String[] args){
+        DatabaseManager.initialize();
         //TODO: remove this line, just for testing
         if (getListOnline().isEmpty()) testListOnline(); showListOnline();
         launch(args);

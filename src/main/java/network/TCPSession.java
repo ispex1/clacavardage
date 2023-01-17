@@ -44,8 +44,6 @@ public class TCPSession extends Thread{
         writer = new PrintWriter(outputStream, true);
         //starting the thread
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession asked by " + link.getInetAddress().getHostAddress());
-
-        //creating a table in the DB, SQL will check if the table already exists
         DatabaseManager.createNewConvo(userDist.getIP());
         start();
     }
@@ -71,6 +69,8 @@ public class TCPSession extends Thread{
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + SessionController.PORT);
 
         //on creer une table dans la BDD, c'est le code SQL qui se charge de verifier si la table existe deja
+        //creating a table in the DB, SQL will check if the table already exists
+        System.out.println("Creating table for " + userdist.getPseudo() + " with the id " + userdist.getIP());
         DatabaseManager.createNewConvo(userdist.getIP());
 
         //starting the thread

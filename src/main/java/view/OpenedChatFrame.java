@@ -56,13 +56,14 @@ public class OpenedChatFrame extends AnchorPane {
         System.out.println("OpenedChatFrame initialized");
         fieldMessage.requestFocus();
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
-        //history = getHistory(chatter.getIP());
+        history = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
         updateChat();
     }
 
     public void updateChat(){
         //TODO : add the history of the chat
+        vboxChat.getChildren().clear();
         for(Message message : history) {
             if (message.getSender().equals(UserController.getMyUser())) {
                 addMessageToChat(message, true);
@@ -74,6 +75,7 @@ public class OpenedChatFrame extends AnchorPane {
     }
 
     public void addMessageToChat(Message message, Boolean sender){
+        System.out.println("addMessageToChat called");
         Label label = new Label(message.toString());
         if(sender){
             label.getStyleClass().add("labelMessageSender");
@@ -87,7 +89,7 @@ public class OpenedChatFrame extends AnchorPane {
         String message = fieldMessage.getText().trim();
         if(!message.equals("")){
             Message msg = new Message(UserController.getMyUser(), chatter, message);
-            //SessionController.sendMessage(msg,chatter);
+            SessionController.sendMessage(msg,chatter);
             history = getHistory(chatter.getIP());
             fieldMessage.clear();
             fieldMessage.requestFocus();
@@ -114,7 +116,7 @@ public class OpenedChatFrame extends AnchorPane {
             searchMode = true;
             imgCross.setVisible(true);
             btnCross.setDisable(false);
-            //history = findListOfMessage(chatter.getIP(), search);
+            history = findListOfMessage(chatter.getIP(), search);
             labelTest.setText("List of message containing " + search + " generated");
             updateChat();
         }
@@ -125,7 +127,7 @@ public class OpenedChatFrame extends AnchorPane {
         imgCross.setVisible(false);
         btnCross.setDisable(true);
         fieldSearch.clear();
-        //history = getHistory(chatter.getIP());
+        history = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
         updateChat();
     }

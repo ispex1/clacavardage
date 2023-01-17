@@ -35,8 +35,8 @@ public class DatabaseManager {
      * This method is used to initialize the database.
      * It creates a new database if it does not exist and connects to it.
      */
-    public static void intitialize(){
-        createNewDatabase();
+    public static void initialize(){
+        //createNewDatabase();
         connect();
     }
 
@@ -87,7 +87,7 @@ public class DatabaseManager {
      */
     public static void createNewConvo(String idOther) {
         // SQL statement for creating a new table
-        String sql= "CREATE TABLE IF NOT EXISTS " + idOther +"(\n"
+        String sql= "CREATE TABLE IF NOT EXISTS id_" + idOther.replace(".","_") +"(\n"
                 + "	indexMsg integer PRIMARY KEY,\n" // Index of the message
                 + " sender text NOT NULL, \n" // ID of the sender
                 + " receiver text NOT NULL, \n" // ID of the receiver
@@ -113,7 +113,7 @@ public class DatabaseManager {
      */
     public static void deleteConvo(String idOther) {
         // SQL statement for deleting a table
-        String sql= "DROP TABLE IF EXISTS " + idOther; 
+        String sql= "DROP TABLE IF EXISTS id_" + idOther.replace(".","_");
 
         try (Connection conn = DriverManager.getConnection(url); 
              Statement  stmt = conn.createStatement()) {
@@ -135,7 +135,7 @@ public class DatabaseManager {
      */
     public static void insertMessage(String idOther, Message msg) {
         // SQL statement for inserting a new row (message)
-        String sql = "INSERT INTO " + idOther + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO id_" + idOther.replace(".","_") + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -161,7 +161,7 @@ public class DatabaseManager {
      */
     public static void deleteMessage(String idOther, int index) {
         // SQL statement for deleting a message
-        String sql = "DELETE FROM " + idOther + " WHERE indexMsg = ?";
+        String sql = "DELETE FROM id_" + idOther.replace(".","_") + " WHERE indexMsg = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -184,7 +184,7 @@ public class DatabaseManager {
      */
     public static ArrayList<Integer> findListOfIndex(String idOther, String data){
         // SQL statement for selecting data
-        String sql = "SELECT indexMsg, message FROM " + idOther; 
+        String sql = "SELECT indexMsg, message FROM id_" + idOther.replace(".","_");
         ArrayList<Integer> indexList = new ArrayList<Integer>();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -211,7 +211,7 @@ public class DatabaseManager {
      * @return msgList
      */
     public static ArrayList<Message> findListOfMessage(String idOther, String data){
-        String sql = "SELECT indexMsg, sender, receiver, message, time FROM " + idOther;
+        String sql = "SELECT indexMsg, sender, receiver, message, time FROM id_" + idOther.replace(".","_");
         ArrayList<Message> msgList = new ArrayList<Message>();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -245,7 +245,7 @@ public class DatabaseManager {
      */
     public static int getIndexFromMsg(String idOther, Message msg){
         // SQL statement for selecting everything from the table
-        String sql = "SELECT * FROM " + idOther;
+        String sql = "SELECT * FROM id_" + idOther.replace(".","_");
         int index = -1;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -276,7 +276,7 @@ public class DatabaseManager {
     public static Message getMsgFromIndex(String idOther, int index) {
         // SQL statement for selecting everything from the table where 
         // the index of the message is equal to the index given in parameter
-        String sql = "SELECT * FROM " + idOther + " WHERE indexMsg = ?";
+        String sql = "SELECT * FROM id_" + idOther.replace(".","_") + " WHERE indexMsg = ?";
         Message msg = null;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -303,7 +303,7 @@ public class DatabaseManager {
      * @return history
      */
     public static ArrayList<Message> getHistory(String idOther) {
-        String sql = "SELECT * FROM " + idOther;
+        String sql = "SELECT * FROM id_" + idOther.replace(".","_");
         ArrayList<Message> history = new ArrayList<Message>();
 
         try (Connection conn = DriverManager.getConnection(url);
