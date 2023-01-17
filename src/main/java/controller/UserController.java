@@ -140,7 +140,7 @@ public class UserController {
         String[] splitedMsg = msg.split("\\|");
 
         // Filtrage des messages recu et ejection des messages non conformes
-        String[] typeMsgString = {"ASK_PSEUDO","PSEUDO_OK","PSEUDO_NOT_OK","CONNECT","DISCONNECT","USER_LIST","TEST"};
+        String[] typeMsgString = {"ASK_PSEUDO","PSEUDO_OK","PSEUDO_NOT_OK","CONNECT","DISCONNECT","ASK_USER_LIST","USER_LIST","TEST"};
         if (!Arrays.asList(typeMsgString).contains(splitedMsg[0])){
             System.out.println("Message non conforme");
             System.out.println("Message recu : " + msg);
@@ -155,9 +155,9 @@ public class UserController {
 
         //Filtrage des messages recu et ejection des messages envoyes a soi meme
         //TODO : ce filtre doit etre commenté lors des phases de test local et enlevé lors du fonctionnement de l'application
-//        if(IP.equals(myUser.getIP())){
-//            return;
-//        }
+        if(IP.equals(myUser.getIP())){
+           return;
+        }
 
         switch(type){
             /*case ASK_PSEUDO:

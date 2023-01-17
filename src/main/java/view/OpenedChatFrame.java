@@ -65,6 +65,8 @@ public class OpenedChatFrame extends AnchorPane {
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
+        //I want to update the the history when I receive a message from TCPSession
+
         /*SessionController.getSessionWithUser(chatter).getHistory().addListener((ListChangeListener<Message>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
@@ -84,7 +86,6 @@ public class OpenedChatFrame extends AnchorPane {
     }
 
     public void updateChat(){
-        //TODO : add the history of the chat
         vboxChat.getChildren().clear();
         for(Message message : history) {
             if (message.getSender().equals(UserController.getMyUser())) {
