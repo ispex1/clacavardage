@@ -1,15 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="openedChatFrame" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OpenedChatFrame">
    <children>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="366.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="752.0" fitWidth="1369.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/background_chat.png" />
          </image>
       </ImageView>
+      <Rectangle fill="#dff53a" height="56.0" layoutX="3.0" layoutY="3.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="1351.0" />
+      <Circle fill="#f88cd7" layoutX="1326.0" layoutY="30.0" onMouseClicked="#closeChatSession" radius="22.0" stroke="BLACK" strokeType="INSIDE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Circle>
+      <Line endX="1216.0" endY="-1.0" layoutX="138.0" layoutY="60.0" startX="-135.0" startY="-1.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f88cd7" height="10.0" layoutX="1237.0" layoutY="40.0" onMouseClicked="#hideChatPane" stroke="BLACK" strokeType="INSIDE" width="50.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Rectangle>
+      <Pane layoutX="12.0" layoutY="11.0" prefHeight="40.0" prefWidth="193.0">
+         <children>
+            <ImageView fitHeight="40.0" fitWidth="192.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/search.png" />
+               </image>
+            </ImageView>
+            <Button defaultButton="true" layoutX="6.0" layoutY="7.0" mnemonicParsing="false" onAction="#searchMessage" opacity="0.0" prefHeight="25.0" prefWidth="23.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <TextField fx:id="fieldSearch" alignment="CENTER" layoutX="36.0" layoutY="3.0" prefHeight="34.0" prefWidth="120.0" promptText="SEARCH" styleClass="search" stylesheets="@../style.css" />
+            <ImageView fx:id="imgCross" fitHeight="24.0" fitWidth="23.0" layoutX="158.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../images/cross.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="btnCross" cancelButton="true" disable="true" layoutX="158.0" layoutY="7.0" mnemonicParsing="false" onAction="#cancelSearch" opacity="0.0" prefHeight="25.0" prefWidth="23.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </Pane>
+      <Label fx:id="labelTest" alignment="CENTER" layoutX="347.0" layoutY="294.0" prefHeight="138.0" prefWidth="656.0">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

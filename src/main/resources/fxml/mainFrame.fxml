@@ -50,7 +50,7 @@
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="imgCat" fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#openChatSession" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgCat" fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/chat.png" />
          </image>

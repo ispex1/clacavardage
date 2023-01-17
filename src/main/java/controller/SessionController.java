@@ -122,7 +122,7 @@ public class SessionController {
      * This method is used to get a session from the Session list with the pseudo of the other user.
      * @param pseudo
      */
-    public TCPSession getSessionWithPseudo(String pseudo){
+    public static TCPSession getSessionWithPseudo(String pseudo){
         for(TCPSession session : sessionsList){
             if(session.getOtherUser().getPseudo().equals(pseudo)){
                 return session;
@@ -141,6 +141,12 @@ public class SessionController {
     }
 
     public static void closeSession(TCPSession session){
+        session.closeSession();
+        sessionsList.remove(session);
+    }
+
+    public static void closeSession(User user){
+        TCPSession session = getSessionWithPseudo(user.getPseudo());
         session.closeSession();
         sessionsList.remove(session);
     }

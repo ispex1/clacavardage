@@ -83,11 +83,21 @@
     -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
 }
 
+/* ################################## CHAT ################################## */
+
 .label_pseudo {
     -fx-font-family: 'Jomhuria', 'cursive';
     -fx-font-style: normal;
     -fx-font-size: 64px;
 }
+
+.search {
+    -fx-background-color: #F88CD7;
+    -fx-background-radius: 19px;
+    -fx-prompt-text-fill: #333333;
+}
+
+
 
 
 
