@@ -20,7 +20,7 @@ public class Main{
 
     public static void main (String[] args){
 
-        testUDPSender(0);
+        testUserController();
 
     }
 
@@ -53,6 +53,7 @@ public class Main{
     } */
 
     //test UDP
+    //TODO : A tester le unicast sur un autre pc
     private static void testUDPSender(int type){
         // type : 0 = broadcast, 1 = unicast
         int port=1234;
@@ -87,6 +88,38 @@ public class Main{
                 e.printStackTrace();
             }
         }
+    }
+
+    //test UserController
+    public static void testUserController(){
+        UserController.initialize();
+        UserController.getListOnline().add(new User("10.10.10.10","gaboche"));
+
+        System.out.println();
+        System.out.println("Liste des utilisateurs connectés :");
+        UserController.getListOnline().forEach((user) -> {
+            System.out.println("User : " + user);
+            System.out.println("Pseudo : " + user.getPseudo());
+            System.out.println("IP : " + user.getIP());
+        });
+        System.out.println();
+
+        UserController.askPseudo("gabocheur");
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Liste des utilisateurs connectés :");
+        UserController.getListOnline().forEach((user) -> {
+            System.out.println("User : " + user);
+            System.out.println("Pseudo : " + user.getPseudo());
+            System.out.println("IP : " + user.getIP());
+        });
+        System.out.println();
+        //TODO : empecher le fait de se repondre un pseudo ok a soi meme, comme le broadcast envoi aussi un message a nous meme, on repondra automatiquement pseudo ok car la liste est initialement vide
+        //TODO :recuperer la liste de tous les utilisateurs connectés (je crois que je le fais a aucune moment ??)
     }
     // ANCIEN test UDP Sender and Listener
     /* private static void testUDP(){

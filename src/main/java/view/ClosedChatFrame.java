@@ -6,9 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+//import javafx.scene.media.AudioClip;
+//import javafx.scene.media.Media;
+//import javafx.scene.media.MediaPlayer;
 import model.User;
 import controller.SessionController;
 
@@ -47,8 +47,8 @@ public class ClosedChatFrame extends AnchorPane {
 
     public void easterEgg(MouseEvent mouseEvent) {
         //print the path of the chaaris.wav file in the resource folder
-        AudioClip audioClip = new AudioClip(getClass().getResource("resources/chaaris.wav").toString());
-        audioClip.play(100);
+    //    AudioClip audioClip = new AudioClip(getClass().getResource("resources/chaaris.wav").toString());
+    //    audioClip.play(100);
         System.out.println("Playing sound");
     }
 }

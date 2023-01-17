@@ -39,9 +39,11 @@ public class UDPListener extends Thread {
                 try {
                     socket.receive(receivePacket);
                     String data = new String(receivePacket.getData(), 0, receivePacket.getLength());
+                    System.out.println("Brut Data : " + data);
+
                     UserController.informationTreatment(data);
 
-                    System.out.println("Brut Data : " + data);
+
 
                 } catch (IOException e) {
                     e.printStackTrace();

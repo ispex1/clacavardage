@@ -81,7 +81,8 @@ public class UDPSender {
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Sending packet to broadcast" );
+        System.out.println("Sending packet to broadcast : " + message );
+
             try {
                 socket.send(packet);
             } catch (IOException e) {
