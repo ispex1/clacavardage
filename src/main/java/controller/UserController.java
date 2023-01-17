@@ -30,7 +30,7 @@ public class UserController {
      * DISCONNECT : "DISCONNECT|ID:id|IP:ip|Pseudo:pseudo"
      */
     public enum TypeMsg {
-        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT, TEST
+        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT, USER_LIST, TEST
     }
     //TODO AJOUTER UN TYPE DE MESSAGE USER_LIST, ELLE SERA ENVOYE EN REPONSE DE ASKPSEUDO SI LE PSEUDO EST OK, A LACCEPTATION DUN DE CES MESSAGE, SI LA LISTONLINE CONTINENT PLUS D'UN ELEMENT (MYUSER), REJET DU MESSAGE CAR LA LISTE A DEJA ETE INITIALISE
 
@@ -119,7 +119,14 @@ public class UserController {
         UDPSender.sendBroadcast(msg, myUser.getPort());
         }
 
-
+    public static void sendUserList(String ip){
+        String msg = TypeMsg.USER_LIST+"|IP:";
+        for (User user : listOnline){
+            msg += "|" + user.getIP() + ":" + user.getPseudo();
+        }
+        System.out.println("Envoi de la Userlist : " + msg);
+        UDPSender.sendUDP(msg, myUser.getPort(), ip);
+    }
 
     // RECEIVE INFORMATIONS
 
@@ -214,6 +221,10 @@ public class UserController {
                     listOnline.remove(new User(IP,pseudo));
                 }
                 //TODO : update the list of online users via the FrameController
+                break;
+
+            case USER_LIST:
+
                 break;
 
             case TEST:

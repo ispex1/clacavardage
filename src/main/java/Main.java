@@ -23,11 +23,14 @@ public class Main{
         testUserController();
 
     }
+    //TODO : harmoniser le code, static au bon endroit, private public, get set, nom de fonction etc
+    //TODO : Jenkins
 
     // test UserController
 
     // test SessionController
 
+    
     //ACNCIEN test TCP
     /* private static void testTCP() {
         int port = 6789;
@@ -118,30 +121,8 @@ public class Main{
             System.out.println("IP : " + user.getIP());
         });
         System.out.println();
-        //TODO : empecher le fait de se repondre un pseudo ok a soi meme, comme le broadcast envoi aussi un message a nous meme, on repondra automatiquement pseudo ok car la liste est initialement vide
         //TODO :recuperer la liste de tous les utilisateurs connectés (je crois que je le fais a aucune moment ??)
     }
-    // ANCIEN test UDP Sender and Listener
-    /* private static void testUDP(){
-        int port=1234;
-
-        //Creating a UDP Listener, should open a new thread
-        UDPListener listener = new UDPListener(port);
-
-        // Creating a UDP Sender
-        UDPSender sender = new UDPSender();
-
-        // Sending messages
-        try {
-            while (true) {
-                //sender.sendBroadcast("Hello Broadcast", port);
-                sender.sendUDP("Hello UDP", port, InetAddress.getLocalHost().getHostAddress());
-                Thread.sleep(1000);
-            }
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
-    } */
 
 
     //ANCIEN test DB Manager function

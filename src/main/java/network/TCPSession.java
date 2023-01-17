@@ -1,5 +1,6 @@
 package network;
 
+import database.DatabaseManager;
 import model.User;
 import model.Message;
 import controller.SessionController;
@@ -43,6 +44,9 @@ public class TCPSession extends Thread{
         writer = new PrintWriter(outputStream, true);
         //starting the thread
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession asked by " + link.getInetAddress().getHostAddress());
+
+        //creating a table in the DB, SQL will check if the table already exists
+        DatabaseManager.createNewConvo(userDist.getIP());
         start();
     }
 
@@ -66,6 +70,9 @@ public class TCPSession extends Thread{
         writer = new PrintWriter(outputStream, true);
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + SessionController.PORT);
 
+        //on creer une table dans la BDD, c'est le code SQL qui se charge de verifier si la table existe deja
+        DatabaseManager.createNewConvo(userdist.getIP());
+
         //starting the thread
         start();
 
@@ -73,7 +80,6 @@ public class TCPSession extends Thread{
 
     public void sendMessage(String data){
         Message msg = new Message(myUser, userDist, data);
-        SessionController.archiveMsg(msg, userDist);
         System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + msg.getData());
         writer.println(msg.getData());
     }
@@ -97,7 +103,7 @@ public class TCPSession extends Thread{
                 msg.setTime(dtf.format(now));
                 msg.setSender(userDist);
                 msg.setReceiver(myUser);
-                SessionController.archiveMsg(msg, userDist);
+                DatabaseManager.insertMessage(userDist.getIP(), msg);
                 // To printin the data in Terminal
                 System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
             } catch (IOException e) {
@@ -140,7 +146,7 @@ public class TCPSession extends Thread{
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
-    public User getOtherUser() {
+    public User getUserDist() {
         return userDist;
     }
 }
