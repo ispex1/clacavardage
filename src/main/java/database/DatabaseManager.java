@@ -36,7 +36,7 @@ public class DatabaseManager {
      * It creates a new database if it does not exist and connects to it.
      */
     public static void initialize(){
-        //createNewDatabase();
+        createNewDatabase();
         connect();
     }
 

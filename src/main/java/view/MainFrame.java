@@ -5,6 +5,7 @@ import controller.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -35,8 +36,6 @@ public class MainFrame {
     @FXML
     private ListView<String> UsersList;
     @FXML
-    private ImageView imgCat;
-    @FXML
     private Pane mainPane;
     @FXML
     private Pane chatPane;
@@ -54,8 +53,11 @@ public class MainFrame {
 
     public void updateUsersList() {
         UsersList.getItems().clear();
+
         for (User user : getListOnline()) {
-            UsersList.getItems().add(user.getPseudo());
+            if (!user.equals(getMyUser())) {
+                UsersList.getItems().add(user.getPseudo());;
+            }
         }
     }
 
@@ -66,7 +68,7 @@ public class MainFrame {
     public void easterEgg() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-        alert.setGraphic(imgCat);
+        alert.setGraphic(new ImageView("/images/Jokey.png"));
 
         alert.setTitle("The Clac Jokey");
         alert.setHeaderText(null);
@@ -141,10 +143,13 @@ public class MainFrame {
     }
 
     public void hideChatPane() {
-        mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
+        if (chatPane != null) {
+            System.out.println("hide");
+            mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
+            chatPane = null;
+        }
         chatter = null;
     }
-
 
     public void openChatSession() throws IOException {
         createSession(chatter);

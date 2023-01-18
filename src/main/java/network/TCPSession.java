@@ -115,7 +115,7 @@ public class TCPSession extends Thread{
                 // To printin the data in Terminal
                 System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
             } catch (IOException e) {
-                e.printStackTrace();
+                if (isRunning) e.printStackTrace();
             }
         }
     }

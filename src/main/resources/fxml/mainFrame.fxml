@@ -25,7 +25,7 @@
             <Insets bottom="100.0" />
          </opaqueInsets>
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="DEFAULT" />
          </cursor>
       </ListView>
       <ImageView disable="true" fitHeight="634.0" fitWidth="264.0" focusTraversable="true" layoutX="63.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
@@ -42,15 +42,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ImageView fx:id="imgCat1" fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/chat.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView fx:id="imgCat" fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/chat.png" />
          </image>
