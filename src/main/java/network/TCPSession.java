@@ -114,13 +114,13 @@ public class TCPSession extends Thread{
                 String receiver = dataSplit[1].split(":")[1];
                 String message = dataSplit[2].split(":")[1];
                 String date = dataSplit[3].split(":")[1];
+
                 msg.setData(message);
 
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                LocalDateTime now = LocalDateTime.now();
-                msg.setTime(dtf.format(now));
-                msg.setSender(userDist);
-                msg.setReceiver(myUser);
+                msg.setTime(date);
+                msg.setSender(UserController.getUserByPseudo(sender));
+                msg.setReceiver(UserController.getUserByPseudo(receiver));
+
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
                 if (isDisplayed){
                     System.out.println("it's displayed");

@@ -107,7 +107,7 @@ public class MainFrame {
     public void updateChatter() throws IOException {
         String pseudo = UsersList.getSelectionModel().getSelectedItem();
         if (pseudo != null) {
-            User user = UserController.findUser(pseudo);
+            User user = UserController.getUserByPseudo(pseudo);
             if (user != null) {
                 if (user != chatter) {
                     chatter = user;

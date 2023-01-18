@@ -201,7 +201,7 @@ public class UserController {
 
             //TODO : A tester
             case PSEUDO:
-                updateUser(findUserByIP(IP));
+                updateUser(getUserByIP(IP));
 
             case CONNECT:
 
@@ -263,22 +263,9 @@ public class UserController {
      * Find the user in the listOnline with the pseudo
      * @param pseudo
      */
-    public static User findUser(String pseudo) {
+    public static User getUserByPseudo(String pseudo) {
         for (User user : listOnline) {
             if (user.getPseudo().equals(pseudo)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Find the user in the listOnline with the IP
-     * @param IP
-     */
-    public static User findUserByIP(String IP) {
-        for (User user : listOnline) {
-            if (user.getIP().equals(IP)) {
                 return user;
             }
         }
