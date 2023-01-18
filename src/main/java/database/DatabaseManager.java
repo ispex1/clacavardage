@@ -26,11 +26,17 @@ public class DatabaseManager {
 
     /**
      * Constructor
-     * The constructor creates the database if it does not exist and connects to it.
-     * 
+     * Static class
      */
-    public DatabaseManager(){
-        createNewDatabase();
+    private DatabaseManager(){
+    }
+    
+    /**
+     * This method is used to initialize the database.
+     * It creates a new database if it does not exist and connects to it.
+     */
+    public static void initialize(){
+        //createNewDatabase();
         connect();
     }
 
@@ -38,7 +44,7 @@ public class DatabaseManager {
      * This method creates a new database if it does not exist.
      *  
      */
-    public static void createNewDatabase() {
+    private static void createNewDatabase() {
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData(); // Get the metadata of the database
@@ -54,7 +60,7 @@ public class DatabaseManager {
      * This method connects to the database previously created.
      * 
      */
-    public void connect() {
+    private static void connect() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url); // Connect to the database
@@ -72,65 +78,6 @@ public class DatabaseManager {
         }
     }
 
-    /**
-     * This method create the table for the personal informations
-     * of the user in the database.
-     * The name of the table is the id of the user. (@MAC)
-     * It will contain the id, the ip and the pseudo of the user.
-     * 
-     * @param idPerso
-     */
-    public static void createPersonalInfo(String idPerso) {
-        // SQL statement for creating a new table
-        String sql= "CREATE TABLE IF NOT EXISTS " + idPerso +"(\n"
-                + " ONE integer PRIMARY KEY,\n" // Index of the row
-                + "	id text NOT NULL,\n" // MAC of the user
-                + " ip text NOT NULL, \n" // IP address of the user
-                + " pseudo text NOT NULL" // Pseudo of the user
-                + ");"; 
-
-        try (Connection conn = DriverManager.getConnection(url); 
-             Statement  stmt = conn.createStatement()) {
-                stmt.execute(sql); // Create a new table
-                System.out.println("The personal table has been created with the name : " + idPerso);
-        } catch (SQLException e) {
-            System.out.println("Error creating table");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /** 
-     * This method update the personal informations of the user in the database.
-     * 
-     * @param idPerso
-     * @param ip
-     * @param pseudo
-     */
-    public static void updatePersonalInfo(String idPerso, String ip, String pseudo) {
-        String sql = "DELETE FROM " + idPerso + " WHERE ONE = ?";
-        String sql2 = "INSERT INTO " + idPerso + " (ONE, id, ip, pseudo) VALUES(?, ?, ?, ?)";
-
-        try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
-                //Deleting the previous personal informations
-                pstmt.setInt(1, 1);
-                pstmt.executeUpdate(); // Delete the message
-
-                //Inserting the new personal informations
-                pstmt2.setInt(1, 1);
-                pstmt2.setString(2, idPerso);
-                pstmt2.setString(3, ip);
-                pstmt2.setString(4, pseudo);
-                pstmt2.executeUpdate(); // Update the personal informations
-
-                System.out.println("The personal informations have been updated.");
-
-        } catch (SQLException e) {
-            System.out.println("Error updating personal informations");
-            System.out.println(e.getMessage());
-        }
-    }
 
     /**
      * This method create a new table (conversation) in the database.
@@ -140,7 +87,7 @@ public class DatabaseManager {
      */
     public static void createNewConvo(String idOther) {
         // SQL statement for creating a new table
-        String sql= "CREATE TABLE IF NOT EXISTS " + idOther +"(\n"
+        String sql= "CREATE TABLE IF NOT EXISTS id_" + idOther.replace(".","_") +"(\n"
                 + "	indexMsg integer PRIMARY KEY,\n" // Index of the message
                 + " sender text NOT NULL, \n" // ID of the sender
                 + " receiver text NOT NULL, \n" // ID of the receiver
@@ -166,7 +113,7 @@ public class DatabaseManager {
      */
     public static void deleteConvo(String idOther) {
         // SQL statement for deleting a table
-        String sql= "DROP TABLE IF EXISTS " + idOther; 
+        String sql= "DROP TABLE IF EXISTS id_" + idOther.replace(".","_");
 
         try (Connection conn = DriverManager.getConnection(url); 
              Statement  stmt = conn.createStatement()) {
@@ -186,14 +133,14 @@ public class DatabaseManager {
      * @param idOther
      * @param msg
      */
-    public void insertMessage(String idOther, Message msg) {
+    public static void insertMessage(String idOther, Message msg) {
         // SQL statement for inserting a new row (message)
-        String sql = "INSERT INTO " + idOther + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO id_" + idOther.replace(".","_") + "(indexMsg,sender,receiver,message,time) VALUES(?,?,?,?,?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(2, msg.getSender().getID());
-                pstmt.setString(3, msg.getReceiver().getID());
+                pstmt.setString(2, msg.getSender().getIP());
+                pstmt.setString(3, msg.getReceiver().getIP());
                 pstmt.setString(4, msg.getData());
                 pstmt.setString(5, msg.getTime());
                 pstmt.executeUpdate(); // Insert a new row (message)
@@ -214,7 +161,7 @@ public class DatabaseManager {
      */
     public static void deleteMessage(String idOther, int index) {
         // SQL statement for deleting a message
-        String sql = "DELETE FROM " + idOther + " WHERE indexMsg = ?";
+        String sql = "DELETE FROM id_" + idOther.replace(".","_") + " WHERE indexMsg = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -235,9 +182,9 @@ public class DatabaseManager {
      * @param data
      * @return indexList
      */
-    public ArrayList<Integer> findListOfIndex(String idOther, String data){
+    public static ArrayList<Integer> findListOfIndex(String idOther, String data){
         // SQL statement for selecting data
-        String sql = "SELECT indexMsg, message FROM " + idOther; 
+        String sql = "SELECT indexMsg, message FROM id_" + idOther.replace(".","_");
         ArrayList<Integer> indexList = new ArrayList<Integer>();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -263,8 +210,8 @@ public class DatabaseManager {
      * @param data
      * @return msgList
      */
-    public ArrayList<Message> findListOfMessage(String idOther, String data){
-        String sql = "SELECT indexMsg, sender, receiver, message, time FROM " + idOther;
+    public static ArrayList<Message> findListOfMessage(String idOther, String data){
+        String sql = "SELECT indexMsg, sender, receiver, message, time FROM id_" + idOther.replace(".","_");
         ArrayList<Message> msgList = new ArrayList<Message>();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -298,7 +245,7 @@ public class DatabaseManager {
      */
     public static int getIndexFromMsg(String idOther, Message msg){
         // SQL statement for selecting everything from the table
-        String sql = "SELECT * FROM " + idOther;
+        String sql = "SELECT * FROM id_" + idOther.replace(".","_");
         int index = -1;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -306,8 +253,8 @@ public class DatabaseManager {
                 ResultSet rs = pstmt.executeQuery(); // Select everything from the table
                 while (rs.next()) { // For each row
                     if( rs.getString("message").equals(msg.getData()) &&
-                        rs.getString("sender").equals(msg.getSender().getID()) &&
-                        rs.getString("receiver").equals(msg.getReceiver().getID()) &&
+                        rs.getString("sender").equals(msg.getSender().getIP()) &&
+                        rs.getString("receiver").equals(msg.getReceiver().getIP()) &&
                         rs.getString("time").equals(msg.getTime())){ // If the exact message is find in the table
                         index = rs.getInt("indexMsg"); // Get the index of the message
                     }
@@ -326,10 +273,10 @@ public class DatabaseManager {
      * @param index
      * @return msg
      */
-    public Message getMsgFromIndex(String idOther, int index) {
+    public static Message getMsgFromIndex(String idOther, int index) {
         // SQL statement for selecting everything from the table where 
         // the index of the message is equal to the index given in parameter
-        String sql = "SELECT * FROM " + idOther + " WHERE indexMsg = ?";
+        String sql = "SELECT * FROM id_" + idOther.replace(".","_") + " WHERE indexMsg = ?";
         Message msg = null;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -356,7 +303,7 @@ public class DatabaseManager {
      * @return history
      */
     public static ArrayList<Message> getHistory(String idOther) {
-        String sql = "SELECT * FROM " + idOther;
+        String sql = "SELECT * FROM id_" + idOther.replace(".","_");
         ArrayList<Message> history = new ArrayList<Message>();
 
         try (Connection conn = DriverManager.getConnection(url);

@@ -1,15 +1,19 @@
 package network;
 
+import database.DatabaseManager;
+import javafx.collections.ObservableList;
+import model.User;
+import model.Message;
 import controller.SessionController;
 import controller.UserController;
-import model.Message;
-import model.User;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class TCPSession extends Thread{
 
@@ -22,14 +26,16 @@ public class TCPSession extends Thread{
     private BufferedReader bufferedReader;
     private User userDist;
     private User myUser = UserController.getMyUser();
-    
+    private ArrayList<Message> history = new ArrayList<>();
+
+
     /**
-     * Constructor of the TCPSession when a use start a session with us
+     * Constructor of the TCPSession when a user start a session with us
      * @param link
      */
-    public TCPSession(Socket link, User userDist) {
+    public TCPSession(Socket link) {
         setSocket(link);
-        this.userDist = userDist;
+        this.userDist = UserController.getUserByIP(link.getInetAddress().getHostAddress());
         try {
             setInputStream(link.getInputStream());
             setOutputStream(link.getOutputStream());
@@ -43,18 +49,19 @@ public class TCPSession extends Thread{
         writer = new PrintWriter(outputStream, true);
         //starting the thread
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession asked by " + link.getInetAddress().getHostAddress());
+
+        //creating a table in the DB, SQL will check if the table already exists
+        DatabaseManager.createNewConvo(userDist.getIP());
         start();
     }
 
     /**
      * Constructor of the TCPSession when we start a session with a user
      */
-    public TCPSession(User userdist, int port) {
+    public TCPSession(User userdist) {
         this.userDist = userdist;
         try {
-            setSocket(new Socket(InetAddress.getByName(userdist.getIP()), port));
-
-            //le code bloque ici
+            setSocket(new Socket(InetAddress.getByName(userdist.getIP()), SessionController.PORT));
             setInputStream(socket.getInputStream());
             setOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -66,17 +73,17 @@ public class TCPSession extends Thread{
         bufferedReader = new BufferedReader(reader);
         //Output buffer setup
         writer = new PrintWriter(outputStream, true);
-        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + port);
+        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + SessionController.PORT);
 
+        //on creer une table dans la BDD, c'est le code SQL qui se charge de verifier si la table existe deja
+        DatabaseManager.createNewConvo(userdist.getIP());
         //starting the thread
         start();
 
     }
 
     public void sendMessage(String data){
-        Message msg = new Message(myUser, userDist, data);//TODO : ajouter le temps au message
-        //System.out.println(msg.toString());
-        SessionController.archiveMsg(msg, userDist);
+        Message msg = new Message(myUser, userDist, data);
         System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + msg.getData());
         writer.println(msg.getData());
     }
@@ -95,17 +102,28 @@ public class TCPSession extends Thread{
                 data = bufferedReader.readLine();
 
                 msg.setData(data);
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-                LocalDateTime now = LocalDateTime.now();  
+
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
                 msg.setTime(dtf.format(now));
                 msg.setSender(userDist);
                 msg.setReceiver(myUser);
-                SessionController.archiveMsg(msg, userDist);
+                DatabaseManager.insertMessage(userDist.getIP(), msg);
+                history = DatabaseManager.getHistory(userDist.getIP());
                 // To printin the data in Terminal
                 System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void closeSession(){
+        this.isRunning = false;
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -133,5 +151,11 @@ public class TCPSession extends Thread{
     }
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
+    }
+    public User getUserDist() {
+        return userDist;
+    }
+    public ArrayList<Message> getHistory() {
+        return history;
     }
 }

@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Objects;
 
 /**
  * UDPSender class is used to send UDP packets
@@ -25,13 +26,34 @@ public class UDPSender {
      * @throws IOException
      */
 
-    public void sendUDP(String message, int port, String ipString) throws IOException {
-            InetAddress address = InetAddress.getByName(ipString);
-            DatagramSocket socket = new DatagramSocket();
-            byte[] buffer = message.getBytes();
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+    public static void sendUDP(String message, int port, String ipString) {
+        InetAddress address;
+        try {
+            address = InetAddress.getByName(ipString);
+        } catch (UnknownHostException e) {
+            address = null;
+            System.out.println("Address recuperation error; address is set to null");
+            e.printStackTrace();
+        }
+
+        DatagramSocket socket;
+        try {
+            socket = new DatagramSocket();
+        } catch (SocketException e) {
+            socket = null;
+            System.out.println("Socket creation error; socket is set to null");
+            e.printStackTrace();
+        }
+        
+        byte[] buffer = message.getBytes();
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+        try {
             socket.send(packet);
-            socket.close();
+        } catch (IOException e) {
+            System.out.println("Packet sending error");
+            e.printStackTrace();
+        }
+        socket.close();
     }
 
 
@@ -39,32 +61,80 @@ public class UDPSender {
      * sendBroadcast method is used to send a UDP packet in broadcast
      * @param message String message converted to DatagramPacket
      */
-    public void sendBroadcast(String message, int port) throws SocketException {
-        DatagramSocket socket = new DatagramSocket();
-        socket.setBroadcast(true);
+    public static void sendBroadcast(String message, int port) {
+        DatagramSocket socket;
+        try {
+            socket = new DatagramSocket();
+            socket.setBroadcast(true);
+        } catch (SocketException e1) {
+            socket = null;
+            System.out.println("Socket creation error; socket is set to null");
+            e1.printStackTrace();
+        }
         byte[] buffer = message.getBytes();
-        for (InetAddress address : getBroadcastAddresses()) {
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+
+        //send a packet to the broadcast address
+
+        DatagramPacket packet = null;
+        try {
+            packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("192.168.1.255"), port);
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Sending packet to broadcast : " + message );
+
             try {
                 socket.send(packet);
             } catch (IOException e) {
+                System.out.println("Packet sending error");
                 e.printStackTrace();
             }
-        }
+        socket.close();
     }
+
+
 
     /**
      * getBroadcastAddresses get every addresses of the network and put them in an array
      * @return array of addresses
      *
      */
+    // FONCTION INUTILE, IL SUFFISAIT SIMPLEMENT D'ENVOYER UN MESSAGE A L'ADRESSE BROADCAST :')
+    /*private static ArrayList<InetAddress> getBroadcastAddresses() {
+        ArrayList<InetAddress> broadcastList = new ArrayList<InetAddress>();
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
 
-    public ArrayList<InetAddress> getBroadcastAddresses() throws SocketException {
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                    continue;
+                }
+
+                networkInterface.getInterfaceAddresses().stream()
+                        .map(a -> a.getBroadcast())
+                        .filter(Objects::nonNull)
+                        .forEach(broadcastList::add);
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return broadcastList;
+    }*/
+
+    public static ArrayList<InetAddress> getBroadcastAddresses2() {
         ArrayList <InetAddress> addresses = new ArrayList<InetAddress>();
-        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        Enumeration<NetworkInterface> interfaces;
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException e) {
+            interfaces = null;
+            System.out.println("Network interface recuperation error; interfaces is set to null");
+            e.printStackTrace();
+        }
         for (NetworkInterface networkInterface : Collections.list(interfaces)) {
             addresses.add(networkInterface.getInetAddresses().nextElement());
-            }
+        }
         return addresses;
     }
 

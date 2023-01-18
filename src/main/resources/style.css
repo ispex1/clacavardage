@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
+
+
+/* ################################## LOGIN & PARAMETERS ################################## */
+
+.login_param {
+    -fx-background-image:url('/images/background_login.jpg');
+}
+
+.field_pseudo{
+    -fx-background-color: #DCDCDC;
+    -fx-background-radius: 30px;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 40px;
+    -fx-prompt-text-fill: #989898;
+}
+
+.txt_pseudo{
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 40px;
+}
+
+.btn_connect_pseudo{
+    -fx-background-radius: 49.5px;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-background-color: #DFF53A;
+    -fx-font-size: 40px;
+    -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
+}
+
+.btn_disconnect {
+    -fx-background-radius: 49.5px;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-background-color: #DCDCDC;
+    -fx-font-size: 25px;
+    -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
+}
+
+/* ################################## MAIN ################################## */
+
+.main {
+    -fx-background-image: url('/images/background_main.jpg');
+}
+
+.pseudo{
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 125px;
+}
+
+.id{
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 32px;
+}
+
+.list_users {
+    -fx-background-color: #DCDCDC;
+    -fx-font-family: 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 40px;
+}
+
+.list-cell:selected{
+    -fx-background-color: #DFF53A;
+    -fx-text-fill: #000000;
+}
+
+.list-cell{
+    -fx-background-color: #FFFFFF;
+}
+
+.btn_open_chat{
+    -fx-background-radius: 49.5px;
+    -fx-font-family : 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-background-color: #DFF53A;
+    -fx-font-size: 40px;
+    -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
+}
+
+/* ################################## CHAT ################################## */
+
+.label_pseudo {
+    -fx-font-family: 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 64px;
+}
+
+.search {
+    -fx-background-color: #F88CD7;
+    -fx-background-radius: 19px;
+    -fx-prompt-text-fill: #333333;
+}
+
+.field_message {
+    -fx-background-color: #F88CD7;
+    -fx-background-radius: 20px;
+    -fx-font-size: 30px;
+    -fx-prompt-text-fill: #333333;
+}
+
+.labelMessageSender {
+    -fx-fill: #F88CD7;
+    -fx-font-family: 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 30px;
+}
+
+.labelMessageReceiver {
+    -fx-fill: #000000;
+    -fx-font-family: 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 30px;
+}
+
+
+
+
+
+
+

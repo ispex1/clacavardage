@@ -8,13 +8,13 @@ import java.net.SocketException;
 
 
 /**
- * UDPListener class is used to listen for UDP packets on a given port, 
+ * UDPListener class is used to listen for UDP packets on a given port,
  * we can listen for connexion responses, changing pseudo response
  */
 public class UDPListener extends Thread {
-    
+
     // ** ATTRIBUTES **
-     private boolean isRunning;
+    private boolean isRunning;
     private boolean pseudoValid;
     private static DatagramSocket socket;
     private DatagramPacket receivePacket;
@@ -30,24 +30,26 @@ public class UDPListener extends Thread {
         setRunningState(true);
 
         byte[] buffer = new byte[1000];
-        
+
         try {
             socket = new DatagramSocket(port);
-            
+
             while (isRunning){
                 receivePacket = new DatagramPacket(buffer, buffer.length);
                 try {
                     socket.receive(receivePacket);
                     String data = new String(receivePacket.getData(), 0, receivePacket.getLength());
+                    System.out.println("Brut Data : " + data);
+
                     UserController.informationTreatment(data);
-                    
-                    //System.out.println(data);
+
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-         } catch (SocketException e) {
+        } catch (SocketException e) {
             e.printStackTrace();
         }
     }
@@ -55,7 +57,7 @@ public class UDPListener extends Thread {
 
 
     // ** GETTERS AND SETTERS **
-   
+
     // Closing the socket
     public void closeSocket(){
         socket.close();
