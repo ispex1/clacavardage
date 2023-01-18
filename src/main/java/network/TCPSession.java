@@ -6,6 +6,7 @@ import model.User;
 import model.Message;
 import controller.SessionController;
 import controller.UserController;
+import view.OpenedChatFrame;
 
 import javax.xml.crypto.Data;
 import java.io.*;
@@ -26,8 +27,8 @@ public class TCPSession extends Thread{
     private BufferedReader bufferedReader;
     private User userDist;
     private User myUser = UserController.getMyUser();
-    private ArrayList<Message> history = new ArrayList<>();
     private Message msg = new Message();
+    public Boolean isDisplayed = false;
 
 
     /**
@@ -114,7 +115,9 @@ public class TCPSession extends Thread{
                 msg.setSender(userDist);
                 msg.setReceiver(myUser);
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
-                history = DatabaseManager.getHistory(userDist.getIP());
+                if (isDisplayed){
+                    OpenedChatFrame.observableHistory.add(msg);
+                }
                 // To printin the data in Terminal
                 System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
             } catch (IOException e) {
@@ -160,7 +163,7 @@ public class TCPSession extends Thread{
     public User getUserDist() {
         return userDist;
     }
-    public ArrayList<Message> getHistory() {
-        return history;
+    public void setDisplay(Boolean display) {
+        isDisplayed = display;
     }
 }

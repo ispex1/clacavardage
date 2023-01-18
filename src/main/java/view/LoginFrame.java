@@ -7,9 +7,6 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-import static controller.UserController.*;
-
-
 public class LoginFrame {
     @FXML
     private TextField textFieldPseudo;

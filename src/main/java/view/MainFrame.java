@@ -5,7 +5,6 @@ import controller.UserController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -56,7 +55,7 @@ public class MainFrame {
 
         for (User user : getListOnline()) {
             if (!user.equals(getMyUser())) {
-                UsersList.getItems().add(user.getPseudo());;
+                UsersList.getItems().add(user.getPseudo());
             }
         }
     }

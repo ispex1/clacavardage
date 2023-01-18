@@ -5,7 +5,6 @@ import database.DatabaseManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -13,18 +12,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.User;
 
 import java.io.IOException;
 import java.util.Objects;
 
 import static controller.UserController.*;
-import controller.SessionController;
 
 public class SceneController extends Application {
     protected static Stage stage;
@@ -35,7 +31,7 @@ public class SceneController extends Application {
         DatabaseManager.initialize();
         UserController.initialize();
         //TODO: remove this line, just for testing
-        //if (getListOnline().isEmpty()) testListOnline();
+        if (getListOnline().isEmpty()) testListOnline();
         launch(args);
     }
 

@@ -1,23 +1,11 @@
 package view;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
-import model.User;
-import controller.SessionController;
 
-import javax.sound.sampled.*;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Objects;
-
-import static com.sun.javafx.reflect.ConstructorUtil.getConstructor;
-import static view.MainFrame.chatter;
 
 public class ClosedChatFrame extends AnchorPane {
 
