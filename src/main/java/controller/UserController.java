@@ -363,10 +363,7 @@ public class UserController {
 
     //TODO : Just for test, to delete
     public static void testListOnline() {
-        listOnline.add(new User(getLocalIP(), "ISPEX"));
-        for (int i = 0; i < 15; i++) {
-            listOnline.add(new User("192.168.1." + i, "PSEUDO-" + i));
-        }
+        listOnline.add(new User(getLocalIP(), "me(test)"));
     }
 
     //TODO : Just for test, to delete
