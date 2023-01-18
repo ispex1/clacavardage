@@ -6,18 +6,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="783.0" prefWidth="1144.0" styleClass="login_param" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ParametersFrame">
+<AnchorPane prefHeight="783.0" prefWidth="1144.0" styleClass="login_param" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ParametersFrame">
    <children>
-      <TextField fx:id="textFieldPseudo" alignment="CENTER" layoutX="674.0" layoutY="415.0" prefHeight="55.0" prefWidth="348.0" promptText="Enter your pseudo" styleClass="field_pseudo" stylesheets="@../style.css" />
+      <TextField fx:id="textFieldPseudo" alignment="CENTER" layoutX="674.0" layoutY="415.0" prefHeight="55.0" prefWidth="348.0" promptText="Enter your pseudo" styleClass="field_pseudo"/>
       <Button alignment="CENTER" defaultButton="true" layoutX="737.0" layoutY="552.0" mnemonicParsing="false" onAction="#changePseudoClick" prefHeight="79.0" prefWidth="232.0" styleClass="btn_connect_pseudo" stylesheets="@../style.css" text="CHANGE PSEUDO">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Button alignment="CENTER" layoutX="787.0" layoutY="640.0" mnemonicParsing="false" onAction="#disconnectClick" prefHeight="37.0" prefWidth="131.0" styleClass="btn_disconnect" stylesheets="@../style.css" text="DISCONNECT">
+      <Button alignment="CENTER" layoutX="787.0" layoutY="640.0" mnemonicParsing="false" onAction="#disconnectClick" prefHeight="37.0" prefWidth="131.0" styleClass="btn_disconnect" text="DISCONNECT">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <AnchorPane layoutX="674.0" layoutY="510.0" prefHeight="36.0" prefWidth="348.0" stylesheets="@../style.css">
+      <AnchorPane layoutX="674.0" layoutY="510.0" prefHeight="36.0" prefWidth="348.0">
          <children>
             <Text fx:id="textPseudoNotValid" fill="WHITE" layoutY="-2.0" styleClass="txt_pseudo" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="348.0" />
          </children>

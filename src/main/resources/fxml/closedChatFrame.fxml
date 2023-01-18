@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="747.0" prefWidth="1365.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ClosedChatFrame">
+<AnchorPane prefHeight="747.0" prefWidth="1365.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ClosedChatFrame">
    <children>
       <ImageView fitHeight="751.0" fitWidth="1369.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -26,7 +26,7 @@
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </ImageView>
-      <Button defaultButton="true" layoutX="517.0" layoutY="537.0" mnemonicParsing="false" onAction="#openChatSession" prefHeight="99.0" prefWidth="360.0" styleClass="btn_open_chat" stylesheets="@../style.css" text="OPEN CHAT SESSION">
+      <Button defaultButton="true" layoutX="517.0" layoutY="537.0" mnemonicParsing="false" onAction="#openChatSession" prefHeight="99.0" prefWidth="360.0" styleClass="btn_open_chat" text="OPEN CHAT SESSION">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
@@ -35,6 +35,6 @@
             <Cursor fx:constant="HAND" />
          </cursor></Circle>
       <Line endX="1216.0" endY="-1.0" layoutX="138.0" layoutY="60.0" startX="-135.0" startY="-1.0" />
-      <Label fx:id="labelPseudo" alignment="CENTER" layoutX="285.0" layoutY="426.0" prefHeight="93.0" prefWidth="856.0" styleClass="label_pseudo" stylesheets="@../style.css" />
+      <Label fx:id="labelPseudo" alignment="CENTER" layoutX="285.0" layoutY="426.0" prefHeight="93.0" prefWidth="856.0" styleClass="label_pseudo"/>
    </children>
 </AnchorPane>
