@@ -41,7 +41,8 @@ public class MainFrame {
 
     @FXML
     public ClosedChatFrame closedChatController;
-    @FXML OpenedChatFrame openedChatController;
+    @FXML
+    public OpenedChatFrame openedChatController;
 
     public void initialize() {
         myPseudo.setText(getMyUser().getPseudo());

@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import model.Message;
+import network.TCPSession;
 
 import java.util.ArrayList;
 
@@ -44,24 +45,28 @@ public class OpenedChatFrame extends AnchorPane {
 
     private ArrayList<Message> listDisplayed = new ArrayList<>();
     @FXML
-    public static ObservableList<Message> observableHistory;
-
+    public ObservableList<Message> observableHistory;
+    TCPSession session;
 
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
     }
 
+
     public void initialize(){
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
+        session = SessionController.getSessionWithUser(chatter);
         initObservableHistory();
-        SessionController.getSessionWithUser(chatter).setDisplay(true);
+        session.setFrame(this);
+        session.setDisplay(true);
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
         updateChat();
     }
 
     public void initObservableHistory(){
         observableHistory = FXCollections.observableArrayList(DatabaseManager.getHistory(chatter.getIP()));
+        System.out.println("observableHistory = " + observableHistory);
         observableHistory.addListener((ListChangeListener<Message>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
@@ -81,11 +86,7 @@ public class OpenedChatFrame extends AnchorPane {
     public void updateChat(){
         vboxChat.getChildren().clear();
         for(Message message : listDisplayed) {
-            if (message.getSender().equals(UserController.getMyUser())) {
-                addMessageToChat(message, true);
-            } else {
-                addMessageToChat(message, false);
-            }
+            addMessageToChat(message, message.getSender().equals(UserController.getMyUser()));
         }
     }
 
@@ -121,8 +122,8 @@ public class OpenedChatFrame extends AnchorPane {
     }
 
     public void hideChatPane() {
+        session.setDisplay(false);
         parentController.hideChatPane();
-        SessionController.getSessionWithUser(chatter).setDisplay(false);
     }
 
     public void closeChatSession(){
@@ -154,6 +155,10 @@ public class OpenedChatFrame extends AnchorPane {
         listDisplayed = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
         updateChat();
+    }
+
+    public OpenedChatFrame() {
+        super();
     }
 
 }
