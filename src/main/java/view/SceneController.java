@@ -32,7 +32,7 @@ public class SceneController extends Application {
         DatabaseManager.initialize();
         UserController.initialize();
         //TODO: remove this line, just for testing
-        //if (getListOnline().isEmpty()) testListOnline(); showListOnline();
+        if (getListOnline().isEmpty()) testListOnline();
         launch(args);
     }
 

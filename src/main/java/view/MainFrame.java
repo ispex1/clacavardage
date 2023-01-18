@@ -54,8 +54,11 @@ public class MainFrame {
 
     public void updateUsersList() {
         UsersList.getItems().clear();
+
         for (User user : getListOnline()) {
-            UsersList.getItems().add(user.getPseudo());
+            if (!user.equals(getMyUser())) {
+                UsersList.getItems().add(user.getPseudo());
+            }
         }
     }
 
@@ -141,10 +144,13 @@ public class MainFrame {
     }
 
     public void hideChatPane() {
-        mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
+        if (chatPane != null) {
+            System.out.println("hide");
+            mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
+            chatPane = null;
+        }
         chatter = null;
     }
-
 
     public void openChatSession() throws IOException {
         createSession(chatter);
