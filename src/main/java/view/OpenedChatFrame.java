@@ -55,6 +55,7 @@ public class OpenedChatFrame extends AnchorPane {
     private boolean searchMode = false;
 
     private ArrayList<Message> history = new ArrayList<>();
+    @FXML
     public ObservableList<Message> observableHistory = FXCollections.observableArrayList(SessionController.getSessionWithUser(chatter).getHistory());
 
 

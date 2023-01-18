@@ -17,7 +17,7 @@ public class LoginFrame {
     private Text textPseudoNotValid;
 
     public void connectClick(ActionEvent event) throws IOException {
-        SceneController.pseudoValid(event, textFieldPseudo, textPseudoNotValid);
+        SceneController.tryConnect(event, textFieldPseudo, textPseudoNotValid);
     }
 
 

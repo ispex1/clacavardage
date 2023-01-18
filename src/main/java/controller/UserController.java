@@ -30,7 +30,7 @@ public class UserController {
      * DISCONNECT : "DISCONNECT|ID:id|IP:ip|Pseudo:pseudo"
      */
     public enum TypeMsg {
-        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT,ASK_USER_LIST, USER_LIST, TEST
+        ASK_PSEUDO, PSEUDO_OK, PSEUDO, CONNECT, DISCONNECT,ASK_USER_LIST, USER_LIST, TEST
     }
     //TODO AJOUTER UN TYPE DE MESSAGE USER_LIST, ELLE SERA ENVOYE EN REPONSE DE ASKPSEUDO SI LE PSEUDO EST OK, A LACCEPTATION DUN DE CES MESSAGE, SI LA LISTONLINE CONTINENT PLUS D'UN ELEMENT (MYUSER), REJET DU MESSAGE CAR LA LISTE A DEJA ETE INITIALISE
 
@@ -80,16 +80,16 @@ public class UserController {
      * Send a broadcast message to ask if the pseudo is available
      * @param pseudo
      * @throws SocketException
-     *//*
-    private static void sendPseudo(String pseudo){
+     */
+    public static void sendPseudo(String pseudo){
 
         // Generate a String with the type of message and user informations
-        String msg = TypeMsg.ASK_PSEUDO+"|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
+        String msg = TypeMsg.PSEUDO+"|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
 
         UDPSender.sendBroadcast(msg,myUser.getPort());
 
     }
-
+    /*
     private static void sendPseudoResponse(String pseudo, String ip, Boolean isValid){
         String msg;
         if (isValid){
@@ -199,6 +199,10 @@ public class UserController {
 
                 break;*/
 
+            //TODO : A tester
+            case PSEUDO:
+                updateUser(findUserByIP(IP));
+
             case CONNECT:
 
                 if (pseudoNotPresent(pseudo)){
@@ -267,6 +271,31 @@ public class UserController {
     }
 
     /**
+     * Find the user in the listOnline with the IP
+     * @param IP
+     */
+    public static User findUserByIP(String IP) {
+        for (User user : listOnline) {
+            if (user.getIP().equals(IP)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Update the user pseudo in the listOnline
+     * @param user
+     */
+    public static void updateUser(User user) {
+        for (User userInList : listOnline) {
+            if (userInList.getIP().equals(user.getIP())) {
+                userInList.setPseudo(user.getPseudo());
+            }
+        }
+    }
+
+    /**
      * This method is used to get the local IP address of the computer
      * @return String localIP
      */
@@ -289,7 +318,6 @@ public class UserController {
                     localIP = current_addr.getHostAddress();
                     if (localIP.contains("192.168.56.")) continue;
                     if (localIP.contains(":")) continue;
-                    System.out.println(localIP);
                     return localIP;
                 }
             }
@@ -314,6 +342,10 @@ public class UserController {
 
     public static void addMyUser(){
         listOnline.add(0,myUser);
+    }
+
+    public static void updateMyUser() {
+        listOnline.set(0,myUser);
     }
 
     public static void close(){
