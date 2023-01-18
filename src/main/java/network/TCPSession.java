@@ -27,6 +27,7 @@ public class TCPSession extends Thread{
     private User userDist;
     private User myUser = UserController.getMyUser();
     private ArrayList<Message> history = new ArrayList<>();
+    private Message msg = new Message();
 
 
     /**
@@ -83,7 +84,9 @@ public class TCPSession extends Thread{
     }
 
     public void sendMessage(String data){
-        Message msg = new Message(myUser, userDist, data);
+        msg.setSender(myUser);
+        msg.setReceiver(userDist);
+        msg.setData(data);
         System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + msg.getData());
         writer.println(msg.getData());
     }
@@ -95,7 +98,7 @@ public class TCPSession extends Thread{
     public void run(){
         setRunning(true);
         String data = null;
-        Message msg = new Message();
+        //Message msg;
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is running, a connection has been established");
         while(isRunning){
             try {

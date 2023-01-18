@@ -132,6 +132,9 @@ public class SceneController extends Application {
         stage.setResizable(false);
 
         stage.setOnCloseRequest(event -> {
+            if (getMyUser().getPseudo() != null) {
+                UserController.sendDisconnect();
+            }
             Platform.exit();
             System.exit(0);
         });
