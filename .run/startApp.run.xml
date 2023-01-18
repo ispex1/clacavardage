@@ -2,7 +2,7 @@
   <configuration default="false" name="startApp" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="view.SceneController" />
     <module name="clavardage" />
-    <option name="VM_PARAMETERS" value="--module-path ${PATH_TO_FX} --add-modules javafx.fxml,javafx.controls,javafx.graphics" />
+    <option name="VM_PARAMETERS" value="--module-path ${PATH_TO_FX} --add-modules javafx.fxml,javafx.controls,javafx.graphics,javafx.media" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

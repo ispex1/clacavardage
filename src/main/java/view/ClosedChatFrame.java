@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 //import javafx.scene.media.AudioClip;
 //import javafx.scene.media.Media;
 //import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.AudioClip;
 import model.User;
 import controller.SessionController;
 
@@ -27,6 +28,7 @@ public class ClosedChatFrame extends AnchorPane {
     private Label labelPseudo;
     @FXML
     private MainFrame parentController;
+    AudioClip audioClip = new AudioClip(getClass().getResource("/sound.mp3").toExternalForm());
 
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
@@ -45,10 +47,8 @@ public class ClosedChatFrame extends AnchorPane {
          System.out.println("Opening chat session with " + MainFrame.chatter.getPseudo());
     }
 
-    public void easterEgg(MouseEvent mouseEvent) {
-        //print the path of the chaaris.wav file in the resource folder
-    //    AudioClip audioClip = new AudioClip(getClass().getResource("resources/chaaris.wav").toString());
-    //    audioClip.play(100);
+    public void easterEgg() {
+        audioClip.play();
         System.out.println("Playing sound");
     }
 }
