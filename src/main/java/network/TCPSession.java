@@ -105,10 +105,16 @@ public class TCPSession extends Thread{
             try {
                 data = bufferedReader.readLine();
 
-                msg.setData(data);
 
 
-                //msg.setData(data);
+                // split data to get sender receiver message and date
+                String[] dataSplit = data.split("\\|");
+                String sender = dataSplit[0].split(":")[1];
+                String receiver = dataSplit[1].split(":")[1];
+                String message = dataSplit[2].split(":")[1];
+                String date = dataSplit[3].split(":")[1];
+                msg.setData(message);
+
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 LocalDateTime now = LocalDateTime.now();
                 msg.setTime(dtf.format(now));
