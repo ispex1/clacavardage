@@ -29,6 +29,7 @@ public class TCPSession extends Thread{
     private User myUser = UserController.getMyUser();
     private Message msg = new Message();
     public Boolean isDisplayed = false;
+    private view.OpenedChatFrame frame;
 
 
     /**
@@ -122,7 +123,8 @@ public class TCPSession extends Thread{
                 msg.setReceiver(myUser);
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
                 if (isDisplayed){
-                    OpenedChatFrame.observableHistory.add(msg);
+                    System.out.println("it's displayed");
+                    frame.observableHistory.add(msg);
                 }
                 // To printin the data in Terminal
                 System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
@@ -171,5 +173,8 @@ public class TCPSession extends Thread{
     }
     public void setDisplay(Boolean display) {
         isDisplayed = display;
+    }
+    public void setFrame(OpenedChatFrame frame){
+        this.frame = frame;
     }
 }
