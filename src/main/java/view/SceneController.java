@@ -129,6 +129,7 @@ public class SceneController extends Application {
 
         stage.setOnCloseRequest(event -> {
             if (getMyUser().getPseudo() != null) {
+                System.out.println("Disconnected");
                 UserController.sendDisconnect();
             }
             Platform.exit();

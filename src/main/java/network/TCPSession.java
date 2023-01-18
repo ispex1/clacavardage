@@ -1,6 +1,7 @@
 package network;
 
 import database.DatabaseManager;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import model.User;
 import model.Message;
@@ -124,7 +125,13 @@ public class TCPSession extends Thread{
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
                 if (isDisplayed){
                     System.out.println("it's displayed");
-                    frame.observableHistory.add(msg);
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            System.out.println("run");
+                            frame.observableHistory.add(msg);
+                        }
+                    });
                 }
                 // To printin the data in Terminal
                 System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
