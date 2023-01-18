@@ -68,7 +68,7 @@ public class MainFrame {
     public void easterEgg() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-        alert.setGraphic(new ImageView("/images/Jokey.png"));
+        alert.setGraphic(new ImageView(new Image("/images/chat.png")));
 
         alert.setTitle("The Clac Jokey");
         alert.setHeaderText(null);

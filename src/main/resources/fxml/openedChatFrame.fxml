@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="openedChatFrame" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OpenedChatFrame">
+<AnchorPane fx:id="openedChatFrame" prefHeight="400.0" prefWidth="600.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OpenedChatFrame">
    <children>
       <ImageView fitHeight="752.0" fitWidth="1369.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -62,7 +62,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <TextField fx:id="fieldSearch" alignment="CENTER" layoutX="36.0" layoutY="3.0" prefHeight="34.0" prefWidth="120.0" promptText="SEARCH" styleClass="search" stylesheets="@../style.css" />
+            <TextField fx:id="fieldSearch" alignment="CENTER" layoutX="36.0" layoutY="3.0" prefHeight="34.0" prefWidth="120.0" promptText="SEARCH" styleClass="search" />
             <ImageView fx:id="imgCross" fitHeight="24.0" fitWidth="23.0" layoutX="158.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/cross.png" />
@@ -75,7 +75,7 @@
             </Button>
          </children>
       </Pane>
-      <TextField fx:id="fieldMessage" layoutX="33.0" layoutY="651.0" prefHeight="65.0" prefWidth="1202.0" promptText="Envoyer un message à " styleClass="field_message" stylesheets="@../style.css" />
+      <TextField fx:id="fieldMessage" layoutX="33.0" layoutY="651.0" prefHeight="65.0" prefWidth="1202.0" promptText="Envoyer un message à " styleClass="field_message" />
       <Circle fill="#f88cd7" layoutX="1294.0" layoutY="683.0" radius="41.0" stroke="BLACK" strokeType="INSIDE" />
       <ImageView fitHeight="76.0" fitWidth="60.0" layoutX="1264.0" layoutY="650.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
          <image>
