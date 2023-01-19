@@ -7,7 +7,10 @@
    
             [SQLITE_CONSTRAINT_NOTNULL] A NOT NULL constraint failed (NOT NULL constraint failed: id_192_168_1_84.message)
             <Session | 33 >  Message recu : null
-    - bugs a la chaine quand l'utilisateur distant ferme la conv
+    - Quand l'utilisateur distant ferme la conv
+    
+          Exception in thread "Thread-6" java.lang.NullPointerException: Cannot invoke "String.split(String)" because "data" is null
+          at network.TCPSession.run(TCPSession.java:113)
     - Lorsque essai de reconnexion :
 
           java.net.BindException: Address already in use: bind

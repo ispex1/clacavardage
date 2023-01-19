@@ -130,7 +130,7 @@ public class TCPSession extends Thread{
                         @Override
                         public void run() {
                             System.out.println("run");
-                            frame.observableHistory.add(msg);
+                            frame.updateChat();
                         }
                     });
                 }
