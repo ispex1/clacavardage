@@ -64,9 +64,6 @@ public class MainFrame {
     }
 
     public void parametersClick(ActionEvent event) throws IOException {
-        if (SessionController.isSessionWith(chatter)) {
-            hideChatPane();
-        }
         switchToParametersScene(event.getSource());
     }
 
