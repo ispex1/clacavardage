@@ -46,7 +46,7 @@ public class OpenedChatFrame extends AnchorPane {
     private ArrayList<Message> listDisplayed = new ArrayList<>();
     @FXML
     public ObservableList<Message> observableHistory;
-    TCPSession session;
+    TCPSession session = SessionController.getSessionWithUser(chatter);
 
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
@@ -56,7 +56,6 @@ public class OpenedChatFrame extends AnchorPane {
     public void initialize(){
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
-        session = SessionController.getSessionWithUser(chatter);
         initObservableHistory();
         session.setFrame(this);
         session.setDisplay(true);

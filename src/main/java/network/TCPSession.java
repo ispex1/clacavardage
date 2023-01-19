@@ -114,12 +114,15 @@ public class TCPSession extends Thread{
 
                 String message = dataSplit[2].split(":")[1];
                 System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Message received : " + message);
-                msg.setData(message);
 
+                msg.setData(message);
                 msg.setTime(dataSplit[3].split(":")[1]);
                 msg.setSender(userDist);
                 msg.setReceiver(myUser);
-
+                //print all element of the message
+                System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Message received from " + msg.getSender().getPseudo() + " : " + msg.getData());
+                //print the receiver and the date
+                System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Message received from " + msg.getReceiver().getPseudo() + " : " + msg.getTime());
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
                 if (isDisplayed){
                     System.out.println("it's displayed");
