@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.User;
+import network.UDPListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class MainFrame {
         myPseudo.setText(getMyUser().getPseudo());
         myIP.setText("IP : " + getMyUser().getIP());
         updateUsersList();
+        UserController.udpListener.setFrame(this);
         SessionController.initialize();
     }
 

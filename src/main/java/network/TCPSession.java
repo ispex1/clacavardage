@@ -111,17 +111,16 @@ public class TCPSession extends Thread{
 
                 // split data to get sender receiver message and date
                 String[] dataSplit = data.split("\\|");
-                String sender = dataSplit[0].split(":")[1];
-                String receiver = dataSplit[1].split(":")[1];
                 String message = dataSplit[2].split(":")[1];
-                String date = dataSplit[3].split(":")[1];
 
                 msg.setData(message);
-
-                msg.setTime(date);
-                msg.setSender(UserController.getUserByPseudo(sender));
-                msg.setReceiver(UserController.getUserByPseudo(receiver));
-
+                msg.setTime(dataSplit[3].split(":")[1]);
+                msg.setSender(userDist);
+                msg.setReceiver(myUser);
+                //print all element of the message
+                System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Message received from " + msg.getSender().getPseudo() + " : " + msg.getData());
+                //print the receiver and the date
+                System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Message received from " + msg.getReceiver().getPseudo() + " : " + msg.getTime());
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
                 if (isDisplayed){
                     System.out.println("it's displayed");
@@ -129,7 +128,8 @@ public class TCPSession extends Thread{
                         @Override
                         public void run() {
                             System.out.println("run");
-                            frame.observableHistory.add(msg);
+                            //frame.observableHistory.add(msg);
+                            frame.receiveMessage(msg);
                         }
                     });
                 }
