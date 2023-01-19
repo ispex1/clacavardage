@@ -43,12 +43,11 @@ public class TCPListener extends Thread {
                 SessionController.sessionCreated(link);
 
                 System.out.println("===update frame===");
-                if (this.frame != null){
+                if (this.frame != null && this.frame.isShowing()) {
                     Platform.runLater(new Runnable(){
                         @Override
                         public void run() {
                             System.out.println("runnnnnnn");
-                            
                             try {
                                 frame.updateChatPane();
                             } catch (IOException e) {

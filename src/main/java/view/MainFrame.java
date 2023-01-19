@@ -54,10 +54,7 @@ public class MainFrame {
         myIP.setText("IP : " + getMyUser().getIP());
         updateUsersList();
         UserController.udpListener.setFrame(this);
-<<<<<<< HEAD
 
-=======
->>>>>>> ab1c804542c7011ff499d7dd62eab1b9a93161b6
         if (!hasRunAtom.getAndSet(true)) {
             System.out.println("+++++ Session Control initialize +++++");
             SessionController.initialize();
@@ -183,5 +180,9 @@ public class MainFrame {
 
     public User getChatter() {
         return chatter;
+    }
+
+    public boolean isShowing() {
+        return chatPane != null;
     }
 }

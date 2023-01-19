@@ -110,6 +110,7 @@ public class TCPSession extends Thread{
             if (isClosedDisplayed) {
                 try {
                     closedFrame.updateChatPane();
+                    setClosedDisplay(false);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -134,10 +135,12 @@ public class TCPSession extends Thread{
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
+                                System.out.println("ruuuuuuuuuuuuuuuuuun fumier");
                                 openedFrame.receiveMessage(msg);
                             }
                         });
                     }
+                    System.out.println("PROUT PROUT");
                 } else {
                     System.out.println("<Session | " + Thread.currentThread().getId() + " > : Connection closed by " + userDist.getIP());
                     setRunning(false);
@@ -150,12 +153,13 @@ public class TCPSession extends Thread{
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                sessionsList.remove(this);
+                sessionsList.remove(getTCPSession());
                 openedFrame.hideChatPane();
             }
         });
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is closed");
     }
+
 
     public void closeSession(){
         this.isRunning = false;
@@ -168,6 +172,9 @@ public class TCPSession extends Thread{
     }
 
     // ** GETTERS AND SETTERS **
+    public TCPSession getTCPSession(){
+        return this;
+    }
     public Socket getSocket() {
         return socket;
     }
