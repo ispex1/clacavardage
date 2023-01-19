@@ -54,6 +54,11 @@ public class UDPListener extends Thread {
                             public void run() {
                                 System.out.println("run");
                                 frame.updateUsersList();
+                                try {
+                                    frame.updateChatPane();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         });
                     }

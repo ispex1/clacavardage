@@ -71,6 +71,7 @@ public class MainFrame {
     }
 
     public void parametersClick(ActionEvent event) throws IOException {
+        hideChatPane();
         switchToParametersScene(event.getSource());
     }
 
