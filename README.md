@@ -22,3 +22,4 @@
         
           Exception in thread "Thread-6" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-6
     - Lorsqu'on change de pseudo on ne oeut pas rouvrir une session avec userdist
+    - Lorsquon se deconnecte, le thread est toujours actif en TCP sur le port s'en face
