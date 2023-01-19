@@ -54,12 +54,11 @@ public class MainFrame {
         myIP.setText("IP : " + getMyUser().getIP());
         updateUsersList();
         UserController.udpListener.setFrame(this);
-        SessionController.tcpListener.setFrame(this);
         if (!hasRunAtom.getAndSet(true)) {
             System.out.println("+++++ Session Control initialize +++++");
             SessionController.initialize();
         }
-
+        SessionController.tcpListener.setFrame(this);
     }
 
     public void updateUsersList() {
