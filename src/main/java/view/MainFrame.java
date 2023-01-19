@@ -74,6 +74,7 @@ public class MainFrame {
 
     public void parametersClick(ActionEvent event) throws IOException {
         hideChatPane();
+        openedChatController.getSession().setOpenDisplay(false);
         switchToParametersScene(event.getSource());
     }
 
@@ -144,7 +145,6 @@ public class MainFrame {
             mainPane.getChildren().add(chatPane);
             openedChatController = chat.getController();
             openedChatController.setParentController(this);
-            openedChatController.getSession().setOpenDisplay(true);
         }
         else {
             chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/closedChatFrame.fxml")));

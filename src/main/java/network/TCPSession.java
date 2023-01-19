@@ -110,7 +110,6 @@ public class TCPSession extends Thread{
             if (isClosedDisplayed) {
                 try {
                     closedFrame.updateChatPane();
-                    setClosedDisplay(false);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -154,7 +153,6 @@ public class TCPSession extends Thread{
             @Override
             public void run() {
                 sessionsList.remove(getTCPSession());
-                openedFrame.hideChatPane();
             }
         });
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is closed");
