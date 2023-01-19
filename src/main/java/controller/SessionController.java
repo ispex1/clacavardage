@@ -158,7 +158,7 @@ public class SessionController {
 
     public static void close(){
         closeAllSessions();
-        tcpListener.closeListner();
+        tcpListener.closeListener();
     }
 
 }

@@ -101,27 +101,28 @@ public class TCPSession extends Thread{
         while(isRunning){
             try {
                 data = bufferedReader.readLine();
+                if (data != null) {
+                    // split data to get sender receiver message and date
+                    String[] dataSplit = data.split("\\|");
 
-                // split data to get sender receiver message and date
-                String[] dataSplit = data.split("\\|");
+                    String message = dataSplit[2].split(":")[1];
 
-                String message = dataSplit[2].split(":")[1];
+                    msg.setData(message);
+                    msg.setTime(dataSplit[3].split(":")[1]);
+                    msg.setSender(userDist);
+                    msg.setReceiver(myUser);
+                    //print all element of the message
+                    System.out.println("<Session | " + Thread.currentThread().getId() + " > : Message received from " + msg.getSender().getPseudo() + " : " + msg.getData());
 
-                msg.setData(message);
-                msg.setTime(dataSplit[3].split(":")[1]);
-                msg.setSender(userDist);
-                msg.setReceiver(myUser);
-                //print all element of the message
-                System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Message received from " + msg.getSender().getPseudo() + " : " + msg.getData());
-
-                DatabaseManager.insertMessage(userDist.getIP(), msg);
-                if (isDisplayed){
-                    Platform.runLater(new Runnable(){
-                        @Override
-                        public void run() {
-                            frame.receiveMessage(msg);
-                        }
-                    });
+                    DatabaseManager.insertMessage(userDist.getIP(), msg);
+                    if (isDisplayed) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                frame.receiveMessage(msg);
+                            }
+                        });
+                    }
                 }
             } catch (IOException e) {
                 if (isRunning) e.printStackTrace();

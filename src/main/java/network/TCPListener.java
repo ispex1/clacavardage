@@ -46,7 +46,7 @@ public class TCPListener extends Thread {
 
     }
 
-    public void closeListner(){
+    public void closeListener(){
         this.isRunning = false;
         try {
             serverSocket.close();
