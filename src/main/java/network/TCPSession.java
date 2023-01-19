@@ -126,7 +126,7 @@ public class TCPSession extends Thread{
                         @Override
                         public void run() {
                             System.out.println("Update the chat - " + Thread.currentThread().getId());
-                            frame.updateChat();
+                            frame.receiveMessage(msg);
                         }
                     });
                 }
