@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.SessionController;
+import javafx.application.Platform;
 import view.MainFrame;
 
 public class TCPListener extends Thread {
@@ -43,7 +44,18 @@ public class TCPListener extends Thread {
 
                 System.out.println("===update frame===");
                 if (this.frame != null){
-                    frame.updateUsersList();
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            System.out.println("runnnnnnn");
+                            
+                            try {
+                                frame.updateChatPane();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
                     System.out.println("===frame updated ?===");
                 }
                 //System.out.println("<Listener | "+ Thread.currentThread().getId() + " > : Socket printing\n" + link.toString());
