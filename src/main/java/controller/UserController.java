@@ -10,10 +10,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -204,7 +201,7 @@ public class UserController {
 
             //TODO : A tester
             case PSEUDO:
-                updateUser(getUserByIP(IP));
+                updateUser(IP, pseudo);
 
             case CONNECT:
 
@@ -278,17 +275,17 @@ public class UserController {
 
     /**
      * Update the user pseudo in the listOnline
-     * @param user
+     * @param IP, pseudo
      */
-    public static void updateUser(User user) {
+    public static void updateUser(String IP , String pseudo) {
         System.out.println("Liste des utilisateurs connectés : ");
         for (User userInList : listOnline) {
             System.out.println(userInList.getPseudo());
         }
         for (User userInList : listOnline) {
-            if (userInList.getIP().equals(user.getIP())) {
-                userInList.setPseudo(user.getPseudo());
-                System.out.println("Pseudo updated : " + user.getPseudo());
+            if (Objects.equals(userInList.getIP(), IP)) {
+                userInList.setPseudo(pseudo);
+                System.out.println("Pseudo updated : " + pseudo);
             }
         }
         //print la liste
@@ -332,7 +329,7 @@ public class UserController {
 
     /**
      * Get a user from the listOnline with his IP
-     * @param String ip
+     * @param ip
      */
     public static User getUserByIP(String ip){
         for (User user : listOnline){
