@@ -111,16 +111,14 @@ public class TCPSession extends Thread{
 
                 // split data to get sender receiver message and date
                 String[] dataSplit = data.split("\\|");
-                String sender = dataSplit[0].split(":")[1];
-                String receiver = dataSplit[1].split(":")[1];
-                String message = dataSplit[2].split(":")[1];
-                String date = dataSplit[3].split(":")[1];
 
+                String message = dataSplit[2].split(":")[1];
+                System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Message received : " + message);
                 msg.setData(message);
 
-                msg.setTime(date);
-                msg.setSender(UserController.getUserByPseudo(sender));
-                msg.setReceiver(UserController.getUserByPseudo(receiver));
+                msg.setTime(dataSplit[3].split(":")[1]);
+                msg.setSender(userDist);
+                msg.setReceiver(myUser);
 
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
                 if (isDisplayed){
