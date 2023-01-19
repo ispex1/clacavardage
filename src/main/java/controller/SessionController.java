@@ -142,9 +142,11 @@ public class SessionController {
     }
 
     public static void closeSession(User user){
+        System.out.println("close session with " + user.getPseudo());
         TCPSession session = getSessionWithPseudo(user.getPseudo());
         session.closeSession();
         sessionsList.remove(session);
+        UserController.sendDisconnect();
     }
 
     public static void closeAllSessions(){
