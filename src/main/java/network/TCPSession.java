@@ -110,6 +110,7 @@ public class TCPSession extends Thread{
             if (isClosedDisplayed) {
                 try {
                     closedFrame.updateChatPane();
+                    System.out.println("JE SUIS DANS LE IF");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -130,6 +131,7 @@ public class TCPSession extends Thread{
                     System.out.println("<Session | " + Thread.currentThread().getId() + " > : Message received from " + msg.getSender().getPseudo() + " : " + msg.getData());
 
                     DatabaseManager.insertMessage(userDist.getIP(), msg);
+                    System.out.println("Open frame : " + isOpenDisplayed);
                     if (isOpenDisplayed) {
                         System.out.println("CUCUUUUUUUU");
                         Platform.runLater(new Runnable() {
@@ -143,6 +145,16 @@ public class TCPSession extends Thread{
                     System.out.println("PROUT PROUT");
                 } else {
                     System.out.println("<Session | " + Thread.currentThread().getId() + " > : Connection closed by " + userDist.getIP());
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            sessionsList.remove(getTCPSession());
+                            System.out.println("Session list : ");
+                            for (TCPSession session : sessionsList) {
+                                System.out.println(session.getUserDist().getPseudo());
+                            }
+                        }
+                    });
                     setRunning(false);
                     socket.close();
                 }
@@ -150,12 +162,6 @@ public class TCPSession extends Thread{
                 if (isRunning) e.printStackTrace();
             }
         }
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                sessionsList.remove(getTCPSession());
-            }
-        });
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is closed");
     }
 
