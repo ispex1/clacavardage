@@ -131,6 +131,7 @@ public class TCPSession extends Thread{
 
                     DatabaseManager.insertMessage(userDist.getIP(), msg);
                     if (isOpenDisplayed) {
+                        System.out.println("CUCUUUUUUUU");
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {

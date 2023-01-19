@@ -44,6 +44,7 @@ public class TCPListener extends Thread {
 
                 System.out.println("===update frame===");
                 if (this.frame != null && this.frame.isShowing()) {
+                    System.out.println("MARCHEEEEEEE");
                     Platform.runLater(new Runnable(){
                         @Override
                         public void run() {

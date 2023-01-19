@@ -74,7 +74,7 @@ public class MainFrame {
 
     public void parametersClick(ActionEvent event) throws IOException {
         hideChatPane();
-        openedChatController.getSession().setOpenDisplay(false);
+        if(openedChatController != null) openedChatController.getSession().setOpenDisplay(false);
         switchToParametersScene(event.getSource());
     }
 
