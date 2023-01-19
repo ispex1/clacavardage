@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.SessionController;
+import view.MainFrame;
 
 public class TCPListener extends Thread {
 
@@ -12,6 +13,8 @@ public class TCPListener extends Thread {
     private boolean isRunning;
     private int port;
     private ServerSocket serverSocket;
+
+    private MainFrame frame;
     
 
     /**
@@ -35,7 +38,14 @@ public class TCPListener extends Thread {
             while(isRunning){
                 System.out.println("<Listener | "+ Thread.currentThread().getId() +" > : TCPListener is listening on port " + port);
                 Socket link = serverSocket.accept();
+
                 SessionController.sessionCreated(link);
+
+                System.out.println("===update frame===");
+                if (this.frame != null){
+                    frame.updateUsersList();
+                    System.out.println("===frame updated ?===");
+                }
                 //System.out.println("<Listener | "+ Thread.currentThread().getId() + " > : Socket printing\n" + link.toString());
                 //TCPSession session = new TCPSession(link, UserController.getMyUser());
                 //sessionsList.add(session);// a verifier
@@ -69,6 +79,9 @@ public class TCPListener extends Thread {
     }
     public void setPort(int port) {
         this.port = port;
+    }
+    public void setFrame(MainFrame frame) {
+        this.frame = frame;
     }
     public ServerSocket getSocket(){
         return serverSocket;

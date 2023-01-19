@@ -17,7 +17,7 @@ import view.MainFrame;
 public class SessionController {
 
     public static final int PORT = 6789;
-    private static TCPListener tcpListener;
+    public static TCPListener tcpListener;
     //table of all the sessions sockets
     public static ArrayList<TCPSession> sessionsList;
 
@@ -158,6 +158,7 @@ public class SessionController {
         }
         sessionsList.clear();
     }
+
 
     public static void close(){
         closeAllSessions();
