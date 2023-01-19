@@ -147,8 +147,13 @@ public class TCPSession extends Thread{
                 if (isRunning) e.printStackTrace();
             }
         }
-        sessionsList.remove(this);
-        openedFrame.hideChatPane();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                sessionsList.remove(this);
+                openedFrame.hideChatPane();
+            }
+        });
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is closed");
     }
 
