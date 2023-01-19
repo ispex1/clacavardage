@@ -127,10 +127,12 @@ public class TCPSession extends Thread{
                 if (isRunning) e.printStackTrace();
             }
         }
+
     }
 
     public void closeSession(){
         this.isRunning = false;
+
         try {
             socket.close();
         } catch (IOException e) {

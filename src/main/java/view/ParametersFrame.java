@@ -28,8 +28,7 @@ public class ParametersFrame {
 
     public void disconnectClick(ActionEvent event) throws IOException {
         SceneController.switchToLoginScene(event.getSource());
-        //TODO: remove the commentaries when the tests will be over
-        //UserController.sendDisconnect();;
+        UserController.sendDisconnect();;
     }
 
 

@@ -217,20 +217,11 @@ public class UserController {
 
 
                 break;
+                //TODO:change
             case DISCONNECT:
+                System.out.println("DISCONNECT");
                 pseudo = fullPseudo.split(":")[1];
                 listOnline.remove(getUserByPseudo(pseudo));
-                TCPSession session = SessionController.getSessionWithPseudo(pseudo);
-                if (session != null){
-                    if (session.getDisplay()){
-                        session.getFrame().closeChatSession();
-                        System.out.println("Fermeture de la session avec " + pseudo + "and close display");
-                    }
-                    else{
-                        SessionController.closeSession(getUserByPseudo(pseudo));
-                        System.out.println("Fermeture de la session avec " + pseudo);
-                    }
-                }
 
                 //TODO : update the list of online users via the FrameController
                 break;
