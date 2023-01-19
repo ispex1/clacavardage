@@ -128,6 +128,10 @@ public class MainFrame {
         }
     }
 
+    public void updateSelection() {
+        UsersList.getSelectionModel().select(chatter.getPseudo());
+    }
+
     public void updateChatPane() throws IOException {
         FXMLLoader chat;
         if (chatPane != null) mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
@@ -158,6 +162,7 @@ public class MainFrame {
             System.out.println("hide");
             mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
             chatPane = null;
+            UsersList.getSelectionModel().clearSelection();
         }
         chatter = null;
     }
@@ -170,5 +175,9 @@ public class MainFrame {
     public void closeChatSession(){
         closeSession(chatter);
         hideChatPane();
+    }
+
+    public User getChatter() {
+        return chatter;
     }
 }
