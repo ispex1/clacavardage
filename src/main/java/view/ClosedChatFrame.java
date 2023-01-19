@@ -27,8 +27,8 @@ public class ClosedChatFrame extends AnchorPane {
 
     public void initialize(){
         labelPseudo.setText("Your are not chatting with " + MainFrame.chatter.getPseudo() + " yet");
-        session.setClosedFrame(this);
-        session.setClosedDisplay(true);
+        //session.setClosedFrame(this);
+        //session.setClosedDisplay(true);
     }
 
     public void hideChatPane() {
