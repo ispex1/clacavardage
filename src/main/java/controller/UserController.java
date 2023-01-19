@@ -1,8 +1,10 @@
 package controller;
 
 import model.User;
+import network.TCPSession;
 import network.UDPListener;
 import network.UDPSender;
+import view.OpenedChatFrame;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+
 
 /**
  * This class represents the user controller.
@@ -106,21 +109,21 @@ public class UserController {
     public static void sendConnect(){
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.CONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        //System.out.println(msg);
+        System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());   
     }
 
     public static void sendDisconnect(){
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.DISCONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        //System.out.println(msg);
+        System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());
         }
 
     public static void askUserList() {
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.ASK_USER_LIST+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        //System.out.println(msg);
+        System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());
     }
 
@@ -217,8 +220,18 @@ public class UserController {
             case DISCONNECT:
                 pseudo = fullPseudo.split(":")[1];
                 listOnline.remove(getUserByPseudo(pseudo));
-                //if session with this user is open, close it
-                
+                TCPSession session = SessionController.getSessionWithPseudo(pseudo);
+                if (session != null){
+                    if (session.getDisplay()){
+                        session.getFrame().closeChatSession();
+                        System.out.println("Fermeture de la session avec " + pseudo + "and close display");
+                    }
+                    else{
+                        SessionController.closeSession(getUserByPseudo(pseudo));
+                        System.out.println("Fermeture de la session avec " + pseudo);
+                    }
+                }
+
                 //TODO : update the list of online users via the FrameController
                 break;
 
@@ -277,10 +290,20 @@ public class UserController {
      * @param user
      */
     public static void updateUser(User user) {
+        System.out.println("Liste des utilisateurs connectés : ");
+        for (User userInList : listOnline) {
+            System.out.println(userInList.getPseudo());
+        }
         for (User userInList : listOnline) {
             if (userInList.getIP().equals(user.getIP())) {
                 userInList.setPseudo(user.getPseudo());
+                System.out.println("Pseudo updated : " + user.getPseudo());
             }
+        }
+        //print la liste
+        System.out.println("Liste des utilisateurs connectés : ");
+        for (User userInList : listOnline) {
+            System.out.println(userInList.getPseudo());
         }
     }
 

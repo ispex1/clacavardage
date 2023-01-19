@@ -2,9 +2,6 @@ package view;
 
 import controller.SessionController;
 import controller.UserController;
-import database.DatabaseManager;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -46,7 +43,7 @@ public class OpenedChatFrame extends AnchorPane {
     private ArrayList<Message> listDisplayed = new ArrayList<>();
     @FXML
     public ObservableList<Message> observableHistory;
-    TCPSession session = SessionController.getSessionWithUser(chatter);
+    public static TCPSession session = SessionController.getSessionWithUser(chatter);
 
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
@@ -56,13 +53,12 @@ public class OpenedChatFrame extends AnchorPane {
     public void initialize(){
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
-        initObservableHistory();
         session.setFrame(this);
         session.setDisplay(true);
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
         updateChat();
     }
-
+    /*
     public void initObservableHistory(){
         observableHistory = FXCollections.observableArrayList(DatabaseManager.getHistory(chatter.getIP()));
         System.out.println("observableHistory = " + observableHistory);
@@ -76,10 +72,14 @@ public class OpenedChatFrame extends AnchorPane {
             }
         });
     }
-
+    */
     public void setHistory() {
         listDisplayed = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
+    }
+
+    public TCPSession getSession(){
+        return session;
     }
 
     public void updateChat(){
@@ -155,9 +155,4 @@ public class OpenedChatFrame extends AnchorPane {
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
         updateChat();
     }
-
-    public OpenedChatFrame() {
-        super();
-    }
-
 }

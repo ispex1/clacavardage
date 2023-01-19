@@ -1,21 +1,16 @@
 package network;
 
-import database.DatabaseManager;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import model.User;
-import model.Message;
 import controller.SessionController;
 import controller.UserController;
+import database.DatabaseManager;
+import javafx.application.Platform;
+import model.Message;
+import model.User;
 import view.OpenedChatFrame;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class TCPSession extends Thread{
 
@@ -121,17 +116,13 @@ public class TCPSession extends Thread{
 
                 DatabaseManager.insertMessage(userDist.getIP(), msg);
                 if (isDisplayed){
-                    System.out.println("it's displayed");
                     Platform.runLater(new Runnable(){
                         @Override
                         public void run() {
-                            System.out.println("Update the chat - " + Thread.currentThread().getId());
                             frame.receiveMessage(msg);
                         }
                     });
                 }
-                // To printin the data in Terminal
-                System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
             } catch (IOException e) {
                 if (isRunning) e.printStackTrace();
             }
@@ -178,7 +169,13 @@ public class TCPSession extends Thread{
     public void setDisplay(Boolean display) {
         isDisplayed = display;
     }
+    public Boolean getDisplay() {
+        return this.isDisplayed;
+    }
     public void setFrame(OpenedChatFrame frame){
         this.frame = frame;
+    }
+    public OpenedChatFrame getFrame(){
+        return frame;
     }
 }
