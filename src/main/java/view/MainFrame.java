@@ -46,6 +46,7 @@ public class MainFrame {
     @FXML
     public OpenedChatFrame openedChatController;
 
+    //permet de savoir si le chat est ouvert ou non afin de ne pas initializer le chat deux fois (quand changement de pseudo par exemple)
     private static final AtomicBoolean hasRunAtom = new AtomicBoolean();
 
     public void initialize() {
