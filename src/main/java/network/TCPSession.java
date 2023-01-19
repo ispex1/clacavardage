@@ -6,6 +6,7 @@ import database.DatabaseManager;
 import javafx.application.Platform;
 import model.Message;
 import model.User;
+import view.ClosedChatFrame;
 import view.OpenedChatFrame;
 
 import java.io.*;
@@ -24,8 +25,10 @@ public class TCPSession extends Thread{
     private User userDist;
     private User myUser = UserController.getMyUser();
     private Message msg = new Message();
-    public Boolean isDisplayed = false;
-    private view.OpenedChatFrame frame;
+    public Boolean isOpenDisplayed = false;
+    public Boolean isClosedDisplayed = false;
+    private view.OpenedChatFrame openedFrame;
+    private view.ClosedChatFrame closedFrame;
 
 
     /**
@@ -99,6 +102,13 @@ public class TCPSession extends Thread{
         //Message msg;
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is running, a connection has been established");
         while(isRunning){
+            if (isClosedDisplayed) {
+                try {
+                    closedFrame.updateChatPane();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             try {
                 data = bufferedReader.readLine();
                 if (data != null) {
@@ -115,11 +125,11 @@ public class TCPSession extends Thread{
                     System.out.println("<Session | " + Thread.currentThread().getId() + " > : Message received from " + msg.getSender().getPseudo() + " : " + msg.getData());
 
                     DatabaseManager.insertMessage(userDist.getIP(), msg);
-                    if (isDisplayed) {
+                    if (isOpenDisplayed) {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                frame.receiveMessage(msg);
+                                openedFrame.receiveMessage(msg);
                             }
                         });
                     }
@@ -169,16 +179,28 @@ public class TCPSession extends Thread{
     public User getUserDist() {
         return userDist;
     }
-    public void setDisplay(Boolean display) {
-        isDisplayed = display;
+    public void setOpenDisplay(Boolean display) {
+        isOpenDisplayed = display;
     }
-    public Boolean getDisplay() {
-        return this.isDisplayed;
+    public Boolean getOpenDisplay() {
+        return this.isOpenDisplayed;
     }
-    public void setFrame(OpenedChatFrame frame){
-        this.frame = frame;
+    public void setOpenedFrame(OpenedChatFrame frame){
+        this.openedFrame = frame;
     }
-    public OpenedChatFrame getFrame(){
-        return frame;
+    public OpenedChatFrame getOpenedFrame(){
+        return openedFrame;
+    }
+    public void setClosedDisplay(Boolean display) {
+        isClosedDisplayed = display;
+    }
+    public Boolean getClosedDisplay() {
+        return this.isOpenDisplayed;
+    }
+    public void setClosedFrame(ClosedChatFrame frame){
+        this.closedFrame = frame;
+    }
+    public ClosedChatFrame getClosedFrame(){
+        return closedFrame;
     }
 }

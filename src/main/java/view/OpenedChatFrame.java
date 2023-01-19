@@ -53,8 +53,8 @@ public class OpenedChatFrame extends AnchorPane {
     public void initialize(){
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
-        session.setFrame(this);
-        session.setDisplay(true);
+        session.setOpenedFrame(this);
+        session.setOpenDisplay(true);
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
         updateChat();
     }
@@ -121,7 +121,7 @@ public class OpenedChatFrame extends AnchorPane {
     }
 
     public void hideChatPane() {
-        session.setDisplay(false);
+        session.setOpenDisplay(false);
         parentController.hideChatPane();
     }
 
