@@ -170,5 +170,4 @@ public class MainFrame {
         closeSession(chatter);
         hideChatPane();
     }
-
 }
