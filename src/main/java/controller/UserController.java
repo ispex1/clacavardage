@@ -218,7 +218,7 @@ public class UserController {
                 pseudo = fullPseudo.split(":")[1];
                 listOnline.remove(getUserByPseudo(pseudo));
                 //if session with this user is open, close it
-                
+
                 //TODO : update the list of online users via the FrameController
                 break;
 
