@@ -216,9 +216,7 @@ public class UserController {
                 break;
             case DISCONNECT:
                 pseudo = fullPseudo.split(":")[1];
-                if (listOnline.contains(new User(IP,pseudo))){
-                    listOnline.remove(new User(IP,pseudo));
-                }
+                listOnline.remove(getUserByPseudo(pseudo));
                 //TODO : update the list of online users via the FrameController
                 break;
 
