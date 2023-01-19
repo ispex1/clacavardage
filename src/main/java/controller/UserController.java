@@ -115,6 +115,7 @@ public class UserController {
         String msg = TypeMsg.DISCONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
         System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());
+        SessionController.close();
         }
 
     public static void askUserList() {
