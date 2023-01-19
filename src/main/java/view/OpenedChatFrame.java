@@ -43,7 +43,7 @@ public class OpenedChatFrame extends AnchorPane {
     private ArrayList<Message> listDisplayed = new ArrayList<>();
     @FXML
     public ObservableList<Message> observableHistory;
-    public static TCPSession session = SessionController.getSessionWithUser(chatter);
+    public static TCPSession session = SessionController.getSessionWithAdress(chatter.getIP());
 
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
@@ -53,6 +53,8 @@ public class OpenedChatFrame extends AnchorPane {
     public void initialize(){
         session.setOpenedFrame(this);
         session.setOpenDisplay(true);
+        //print session information
+        System.out.println("Session with " + chatter.getPseudo() + " is open");
 
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
