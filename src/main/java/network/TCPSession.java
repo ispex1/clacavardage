@@ -134,9 +134,9 @@ public class TCPSession extends Thread{
                         });
                     }
                 } else {
-                    System.out.println("<Session | " + Thread.currentThread().getId() + " > : Connection closed by " + userDist.getIP());
+                    System.out.println("<=============Session | " + Thread.currentThread().getId() + " > : Connection closed by " + userDist.getIP());
                     setRunning(false);
-                    //socket.close();
+                    socket.close();
                 }
             } catch (IOException e) {
                 if (isRunning) e.printStackTrace();

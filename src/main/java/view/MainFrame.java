@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static controller.SessionController.closeSession;
 import static controller.SessionController.createSession;
@@ -45,12 +46,18 @@ public class MainFrame {
     @FXML
     public OpenedChatFrame openedChatController;
 
+    private static final AtomicBoolean hasRunAtom = new AtomicBoolean();
+
     public void initialize() {
         myPseudo.setText(getMyUser().getPseudo());
         myIP.setText("IP : " + getMyUser().getIP());
         updateUsersList();
         UserController.udpListener.setFrame(this);
-        SessionController.initialize();
+        if (!hasRunAtom.getAndSet(true)) {
+            System.out.println("+++++ Session Control initialize +++++");
+            SessionController.initialize();
+        }
+
     }
 
     public void updateUsersList() {

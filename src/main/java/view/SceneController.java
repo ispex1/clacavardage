@@ -1,5 +1,6 @@
 package view;
 
+import controller.SessionController;
 import controller.UserController;
 import database.DatabaseManager;
 import javafx.application.Application;
@@ -16,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.User;
+import network.TCPSession;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -77,7 +79,17 @@ public class SceneController extends Application {
                 setMyUser(pseudo);
                 UserController.updateMyUser();
                 UserController.sendPseudo(pseudo);
-                System.out.println("Pseudo valid");
+
+                //print list online
+                System.out.println("List online :");
+                for (User user : getListOnline()) {
+                    System.out.println(user.getPseudo());
+                }
+                //print session list
+                System.out.println("Session list :");
+                for (TCPSession session : SessionController.sessionsList) {
+                    System.out.println(session.getUserDist().getPseudo());
+                }
                 switchToMainScene(event.getSource());
             } else textPseudoNotValid.setText("This pseudo is already taken");
         }
