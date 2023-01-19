@@ -33,7 +33,9 @@ public class ClosedChatFrame extends AnchorPane {
 
     public void hideChatPane() {
         parentController.hideChatPane();
-        session.setClosedDisplay(false);
+        if(session != null) {
+            session.setClosedDisplay(false);
+        }
     }
 
     public void openChatSession() throws IOException {

@@ -15,6 +15,8 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static controller.SessionController.sessionsList;
+
 public class TCPSession extends Thread{
 
     // ** ATTRIBUTES **
@@ -145,7 +147,9 @@ public class TCPSession extends Thread{
                 if (isRunning) e.printStackTrace();
             }
         }
-
+        sessionsList.remove(this);
+        openedFrame.hideChatPane();
+        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is closed");
     }
 
     public void closeSession(){
