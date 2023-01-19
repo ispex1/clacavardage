@@ -54,7 +54,6 @@ public class OpenedChatFrame extends AnchorPane {
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
         session.setOpenedFrame(this);
-        session.setOpenDisplay(true);
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
         updateChat();
     }

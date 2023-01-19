@@ -144,6 +144,7 @@ public class MainFrame {
             mainPane.getChildren().add(chatPane);
             openedChatController = chat.getController();
             openedChatController.setParentController(this);
+            openedChatController.getSession().setOpenDisplay(true);
         }
         else {
             chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/closedChatFrame.fxml")));
