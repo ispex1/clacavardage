@@ -1,5 +1,6 @@
 package network;
 
+import com.sun.tools.javac.Main;
 import controller.SessionController;
 import controller.UserController;
 import database.DatabaseManager;
@@ -7,6 +8,7 @@ import javafx.application.Platform;
 import model.Message;
 import model.User;
 import view.ClosedChatFrame;
+import view.MainFrame;
 import view.OpenedChatFrame;
 
 import java.io.*;
@@ -29,6 +31,7 @@ public class TCPSession extends Thread{
     public Boolean isClosedDisplayed = false;
     private view.OpenedChatFrame openedFrame;
     private view.ClosedChatFrame closedFrame;
+
 
 
     /**
@@ -134,7 +137,7 @@ public class TCPSession extends Thread{
                         });
                     }
                 } else {
-                    System.out.println("<=============Session | " + Thread.currentThread().getId() + " > : Connection closed by " + userDist.getIP());
+                    System.out.println("<Session | " + Thread.currentThread().getId() + " > : Connection closed by " + userDist.getIP());
                     setRunning(false);
                     socket.close();
                 }
