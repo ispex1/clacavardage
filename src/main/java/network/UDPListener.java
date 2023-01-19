@@ -48,14 +48,15 @@ public class UDPListener extends Thread {
                     System.out.println("Brut Data : " + data);
 
                     UserController.informationTreatment(data);
-                    Platform.runLater(new Runnable(){
-                        @Override
-                        public void run() {
-                            System.out.println("run");
-                            frame.updateUsersList();
-                        }
-                    });
-
+                    if (this.frame != null){
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run() {
+                                System.out.println("run");
+                                frame.updateUsersList();
+                            }
+                        });
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
