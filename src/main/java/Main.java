@@ -1,5 +1,6 @@
 import controller.SessionController;
 import controller.UserController;
+import database.DatabaseManager;
 import database.DatabaseManager.*;
 import model.Message;
 import model.User;
@@ -8,6 +9,7 @@ import network.TCPSession;
 import network.UDPListener;
 import network.UDPSender;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -24,7 +26,7 @@ public class Main{
 
     public static void main (String[] args){
 
-        testUserController();
+        testSessionController();
 
     }
     //TODO : harmoniser le code, static au bon endroit, private public, get set, nom de fonction etc
@@ -38,7 +40,7 @@ public class Main{
     private static void testNetwork(){
         //test UDP
         UserController.initialize();
-        UDPSender.sendBroadcast("TEST_HELLOWORLD",UserController.getMyUser().getPort());
+        UDPSender.sendBroadcast("TEST",UserController.getMyUser().getPort());
 
         SessionController.initialize();
 
@@ -59,7 +61,8 @@ public class Main{
             throw new RuntimeException(e);
         }
 
-        SessionController.sendMessage(new Message(UserController.getMyUser(), UserController.getListOnline().get(0), "Gros shlingueur toi nn ??"), UserController.getListOnline().get(0) );
+        SessionController.sendMessage(new Message(UserController.getMyUser(), UserController.getListOnline().get(0), "testouille"), UserController.getListOnline().get(0) );
+        DatabaseManager.getHistory(UserController.getListOnline().get(0).getIP());
     }
 
 

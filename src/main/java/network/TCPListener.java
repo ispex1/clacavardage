@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.SessionController;
+import javafx.application.Platform;
+import view.MainFrame;
 
 public class TCPListener extends Thread {
 
@@ -12,6 +14,8 @@ public class TCPListener extends Thread {
     private boolean isRunning;
     private int port;
     private ServerSocket serverSocket;
+
+    private MainFrame frame;
     
 
     /**
@@ -35,7 +39,25 @@ public class TCPListener extends Thread {
             while(isRunning){
                 System.out.println("<Listener | "+ Thread.currentThread().getId() +" > : TCPListener is listening on port " + port);
                 Socket link = serverSocket.accept();
+
                 SessionController.sessionCreated(link);
+
+                System.out.println("===update frame===");
+                if (this.frame != null && this.frame.isShowing()) {
+                    System.out.println("MARCHEEEEEEE");
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {
+                            System.out.println("runnnnnnn");
+                            try {
+                                frame.updateChatPane();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+                    System.out.println("===frame updated ?===");
+                }
                 //System.out.println("<Listener | "+ Thread.currentThread().getId() + " > : Socket printing\n" + link.toString());
                 //TCPSession session = new TCPSession(link, UserController.getMyUser());
                 //sessionsList.add(session);// a verifier
@@ -46,7 +68,7 @@ public class TCPListener extends Thread {
 
     }
 
-    public void closeListner(){
+    public void closeListener(){
         this.isRunning = false;
         try {
             serverSocket.close();
@@ -69,6 +91,9 @@ public class TCPListener extends Thread {
     }
     public void setPort(int port) {
         this.port = port;
+    }
+    public void setFrame(MainFrame frame) {
+        this.frame = frame;
     }
     public ServerSocket getSocket(){
         return serverSocket;

@@ -13,11 +13,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.User;
+import network.UDPListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static controller.SessionController.closeSession;
 import static controller.SessionController.createSession;
@@ -35,21 +37,29 @@ public class MainFrame {
     @FXML
     private ListView<String> UsersList;
     @FXML
-    private ImageView imgCat;
-    @FXML
     private Pane mainPane;
     @FXML
     private Pane chatPane;
 
     @FXML
     public ClosedChatFrame closedChatController;
-    @FXML OpenedChatFrame openedChatController;
+    @FXML
+    public OpenedChatFrame openedChatController;
+
+    //permet de savoir si le chat est ouvert ou non afin de ne pas initializer le chat deux fois (quand changement de pseudo par exemple)
+    private static final AtomicBoolean hasRunAtom = new AtomicBoolean();
 
     public void initialize() {
         myPseudo.setText(getMyUser().getPseudo());
         myIP.setText("IP : " + getMyUser().getIP());
         updateUsersList();
-        SessionController.initialize();
+        UserController.udpListener.setFrame(this);
+
+        if (!hasRunAtom.getAndSet(true)) {
+            System.out.println("+++++ Session Control initialize +++++");
+            SessionController.initialize();
+        }
+        SessionController.tcpListener.setFrame(this);
     }
 
     public void updateUsersList() {
@@ -63,13 +73,15 @@ public class MainFrame {
     }
 
     public void parametersClick(ActionEvent event) throws IOException {
+        hideChatPane();
+        if(openedChatController != null) openedChatController.getSession().setOpenDisplay(false);
         switchToParametersScene(event.getSource());
     }
 
     public void easterEgg() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
-        alert.setGraphic(imgCat);
+        alert.setGraphic(new ImageView(new Image("/images/chat.png")));
 
         alert.setTitle("The Clac Jokey");
         alert.setHeaderText(null);
@@ -108,7 +120,7 @@ public class MainFrame {
     public void updateChatter() throws IOException {
         String pseudo = UsersList.getSelectionModel().getSelectedItem();
         if (pseudo != null) {
-            User user = UserController.findUser(pseudo);
+            User user = UserController.getUserByPseudo(pseudo);
             if (user != null) {
                 if (user != chatter) {
                     chatter = user;
@@ -118,8 +130,13 @@ public class MainFrame {
         }
     }
 
+    public void updateSelection() {
+        UsersList.getSelectionModel().select(chatter.getPseudo());
+    }
+
     public void updateChatPane() throws IOException {
         FXMLLoader chat;
+
         if (chatPane != null) mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
 
         if (SessionController.isSessionWith(chatter)) {
@@ -148,12 +165,14 @@ public class MainFrame {
             System.out.println("hide");
             mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
             chatPane = null;
+            UsersList.getSelectionModel().clearSelection();
         }
         chatter = null;
     }
 
     public void openChatSession() throws IOException {
         createSession(chatter);
+        closedChatController.session.setClosedDisplay(true);
         updateChatPane();
     }
 
@@ -162,4 +181,11 @@ public class MainFrame {
         hideChatPane();
     }
 
+    public User getChatter() {
+        return chatter;
+    }
+
+    public boolean isShowing() {
+        return chatPane != null;
+    }
 }

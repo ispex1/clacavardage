@@ -1,24 +1,15 @@
 package view;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-//import javafx.scene.media.AudioClip;
-//import javafx.scene.media.Media;
-//import javafx.scene.media.MediaPlayer;
-import model.User;
+import com.sun.tools.javac.Main;
 import controller.SessionController;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.AudioClip;
+import network.TCPSession;
 
-import javax.sound.sampled.*;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Objects;
 
-import static com.sun.javafx.reflect.ConstructorUtil.getConstructor;
 import static view.MainFrame.chatter;
 
 public class ClosedChatFrame extends AnchorPane {
@@ -27,6 +18,8 @@ public class ClosedChatFrame extends AnchorPane {
     private Label labelPseudo;
     @FXML
     private MainFrame parentController;
+    public static TCPSession session = SessionController.getSessionWithUser(chatter);
+    AudioClip audioClip = new AudioClip(getClass().getResource("/sound.mp3").toExternalForm());
 
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
@@ -34,6 +27,8 @@ public class ClosedChatFrame extends AnchorPane {
 
     public void initialize(){
         labelPseudo.setText("Your are not chatting with " + MainFrame.chatter.getPseudo() + " yet");
+        //session.setClosedFrame(this);
+        //session.setClosedDisplay(true);
     }
 
     public void hideChatPane() {
@@ -42,13 +37,16 @@ public class ClosedChatFrame extends AnchorPane {
 
     public void openChatSession() throws IOException {
          parentController.openChatSession();
+         session.setClosedDisplay(false);
          System.out.println("Opening chat session with " + MainFrame.chatter.getPseudo());
     }
 
-    public void easterEgg(MouseEvent mouseEvent) {
-        //print the path of the chaaris.wav file in the resource folder
-    //    AudioClip audioClip = new AudioClip(getClass().getResource("resources/chaaris.wav").toString());
-    //    audioClip.play(100);
+    public void updateChatPane() throws IOException {
+        parentController.updateChatPane();
+    }
+
+    public void easterEgg() {
+        audioClip.play();
         System.out.println("Playing sound");
     }
 }

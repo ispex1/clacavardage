@@ -1,19 +1,21 @@
 package network;
 
-import database.DatabaseManager;
-import javafx.collections.ObservableList;
-import model.User;
-import model.Message;
+import com.sun.tools.javac.Main;
 import controller.SessionController;
 import controller.UserController;
+import database.DatabaseManager;
+import javafx.application.Platform;
+import model.Message;
+import model.User;
+import view.ClosedChatFrame;
+import view.MainFrame;
+import view.OpenedChatFrame;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
+import static controller.SessionController.sessionsList;
 
 public class TCPSession extends Thread{
 
@@ -26,7 +28,12 @@ public class TCPSession extends Thread{
     private BufferedReader bufferedReader;
     private User userDist;
     private User myUser = UserController.getMyUser();
-    private ArrayList<Message> history = new ArrayList<>();
+    private Message msg = new Message();
+    public Boolean isOpenDisplayed = false;
+    public Boolean isClosedDisplayed = false;
+    private view.OpenedChatFrame openedFrame;
+    private view.ClosedChatFrame closedFrame;
+
 
 
     /**
@@ -83,7 +90,9 @@ public class TCPSession extends Thread{
     }
 
     public void sendMessage(String data){
-        Message msg = new Message(myUser, userDist, data);
+        msg.setSender(myUser);
+        msg.setReceiver(userDist);
+        msg.setData(data);
         System.out.println("<Session | " + Thread.currentThread().getId() +" >  Sending message : " + msg.getData());
         writer.println(msg.getData());
     }
@@ -95,31 +104,71 @@ public class TCPSession extends Thread{
     public void run(){
         setRunning(true);
         String data = null;
-        Message msg = new Message();
+        //Message msg;
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is running, a connection has been established");
         while(isRunning){
+            if (isClosedDisplayed) {
+                try {
+                    closedFrame.updateChatPane();
+                    System.out.println("JE SUIS DANS LE IF");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             try {
                 data = bufferedReader.readLine();
+                if (data != null) {
+                    // split data to get sender receiver message and date
+                    String[] dataSplit = data.split("\\|");
 
-                msg.setData(data);
+                    String message = dataSplit[2].split(":")[1];
 
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                LocalDateTime now = LocalDateTime.now();
-                msg.setTime(dtf.format(now));
-                msg.setSender(userDist);
-                msg.setReceiver(myUser);
-                DatabaseManager.insertMessage(userDist.getIP(), msg);
-                history = DatabaseManager.getHistory(userDist.getIP());
-                // To printin the data in Terminal
-                System.out.println("<Session | " + Thread.currentThread().getId() +" >  Message recu : " + data);
+                    msg.setData(message);
+                    msg.setTime(dataSplit[3].split(":")[1]);
+                    msg.setSender(userDist);
+                    msg.setReceiver(myUser);
+                    //print all element of the message
+                    System.out.println("<Session | " + Thread.currentThread().getId() + " > : Message received from " + msg.getSender().getPseudo() + " : " + msg.getData());
+
+                    DatabaseManager.insertMessage(userDist.getIP(), msg);
+                    System.out.println("Open frame : " + isOpenDisplayed);
+                    if (isOpenDisplayed) {
+                        System.out.println("CUCUUUUUUUU");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("ruuuuuuuuuuuuuuuuuun fumier");
+                                openedFrame.receiveMessage(msg);
+                            }
+                        });
+                    }
+                    System.out.println("PROUT PROUT");
+                } else {
+                    System.out.println("<Session | " + Thread.currentThread().getId() + " > : Connection closed by " + userDist.getIP());
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            sessionsList.remove(getTCPSession());
+                            System.out.println("Session list : ");
+                            for (TCPSession session : sessionsList) {
+                                System.out.println(session.getUserDist().getPseudo());
+                            }
+                        }
+                    });
+                    setRunning(false);
+                    socket.close();
+                }
             } catch (IOException e) {
                 if (isRunning) e.printStackTrace();
             }
         }
+        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is closed");
     }
+
 
     public void closeSession(){
         this.isRunning = false;
+
         try {
             socket.close();
         } catch (IOException e) {
@@ -128,6 +177,9 @@ public class TCPSession extends Thread{
     }
 
     // ** GETTERS AND SETTERS **
+    public TCPSession getTCPSession(){
+        return this;
+    }
     public Socket getSocket() {
         return socket;
     }
@@ -155,7 +207,28 @@ public class TCPSession extends Thread{
     public User getUserDist() {
         return userDist;
     }
-    public ArrayList<Message> getHistory() {
-        return history;
+    public void setOpenDisplay(Boolean display) {
+        isOpenDisplayed = display;
+    }
+    public Boolean getOpenDisplay() {
+        return this.isOpenDisplayed;
+    }
+    public void setOpenedFrame(OpenedChatFrame frame){
+        this.openedFrame = frame;
+    }
+    public OpenedChatFrame getOpenedFrame(){
+        return openedFrame;
+    }
+    public void setClosedDisplay(Boolean display) {
+        isClosedDisplayed = display;
+    }
+    public Boolean getClosedDisplay() {
+        return this.isOpenDisplayed;
+    }
+    public void setClosedFrame(ClosedChatFrame frame){
+        this.closedFrame = frame;
+    }
+    public ClosedChatFrame getClosedFrame(){
+        return closedFrame;
     }
 }

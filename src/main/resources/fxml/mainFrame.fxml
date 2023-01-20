@@ -10,22 +10,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="mainPane" prefHeight="1050.0" prefWidth="1920.0" styleClass="main" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainFrame">
+<AnchorPane fx:id="mainPane" prefHeight="1050.0" prefWidth="1920.0" styleClass="main" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainFrame">
    <children>
       <Pane layoutX="65.0" layoutY="-15.0" prefHeight="136.0" prefWidth="345.0">
          <children>
-            <Label fx:id="myIP" layoutX="18.0" layoutY="96.0" prefHeight="47.0" prefWidth="383.0" styleClass="id" stylesheets="../style.css" text="ID : " textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="myIP" layoutX="18.0" layoutY="96.0" prefHeight="47.0" prefWidth="383.0" styleClass="id" text="ID : " textAlignment="CENTER" textFill="WHITE">
       </Label>
-            <Label fx:id="myPseudo" layoutX="1.0" layoutY="-17.0" prefHeight="182.0" prefWidth="818.0" styleClass="pseudo" stylesheets="../style.css" text="PSEUDO" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="myPseudo" layoutX="1.0" layoutY="-17.0" prefHeight="182.0" prefWidth="818.0" styleClass="pseudo" text="PSEUDO" textAlignment="CENTER" textFill="WHITE">
       </Label>
          </children>
       </Pane>
-      <ListView fx:id="UsersList" fixedCellSize="75.0" layoutX="63.0" layoutY="124.0" onMouseClicked="#updateChatter" prefHeight="626.0" prefWidth="256.0" styleClass="list_users" stylesheets="../style.css">
+      <ListView fx:id="UsersList" fixedCellSize="75.0" layoutX="63.0" layoutY="124.0" onMouseClicked="#updateChatter" prefHeight="626.0" prefWidth="256.0" styleClass="list_users" >
          <opaqueInsets>
             <Insets bottom="100.0" />
          </opaqueInsets>
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="DEFAULT" />
          </cursor>
       </ListView>
       <ImageView disable="true" fitHeight="634.0" fitWidth="264.0" focusTraversable="true" layoutX="63.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
@@ -42,17 +42,9 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ImageView fx:id="imgCat1" fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/chat.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView fx:id="imgCat" fitHeight="185.0" fitWidth="182.0" layoutX="1643.0" layoutY="67.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/chat.png" />
+            <Image url="@../images/chat.png"/>
          </image>
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />

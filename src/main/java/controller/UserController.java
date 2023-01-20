@@ -1,17 +1,17 @@
 package controller;
 
 import model.User;
+import network.TCPSession;
 import network.UDPListener;
 import network.UDPSender;
+import view.OpenedChatFrame;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
+
 
 /**
  * This class represents the user controller.
@@ -30,7 +30,7 @@ public class UserController {
      * DISCONNECT : "DISCONNECT|ID:id|IP:ip|Pseudo:pseudo"
      */
     public enum TypeMsg {
-        ASK_PSEUDO, PSEUDO_OK, PSEUDO_NOT_OK, CONNECT, DISCONNECT,ASK_USER_LIST, USER_LIST, TEST
+        ASK_PSEUDO, PSEUDO_OK, PSEUDO, CONNECT, DISCONNECT,ASK_USER_LIST, USER_LIST, TEST
     }
     //TODO AJOUTER UN TYPE DE MESSAGE USER_LIST, ELLE SERA ENVOYE EN REPONSE DE ASKPSEUDO SI LE PSEUDO EST OK, A LACCEPTATION DUN DE CES MESSAGE, SI LA LISTONLINE CONTINENT PLUS D'UN ELEMENT (MYUSER), REJET DU MESSAGE CAR LA LISTE A DEJA ETE INITIALISE
 
@@ -80,16 +80,16 @@ public class UserController {
      * Send a broadcast message to ask if the pseudo is available
      * @param pseudo
      * @throws SocketException
-     *//*
-    private static void sendPseudo(String pseudo){
+     */
+    public static void sendPseudo(String pseudo){
 
         // Generate a String with the type of message and user informations
-        String msg = TypeMsg.ASK_PSEUDO+"|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
+        String msg = TypeMsg.PSEUDO+"|IP:" + myUser.getIP() + "|Pseudo:" + pseudo;
 
         UDPSender.sendBroadcast(msg,myUser.getPort());
 
     }
-
+    /*
     private static void sendPseudoResponse(String pseudo, String ip, Boolean isValid){
         String msg;
         if (isValid){
@@ -106,21 +106,22 @@ public class UserController {
     public static void sendConnect(){
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.CONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        //System.out.println(msg);
+        System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());   
     }
 
     public static void sendDisconnect(){
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.DISCONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        //System.out.println(msg);
+        System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());
+        SessionController.close();
         }
 
     public static void askUserList() {
         // Generate a String with the type of message and the user informations
         String msg = TypeMsg.ASK_USER_LIST+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
-        //System.out.println(msg);
+        System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());
     }
 
@@ -140,7 +141,7 @@ public class UserController {
         String[] splitedMsg = msg.split("\\|");
 
         // Filtrage des messages recu et ejection des messages non conformes
-        String[] typeMsgString = {"ASK_PSEUDO","PSEUDO_OK","PSEUDO_NOT_OK","CONNECT","DISCONNECT","ASK_USER_LIST","USER_LIST","TEST"};
+        String[] typeMsgString = {"ASK_PSEUDO","PSEUDO_OK","PSEUDO_NOT_OK","PSEUDO","CONNECT","DISCONNECT","ASK_USER_LIST","USER_LIST","TEST"};
         if (!Arrays.asList(typeMsgString).contains(splitedMsg[0])){
             System.out.println("Message non conforme" );
             System.out.println("Message recu : " + msg);
@@ -199,6 +200,10 @@ public class UserController {
 
                 break;*/
 
+            //TODO : A tester
+            case PSEUDO:
+                updateUser(IP, pseudo);
+
             case CONNECT:
 
                 if (pseudoNotPresent(pseudo)){
@@ -210,16 +215,19 @@ public class UserController {
 
 
                 break;
+                //TODO:change
             case DISCONNECT:
+                System.out.println("DISCONNECT");
                 pseudo = fullPseudo.split(":")[1];
-                if (listOnline.contains(new User(IP,pseudo))){
-                    listOnline.remove(new User(IP,pseudo));
-                }
+                listOnline.remove(getUserByPseudo(pseudo));
+
                 //TODO : update the list of online users via the FrameController
                 break;
 
             case ASK_USER_LIST:
-                sendUserList(IP);
+                if(myUser.getPseudo() != null) {
+                    sendUserList(IP);
+                }
                 break;
 
             case USER_LIST:
@@ -257,13 +265,35 @@ public class UserController {
      * Find the user in the listOnline with the pseudo
      * @param pseudo
      */
-    public static User findUser(String pseudo) {
+    public static User getUserByPseudo(String pseudo) {
         for (User user : listOnline) {
             if (user.getPseudo().equals(pseudo)) {
                 return user;
             }
         }
         return null;
+    }
+
+    /**
+     * Update the user pseudo in the listOnline
+     * @param IP, pseudo
+     */
+    public static void updateUser(String IP , String pseudo) {
+        System.out.println("Liste des utilisateurs connectés : ");
+        for (User userInList : listOnline) {
+            System.out.println(userInList.getPseudo());
+        }
+        for (User userInList : listOnline) {
+            if (Objects.equals(userInList.getIP(), IP)) {
+                userInList.setPseudo(pseudo);
+                System.out.println("Pseudo updated : " + pseudo);
+            }
+        }
+        //print la liste
+        System.out.println("Liste des utilisateurs connectés : ");
+        for (User userInList : listOnline) {
+            System.out.println(userInList.getPseudo());
+        }
     }
 
     /**
@@ -289,7 +319,6 @@ public class UserController {
                     localIP = current_addr.getHostAddress();
                     if (localIP.contains("192.168.56.")) continue;
                     if (localIP.contains(":")) continue;
-                    System.out.println(localIP);
                     return localIP;
                 }
             }
@@ -301,7 +330,7 @@ public class UserController {
 
     /**
      * Get a user from the listOnline with his IP
-     * @param String ip
+     * @param ip
      */
     public static User getUserByIP(String ip){
         for (User user : listOnline){
@@ -314,6 +343,10 @@ public class UserController {
 
     public static void addMyUser(){
         listOnline.add(0,myUser);
+    }
+
+    public static void updateMyUser() {
+        listOnline.set(0,myUser);
     }
 
     public static void close(){
@@ -363,7 +396,7 @@ public class UserController {
 
     //TODO : Just for test, to delete
     public static void testListOnline() {
-        listOnline.add(new User(getLocalIP(), "me(test)"));
+        listOnline.add(new User("192.168.2.3", "me(test)"));
     }
 
     //TODO : Just for test, to delete

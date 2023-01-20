@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static controller.UserController.getMyUser;
-import static view.SceneController.pseudoValid;
 
 public class ParametersFrame {
 
@@ -24,13 +23,12 @@ public class ParametersFrame {
     }
 
     public void changePseudoClick(ActionEvent event) throws IOException {
-        pseudoValid(event, textFieldPseudo, textPseudoNotValid);
+        SceneController.changePseudo(event, textFieldPseudo, textPseudoNotValid);
     }
 
     public void disconnectClick(ActionEvent event) throws IOException {
         SceneController.switchToLoginScene(event.getSource());
-        //TODO: remove the commentaries when the tests will be over
-        //UserController.sendDisconnect();;
+        UserController.sendDisconnect();;
     }
 
 

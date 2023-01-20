@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import database.DatabaseManager;
 import model.*;
 import network.*;
+import view.MainFrame;
 
 /**
  * This class represents the session controller.
@@ -16,9 +17,10 @@ import network.*;
 public class SessionController {
 
     public static final int PORT = 6789;
-    private static TCPListener tcpListener;
+    public static TCPListener tcpListener;
     //table of all the sessions sockets
     public static ArrayList<TCPSession> sessionsList;
+
 
     /**
      * Constructor
@@ -32,10 +34,11 @@ public class SessionController {
      * Initialise le controller et crée un listener TCP qui va permettre de créer des sessions TCP.
      * A appeler lorsqu'on passe a l'ecran de chat.
      */
-    public static void initialize(){
+    public static void initialize() {
         //start TCP listener
         tcpListener = new TCPListener(PORT);
         sessionsList = new ArrayList<TCPSession>();
+
     }
     /**
      * Create a new TCP session with the other user.
@@ -141,7 +144,9 @@ public class SessionController {
         sessionsList.remove(session);
     }
 
+    //TODO:change
     public static void closeSession(User user){
+        System.out.println("close session with " + user.getPseudo());
         TCPSession session = getSessionWithPseudo(user.getPseudo());
         session.closeSession();
         sessionsList.remove(session);
@@ -154,9 +159,9 @@ public class SessionController {
         sessionsList.clear();
     }
 
+
     public static void close(){
         closeAllSessions();
-        tcpListener.closeListner();
+        tcpListener.closeListener();
     }
-
 }
