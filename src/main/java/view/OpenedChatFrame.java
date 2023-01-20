@@ -12,8 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import model.Message;
+import model.User;
 import network.TCPSession;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static database.DatabaseManager.findListOfMessage;
@@ -62,21 +64,6 @@ public class OpenedChatFrame extends AnchorPane {
         vboxChat.heightProperty().addListener(observable -> scrollPane.setVvalue(1D));
         updateChat();
     }
-    /*
-    public void initObservableHistory(){
-        observableHistory = FXCollections.observableArrayList(DatabaseManager.getHistory(chatter.getIP()));
-        System.out.println("observableHistory = " + observableHistory);
-        observableHistory.addListener((ListChangeListener<Message>) c -> {
-            while (c.next()) {
-                if (c.wasAdded()) {
-                    for (Message m : c.getAddedSubList()) {
-                        receiveMessage(m);
-                    }
-                }
-            }
-        });
-    }
-    */
     public void setHistory() {
         listDisplayed = getHistory(chatter.getIP());
         labelTest.setText("History of " + chatter.getPseudo() + " generated");
@@ -127,6 +114,10 @@ public class OpenedChatFrame extends AnchorPane {
     public void hideChatPane() {
         session.setOpenDisplay(false);
         parentController.hidePane();
+    }
+
+    public void updateChatPane() throws IOException {
+        parentController.updateChatPane();
     }
 
     public void closeChatSession(){

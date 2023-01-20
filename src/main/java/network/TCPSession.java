@@ -152,7 +152,11 @@ public class TCPSession extends Thread{
                                 System.out.println(session.getUserDist().getPseudo());
                             }
                             if (isOpenDisplayed) {
-                                openedFrame.hideChatPane();
+                                try {
+                                    openedFrame.updateChatPane();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         }
                     });
