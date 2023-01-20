@@ -59,7 +59,7 @@ public class MainFrame {
 
         if (!hasRunAtom.getAndSet(true)) {
             System.out.println("+++++ Session Control initialize +++++");
-            SessionController.initialize();
+
         }
         SessionController.tcpListener.setFrame(this);
     }

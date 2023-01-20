@@ -159,7 +159,6 @@ public class SessionController {
         sessionsList.clear();
     }
 
-
     public static void close(){
         closeAllSessions();
         tcpListener.closeListener();

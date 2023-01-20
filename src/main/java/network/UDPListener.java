@@ -66,6 +66,8 @@ public class UDPListener extends Thread {
                         });
                     }
                 } catch (IOException e) {
+                    Platform.exit();
+                    System.exit(0);
                     e.printStackTrace();
                 }
             }

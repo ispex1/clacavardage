@@ -30,8 +30,6 @@ public class SceneController extends Application {
     protected static Parent root;
 
     public static void main(String[] args){
-        DatabaseManager.initialize();
-        UserController.initialize();
         //TODO: remove this line, just for testing
         //if (getListOnline().isEmpty()) testListOnline();
         launch(args);
@@ -142,8 +140,10 @@ public class SceneController extends Application {
         stage.setOnCloseRequest(event -> {
             if (getMyUser().getPseudo() != null) {
                 System.out.println("Disconnected");
-                UserController.close();
+                UserController.sendDisconnect();
             }
+            SessionController.initialize();
+            UserController.close();
             Platform.exit();
             System.exit(0);
         });

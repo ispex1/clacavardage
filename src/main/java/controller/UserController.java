@@ -112,7 +112,10 @@ public class UserController {
         String msg = TypeMsg.DISCONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
         System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());
-        SessionController.close();
+        //TODO:remove?
+        //SessionController.close();
+        SessionController.closeAllSessions();
+        setMyUser(null);
         }
 
     public static void askUserList() {
@@ -350,9 +353,7 @@ public class UserController {
     }
 
     public static void close(){
-        sendDisconnect();
         udpListener.closeSocket();
-
         //pas besoin de fermer le socket udpSender, il est fermé automatiquement apres un envoi de message
     }
 
