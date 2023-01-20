@@ -37,7 +37,6 @@ public class ClosedChatFrame extends AnchorPane {
 
     public void openChatSession() throws IOException {
          parentController.openChatSession();
-         session.setClosedDisplay(false);
          System.out.println("Opening chat session with " + MainFrame.chatter.getPseudo());
     }
 
