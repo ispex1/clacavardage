@@ -1,6 +1,5 @@
 package network;
 
-import com.sun.tools.javac.Main;
 import controller.SessionController;
 import controller.UserController;
 import database.DatabaseManager;
@@ -8,7 +7,6 @@ import javafx.application.Platform;
 import model.Message;
 import model.User;
 import view.ClosedChatFrame;
-import view.MainFrame;
 import view.OpenedChatFrame;
 
 import java.io.*;
@@ -121,10 +119,10 @@ public class TCPSession extends Thread{
                     // split data to get sender receiver message and date
                     String[] dataSplit = data.split("\\|");
 
-                    String message = dataSplit[2].split(":")[1];
+                    String message = dataSplit[2].split(";")[1];
 
                     msg.setData(message);
-                    msg.setTime(dataSplit[3].split(":")[1]);
+                    msg.setTime(dataSplit[3].split(";")[1]);
                     msg.setSender(userDist);
                     msg.setReceiver(myUser);
                     //print all element of the message

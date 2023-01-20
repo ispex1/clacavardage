@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Objects;
 
 /**
  * UDPSender class is used to send UDP packets
@@ -77,7 +76,7 @@ public class UDPSender {
 
         DatagramPacket packet = null;
         try {
-            packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("192.168.1.255"), port);
+            packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("255.255.255.255"), port);
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
