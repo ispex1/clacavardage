@@ -352,6 +352,7 @@ public class UserController {
     public static void close(){
         sendDisconnect();
         udpListener.closeSocket();
+
         //pas besoin de fermer le socket udpSender, il est fermé automatiquement apres un envoi de message
     }
 

@@ -81,6 +81,7 @@ public class UDPListener extends Thread {
     // Closing the socket
     public void closeSocket(){
         socket.close();
+        setRunningState(false);
     }
     // Running state
     public boolean getRunningState(){
