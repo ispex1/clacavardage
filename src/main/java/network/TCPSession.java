@@ -149,7 +149,7 @@ public class TCPSession extends Thread{
                         public void run() {
                             sessionsList.remove(getTCPSession());
 
-                            if (isOpenDisplayed && getListOnline().contains(openedFrame.parentController.getChatter())) {
+                            if (isOpenDisplayed) {
                                 try {
                                     openedFrame.parentController.updateChatter();
                                 } catch (IOException e) {
