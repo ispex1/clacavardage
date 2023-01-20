@@ -24,9 +24,6 @@ public class ParametersFrame {
         this.parentController = parentController;
     }
 
-    public void initialize() {
-        textFieldPseudo.setPromptText(getMyUser().getPseudo());
-    }
 
     public void changePseudoClick(ActionEvent event) throws IOException {
         SceneController.changePseudo(event, textFieldPseudo, textPseudoNotValid);

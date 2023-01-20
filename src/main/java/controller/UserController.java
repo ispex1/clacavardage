@@ -300,7 +300,13 @@ public class UserController {
     public static String getLocalIP(){
         String localIP = null;
 
+        try {
+            localIP = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
+        /*
         try {
             //I want the ip adress of the computer on the network so the others can connect to me
             //I don't want the loopback address or the virtual address
@@ -323,7 +329,7 @@ public class UserController {
             }
         } catch (SocketException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         return localIP;
     }
 

@@ -80,6 +80,10 @@ public class MainFrame {
             if(openedChatController != null) openedChatController.getSession().setOpenDisplay(false);
         }
 
+        if(chatter != null) {
+            chatter = null;
+            UsersList.getSelectionModel().clearSelection();
+        }
 
         FXMLLoader parameter;
 
