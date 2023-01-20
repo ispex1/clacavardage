@@ -163,7 +163,6 @@ public class MainFrame {
         if (SessionController.isSessionWith(chatter)) {
             chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/openedChatFrame.fxml")));
             pane = chat.load();
-            pane.setDisable(false);
             mainPane.getChildren().add(pane);
             openedChatController = chat.getController();
             openedChatController.setParentController(this);

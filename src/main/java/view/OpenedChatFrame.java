@@ -43,7 +43,7 @@ public class OpenedChatFrame extends AnchorPane {
     private ArrayList<Message> listDisplayed = new ArrayList<>();
     @FXML
     public ObservableList<Message> observableHistory;
-    public static TCPSession session = SessionController.getSessionWithAdress(chatter.getIP());
+    public static TCPSession session;
 
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
@@ -51,6 +51,7 @@ public class OpenedChatFrame extends AnchorPane {
 
 
     public void initialize(){
+        session = SessionController.getSessionWithAdress(chatter.getIP());
         session.setOpenedFrame(this);
         session.setOpenDisplay(true);
         //print session information
