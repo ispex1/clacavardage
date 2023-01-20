@@ -24,7 +24,7 @@ import static view.MainFrame.chatter;
 
 public class OpenedChatFrame extends AnchorPane {
     @FXML
-    private MainFrame parentController;
+    public MainFrame parentController;
     @FXML
     private TextField fieldSearch;
     @FXML
@@ -114,10 +114,6 @@ public class OpenedChatFrame extends AnchorPane {
     public void hideChatPane() {
         session.setOpenDisplay(false);
         parentController.hidePane();
-    }
-
-    public void updateChatPane() throws IOException {
-        parentController.updateChatPane();
     }
 
     public void closeChatSession(){

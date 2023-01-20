@@ -142,10 +142,10 @@ public class MainFrame {
             if (user != null) {
                 if (user != chatter) {
                     chatter = user;
-                    updateChatPane();
                 }
             }
         }
+        updateChatPane();
     }
 
     public void updateSelection() {

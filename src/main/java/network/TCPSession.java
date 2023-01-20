@@ -147,13 +147,9 @@ public class TCPSession extends Thread{
                         @Override
                         public void run() {
                             sessionsList.remove(getTCPSession());
-                            System.out.println("Session list : ");
-                            for (TCPSession session : sessionsList) {
-                                System.out.println(session.getUserDist().getPseudo());
-                            }
                             if (isOpenDisplayed) {
                                 try {
-                                    openedFrame.updateChatPane();
+                                    openedFrame.parentController.updateChatter();
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
