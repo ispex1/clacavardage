@@ -191,7 +191,6 @@ public class MainFrame {
 
     public void openChatSession() throws IOException {
         createSession(chatter);
-        closedChatController.session.setClosedDisplay(true);
         updateChatPane();
     }
 
