@@ -142,7 +142,7 @@ public class SceneController extends Application {
                 System.out.println("Disconnected");
                 UserController.sendDisconnect();
             }
-            SessionController.initialize();
+            SessionController.close();
             UserController.close();
             Platform.exit();
             System.exit(0);
