@@ -115,6 +115,7 @@ public class UserController {
         //TODO:remove?
         //SessionController.close();
         SessionController.closeAllSessions();
+        listOnline.clear();
         setMyUser(null);
         }
 
@@ -237,6 +238,7 @@ public class UserController {
                         listOnline.add(new User(user[0],user[1]));
                     }
                 }
+                System.out.println("test");
                 //TODO : update the list of online users via the FrameController
                 break;
 
@@ -252,7 +254,7 @@ public class UserController {
 
     }
 
-    private static boolean pseudoNotPresent(String pseudo){
+    public static boolean pseudoNotPresent(String pseudo){
         for (User user : listOnline){
             if (user.getPseudo().equals(pseudo)){
                 return false;
