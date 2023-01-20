@@ -14,6 +14,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import static controller.SessionController.sessionsList;
+import static controller.UserController.getListOnline;
 
 public class TCPSession extends Thread{
 
@@ -147,7 +148,8 @@ public class TCPSession extends Thread{
                         @Override
                         public void run() {
                             sessionsList.remove(getTCPSession());
-                            if (isOpenDisplayed) {
+
+                            if (isOpenDisplayed && getListOnline().contains(openedFrame.parentController.getChatter())) {
                                 try {
                                     openedFrame.parentController.updateChatter();
                                 } catch (IOException e) {

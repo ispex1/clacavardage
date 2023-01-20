@@ -145,6 +145,8 @@ public class MainFrame {
                 }
             }
         }
+        //check if user is in the online list
+
         updateChatPane();
     }
 
