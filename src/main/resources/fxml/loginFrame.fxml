@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="783.0" prefWidth="1144.0" styleClass="login_param" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginFrame">
+<AnchorPane prefHeight="783.0" prefWidth="1144.0" styleClass="login" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginFrame">
    <children>
       <TextField fx:id="textFieldPseudo" alignment="CENTER" layoutX="674.0" layoutY="415.0" prefHeight="55.0" prefWidth="348.0" promptText="Enter your pseudo" styleClass="field_pseudo"/>
       <Button fx:id="buttonConnect" alignment="CENTER" defaultButton="true" layoutX="737.0" layoutY="552.0" mnemonicParsing="false" onAction="#connectClick" prefHeight="79.0" prefWidth="232.0" styleClass="btn_connect_pseudo" text="CONNECT">

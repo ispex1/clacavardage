@@ -32,7 +32,7 @@ public class ClosedChatFrame extends AnchorPane {
     }
 
     public void hideChatPane() {
-        parentController.hideChatPane();
+        parentController.hidePane();
     }
 
     public void openChatSession() throws IOException {

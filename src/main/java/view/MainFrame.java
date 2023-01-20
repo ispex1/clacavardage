@@ -39,12 +39,14 @@ public class MainFrame {
     @FXML
     private Pane mainPane;
     @FXML
-    private Pane chatPane;
+    private Pane pane;
 
     @FXML
     public ClosedChatFrame closedChatController;
     @FXML
     public OpenedChatFrame openedChatController;
+    @FXML
+    public ParametersFrame parametersController;
 
     //permet de savoir si le chat est ouvert ou non afin de ne pas initializer le chat deux fois (quand changement de pseudo par exemple)
     private static final AtomicBoolean hasRunAtom = new AtomicBoolean();
@@ -73,9 +75,21 @@ public class MainFrame {
     }
 
     public void parametersClick(ActionEvent event) throws IOException {
-        hideChatPane();
-        if(openedChatController != null) openedChatController.getSession().setOpenDisplay(false);
-        switchToParametersScene(event.getSource());
+        if (pane != null) {
+            mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
+            if(openedChatController != null) openedChatController.getSession().setOpenDisplay(false);
+        }
+
+
+        FXMLLoader parameter;
+
+        parameter = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/parametersFrame.fxml")));
+        pane = parameter.load();
+        mainPane.getChildren().add(pane);
+        parametersController = parameter.getController();
+        parametersController.setParentController(this);
+        pane.setLayoutX(656);
+        pane.setLayoutY(142);
     }
 
     public void easterEgg() {
@@ -137,38 +151,39 @@ public class MainFrame {
     public void updateChatPane() throws IOException {
         FXMLLoader chat;
 
-        if (chatPane != null) mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
+        if (pane != null) mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
 
         if (SessionController.isSessionWith(chatter)) {
             chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/openedChatFrame.fxml")));
-            chatPane = chat.load();
-            chatPane.setDisable(false);
-            mainPane.getChildren().add(chatPane);
+            pane = chat.load();
+            pane.setDisable(false);
+            mainPane.getChildren().add(pane);
             openedChatController = chat.getController();
             openedChatController.setParentController(this);
         }
         else {
             chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/closedChatFrame.fxml")));
-            chatPane = chat.load();
-            chatPane.setDisable(false);
-            mainPane.getChildren().add(chatPane);
+            pane = chat.load();
+            mainPane.getChildren().add(pane);
             closedChatController = chat.getController();
             closedChatController.setParentController(this);
         }
 
-        chatPane.setLayoutX(407);
-        chatPane.setLayoutY(142);
+        pane.setLayoutX(407);
+        pane.setLayoutY(142);
     }
 
-    public void hideChatPane() {
-        if (chatPane != null) {
+    public void hidePane() {
+        if (pane != null) {
             System.out.println("hide");
             mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
-            chatPane = null;
+            pane = null;
             UsersList.getSelectionModel().clearSelection();
         }
         chatter = null;
     }
+
+
 
     public void openChatSession() throws IOException {
         createSession(chatter);
@@ -178,7 +193,7 @@ public class MainFrame {
 
     public void closeChatSession(){
         closeSession(chatter);
-        hideChatPane();
+        hidePane();
     }
 
     public User getChatter() {
@@ -186,6 +201,6 @@ public class MainFrame {
     }
 
     public boolean isShowing() {
-        return chatPane != null;
+        return pane != null;
     }
 }

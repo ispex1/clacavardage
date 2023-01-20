@@ -125,7 +125,7 @@ public class OpenedChatFrame extends AnchorPane {
 
     public void hideChatPane() {
         session.setOpenDisplay(false);
-        parentController.hideChatPane();
+        parentController.hidePane();
     }
 
     public void closeChatSession(){
