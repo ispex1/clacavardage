@@ -14,9 +14,15 @@ import static controller.UserController.getMyUser;
 public class ParametersFrame {
 
     @FXML
+    private MainFrame parentController;
+    @FXML
     private TextField textFieldPseudo;
     @FXML
     private Text textPseudoNotValid;
+
+    public void setParentController(MainFrame parentController) {
+        this.parentController = parentController;
+    }
 
     public void initialize() {
         textFieldPseudo.setPromptText(getMyUser().getPseudo());
@@ -24,6 +30,10 @@ public class ParametersFrame {
 
     public void changePseudoClick(ActionEvent event) throws IOException {
         SceneController.changePseudo(event, textFieldPseudo, textPseudoNotValid);
+    }
+
+    public void hideParametersPane() {
+        parentController.hidePane();
     }
 
     public void disconnectClick(ActionEvent event) throws IOException {

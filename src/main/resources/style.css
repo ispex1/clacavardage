@@ -3,8 +3,19 @@
 
 /* ################################## LOGIN & PARAMETERS ################################## */
 
-.login_param {
+.login {
     -fx-background-image:url('/images/background_login.jpg');
+}
+
+.parameters {
+    -fx-background-image:url('/images/background_parameters.jpg');
+}
+
+.label_parameters {
+    -fx-font-family: 'Jomhuria', 'cursive';
+    -fx-font-style: normal;
+    -fx-font-size: 100 px;
+    -fx-text-fill: #000000;
 }
 
 .field_pseudo{
