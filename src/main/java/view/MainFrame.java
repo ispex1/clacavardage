@@ -163,7 +163,7 @@ public class MainFrame {
             pane = null;
         }
 
-        if (chatter == null) hidePane();
+        if (!getListOnline().contains(chatter)) hidePane();
 
         if (SessionController.isSessionWith(chatter)) {
             chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/openedChatFrame.fxml")));

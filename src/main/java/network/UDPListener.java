@@ -57,11 +57,13 @@ public class UDPListener extends Thread {
                                 if(frame.getChatter()!=null){
                                     try {
                                         frame.updateChatPane();
+                                        System.out.println(frame.getChatter().getPseudo());
                                         frame.updateSelection();
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
                                     }
                                 }
+                                else frame.hidePane();
                             }
                         });
                     }
