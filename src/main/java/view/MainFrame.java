@@ -155,7 +155,10 @@ public class MainFrame {
     public void updateChatPane() throws IOException {
         FXMLLoader chat;
 
-        if (pane != null) mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
+        if (pane != null){
+            mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
+            pane = null;
+        }
 
         if (SessionController.isSessionWith(chatter)) {
             chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/openedChatFrame.fxml")));
