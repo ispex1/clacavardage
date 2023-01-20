@@ -35,7 +35,7 @@ public class ParametersFrame {
 
     public void disconnectClick(ActionEvent event) throws IOException {
         SceneController.switchToLoginScene(event.getSource());
-        UserController.sendDisconnect();;
+        UserController.close();
     }
 
 

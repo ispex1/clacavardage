@@ -72,6 +72,9 @@ public class MainFrame {
                 UsersList.getItems().add(user.getPseudo());
             }
         }
+        if (!getListOnline().contains(chatter)) {
+            chatter=null;
+        }
     }
 
     public void parametersClick(ActionEvent event) throws IOException {
