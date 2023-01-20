@@ -136,6 +136,7 @@ public class MainFrame {
 
     public void updateChatPane() throws IOException {
         FXMLLoader chat;
+
         if (chatPane != null) mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
 
         if (SessionController.isSessionWith(chatter)) {
@@ -171,6 +172,7 @@ public class MainFrame {
 
     public void openChatSession() throws IOException {
         createSession(chatter);
+        closedChatController.session.setClosedDisplay(true);
         updateChatPane();
     }
 
