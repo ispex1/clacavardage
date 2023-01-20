@@ -112,7 +112,11 @@ public class UserController {
         String msg = TypeMsg.DISCONNECT+"|IP:" + myUser.getIP() + "|Pseudo:" + myUser.getPseudo();
         System.out.println(msg);
         UDPSender.sendBroadcast(msg, myUser.getPort());
-        SessionController.close();
+        //TODO:remove?
+        //SessionController.close();
+        SessionController.closeAllSessions();
+        listOnline.clear();
+        setMyUser(null);
         }
 
     public static void askUserList() {
@@ -234,6 +238,7 @@ public class UserController {
                         listOnline.add(new User(user[0],user[1]));
                     }
                 }
+                System.out.println("test");
                 //TODO : update the list of online users via the FrameController
                 break;
 
@@ -249,7 +254,7 @@ public class UserController {
 
     }
 
-    private static boolean pseudoNotPresent(String pseudo){
+    public static boolean pseudoNotPresent(String pseudo){
         for (User user : listOnline){
             if (user.getPseudo().equals(pseudo)){
                 return false;
@@ -350,7 +355,6 @@ public class UserController {
     }
 
     public static void close(){
-        sendDisconnect();
         udpListener.closeSocket();
         //pas besoin de fermer le socket udpSender, il est fermé automatiquement apres un envoi de message
     }

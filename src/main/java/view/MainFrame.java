@@ -59,7 +59,7 @@ public class MainFrame {
 
         if (!hasRunAtom.getAndSet(true)) {
             System.out.println("+++++ Session Control initialize +++++");
-            SessionController.initialize();
+
         }
         SessionController.tcpListener.setFrame(this);
     }
@@ -71,6 +71,9 @@ public class MainFrame {
             if (!user.equals(getMyUser())) {
                 UsersList.getItems().add(user.getPseudo());
             }
+        }
+        if (!getListOnline().contains(chatter)) {
+            chatter=null;
         }
     }
 
@@ -138,14 +141,14 @@ public class MainFrame {
     public void updateChatter() throws IOException {
         String pseudo = UsersList.getSelectionModel().getSelectedItem();
         if (pseudo != null) {
+            System.out.println("test test test test");
             User user = UserController.getUserByPseudo(pseudo);
-            if (user != null) {
-                if (user != chatter) {
-                    chatter = user;
-                    updateChatPane();
-                }
+            if (user != chatter) {
+                chatter = user;
             }
         }
+        //check if user is in the online list
+        updateChatPane();
     }
 
     public void updateSelection() {
@@ -159,6 +162,8 @@ public class MainFrame {
             mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
             pane = null;
         }
+
+        if (chatter == null) hidePane();
 
         if (SessionController.isSessionWith(chatter)) {
             chat = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/openedChatFrame.fxml")));

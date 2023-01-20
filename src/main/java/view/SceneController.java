@@ -30,10 +30,8 @@ public class SceneController extends Application {
     protected static Parent root;
 
     public static void main(String[] args){
-        DatabaseManager.initialize();
-        UserController.initialize();
         //TODO: remove this line, just for testing
-        if (getListOnline().isEmpty()) testListOnline();
+        //if (getListOnline().isEmpty()) testListOnline();
         launch(args);
     }
 
@@ -97,6 +95,7 @@ public class SceneController extends Application {
 
     public static void tryConnect(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
         String pseudo = textFieldPseudo.getText().trim();
+        System.out.println(pseudo);
 
         UserController.askUserList();
 
@@ -107,18 +106,22 @@ public class SceneController extends Application {
             boolean pseudoValid = true;
             for (User user : getListOnline()) {
                 if (user.getPseudo().equals(pseudo)) {
+                    System.out.println("..........");
                     pseudoValid = false;
                     getListOnline().clear();
                     break;
                 }
             }
-            if (pseudoValid) {
+            if (UserController.pseudoNotPresent(pseudo)) {
                 setMyUser(pseudo);
                 UserController.addMyUser();
                 UserController.sendConnect();
                 System.out.println("Connected");
                 switchToMainScene(event.getSource());
-            } else textPseudoNotValid.setText("This pseudo is already taken");
+            } else {
+                getListOnline().clear();
+                textPseudoNotValid.setText("This pseudo is already taken");
+            }
         }
     }
 
@@ -144,6 +147,8 @@ public class SceneController extends Application {
                 System.out.println("Disconnected");
                 UserController.sendDisconnect();
             }
+            SessionController.close();
+            UserController.close();
             Platform.exit();
             System.exit(0);
         });
