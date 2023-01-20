@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="747.0" prefWidth="1365.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ClosedChatFrame">
+   <children>
+      <ImageView fitHeight="751.0" fitWidth="1369.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/background_chat.png" />
+         </image>
+      </ImageView>
+      <Rectangle fill="#dff53a" height="56.0" layoutX="3.0" layoutY="3.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="1351.0" />
+      <ImageView fitHeight="291.0" fitWidth="403.0" layoutX="508.0" layoutY="92.0" onMouseClicked="#easterEgg" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/chat.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </ImageView>
+      <Button defaultButton="true" layoutX="517.0" layoutY="537.0" mnemonicParsing="false" onAction="#openChatSession" prefHeight="99.0" prefWidth="360.0" styleClass="btn_open_chat" text="OPEN CHAT SESSION">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Circle fill="#f88cd7" layoutX="1326.0" layoutY="30.0" onMouseClicked="#hideChatPane" radius="22.0" stroke="BLACK" strokeType="INSIDE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Circle>
+      <Line endX="1216.0" endY="-1.0" layoutX="138.0" layoutY="60.0" startX="-135.0" startY="-1.0" />
+      <Label fx:id="labelPseudo" alignment="CENTER" layoutX="285.0" layoutY="426.0" prefHeight="93.0" prefWidth="856.0" styleClass="label_pseudo"/>
+   </children>
+</AnchorPane>
