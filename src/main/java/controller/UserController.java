@@ -400,7 +400,7 @@ public class UserController {
 
     //TODO : Just for test, to delete
     public static void testListOnline() {
-        listOnline.add(new User("192.168.2.3", "me(test)"));
+        listOnline.add(new User(getLocalIP(), "me"));
     }
 
     //TODO : Just for test, to delete

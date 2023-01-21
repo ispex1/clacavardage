@@ -93,6 +93,8 @@ public class OpenedChatFrame extends AnchorPane {
 
     public void sendMessage(){
         String message = fieldMessage.getText().trim();
+
+        message = message.replace(";", " ");
         if(!message.isEmpty()){
             fieldMessage.clear();
             Message msg = new Message(UserController.getMyUser(), chatter, message);

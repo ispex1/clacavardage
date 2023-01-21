@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import model.User;
 import network.UDPListener;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -139,6 +140,7 @@ public class MainFrame {
      *
      */
     public void updateChatter() throws IOException {
+
         String pseudo = UsersList.getSelectionModel().getSelectedItem();
         if (pseudo != null) {
             System.out.println("test test test test");
@@ -198,7 +200,6 @@ public class MainFrame {
 
     public void openChatSession() throws IOException {
         createSession(chatter);
-        updateChatPane();
     }
 
     public void closeChatSession(){
