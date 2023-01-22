@@ -173,6 +173,20 @@ public class DatabaseManager {
             System.out.println(e.getMessage());
         }
     }
+
+    public static void deletteAllMessages(String idOther) {
+        // SQL statement for deleting a message
+        String sql = "DELETE FROM id_" + idOther.replace(".","_");
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.executeUpdate(); // Delete the message
+                System.out.println("All messages have been successfully deleted");
+        } catch (SQLException e) {
+            System.out.println("Error deleting a message");
+            System.out.println(e.getMessage());
+        }
+    }
     
     /**
      * This method returns an ArrayList of all the messages's index
