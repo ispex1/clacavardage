@@ -2,9 +2,11 @@
 
 ### TODO List
 
+AJOUTER TESTS JENKINS + FINIR LA DOC 
+
 1. Bugs a regler
     - En boucle : 
-   
+
             [SQLITE_CONSTRAINT_NOTNULL] A NOT NULL constraint failed (NOT NULL constraint failed: id_192_168_1_84.message)
             <Session | 33 >  Message recu : null
     - Quand l'utilisateur distant ferme la conv
