@@ -70,7 +70,7 @@
 }
 
 .list_users {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #DCDCDC;
     -fx-font-family: 'Jomhuria', 'cursive';
     -fx-font-style: normal;
     -fx-font-size: 40px;
@@ -94,8 +94,9 @@
     -fx-effect: dropshadow( gaussian , #000000 , 0,0,6,6 );
 }
 
-.list-view .scroll-bar:vertical {
-    -fx-padding: -50; -fx-opacity: 0;
+.scroll-bar {
+    -fx-padding: -25; -fx-opacity: 0
+
 }
 
 /* ################################## CHAT ################################## */
@@ -133,18 +134,8 @@
     -fx-font-size: 30px;
 }
 
-.scroll-pane {
-    -fx-background-insets: 0;
-    -fx-padding: 0;
-}
 
-.scroll-pane:focused {
-    -fx-background-insets: 0;
-}
 
-.scroll-pane .corner {
-    -fx-background-insets: 0;
-}
 
 .chat {
     -fx-background-color:#FFFFFF;
@@ -160,6 +151,8 @@
 .VBox {
     -fx-background-color:#FFFFFF;
 }
+
+
 
 
 
