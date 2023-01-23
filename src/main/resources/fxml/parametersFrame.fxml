@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="753.0" prefWidth="753.0" styleClass="parameters" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ParametersFrame">
+<AnchorPane prefHeight="753.0" prefWidth="753.0" styleClass="parameters" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ParametersFrame">
    <children>
       <TextField fx:id="textFieldPseudo" alignment="CENTER" layoutX="201.0" layoutY="383.0" prefHeight="55.0" prefWidth="348.0" promptText="Enter your new pseudo" styleClass="field_pseudo" />
       <Button alignment="CENTER" defaultButton="true" layoutX="264.0" layoutY="549.0" mnemonicParsing="false" onAction="#changePseudoClick" prefHeight="79.0" prefWidth="232.0" styleClass="btn_connect_pseudo" stylesheets="@../style.css" text="CHANGE PSEUDO">

@@ -19,7 +19,6 @@ public class LoginFrame {
     private static final AtomicBoolean hasRunAtom = new AtomicBoolean();
 
     public void initialize(){
-        System.out.println("TEST");
         if (!hasRunAtom.getAndSet(true)) {
             DatabaseManager.initialize();
             SessionController.initialize();

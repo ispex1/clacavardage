@@ -14,14 +14,13 @@ public class TCPListener extends Thread {
     private boolean isRunning;
     private int port;
     private ServerSocket serverSocket;
-
     private MainFrame frame;
     
 
     /**
      * Constructor of the TCPListener class
      * TCP Listener is just a thread that listen for incoming TCP connections
-     * @param port
+     * @param port , the port to listen to
      */
     public TCPListener(int port){
         setPort(port);
@@ -42,30 +41,19 @@ public class TCPListener extends Thread {
 
                 SessionController.sessionCreated(link);
 
-                System.out.println("===update frame===");
                 if (this.frame != null && this.frame.isShowing()) {
-                    System.out.println("MARCHEEEEEEE");
-                    Platform.runLater(new Runnable(){
-                        @Override
-                        public void run() {
-                            System.out.println("runnnnnnn");
-                            try {
-                                frame.updateChatPane();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                    Platform.runLater(() -> {
+                        try {
+                            frame.updateChatPane();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
                     });
-                    System.out.println("===frame updated ?===");
                 }
-                //System.out.println("<Listener | "+ Thread.currentThread().getId() + " > : Socket printing\n" + link.toString());
-                //TCPSession session = new TCPSession(link, UserController.getMyUser());
-                //sessionsList.add(session);// a verifier
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            if (isRunning) e.printStackTrace();
         }
-
     }
 
     public void closeListener(){
@@ -76,29 +64,10 @@ public class TCPListener extends Thread {
             e.printStackTrace();
         }
     }
-
-    
-
-    // ** GETTERS AND SETTERS**
-    public boolean isRunning() {
-        return isRunning;
-    }
-    public void setRunning(boolean isRunning) {
-        this.isRunning = isRunning;
-    }
-    public int getPort() {
-        return port;
-    }
     public void setPort(int port) {
         this.port = port;
     }
     public void setFrame(MainFrame frame) {
         this.frame = frame;
-    }
-    public ServerSocket getSocket(){
-        return serverSocket;
-    }
-    public void setSocket(ServerSocket serverSocket){
-        this.serverSocket = serverSocket;
     }
 }

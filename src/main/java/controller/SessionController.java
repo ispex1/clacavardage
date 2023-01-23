@@ -1,14 +1,15 @@
 package controller;
 
+import database.DatabaseManager;
+import model.Message;
+import model.User;
+import network.TCPListener;
+import network.TCPSession;
+
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
-import database.DatabaseManager;
-import model.*;
-import network.*;
-import view.MainFrame;
 
 /**
  * This class represents the session controller.
@@ -37,7 +38,7 @@ public class SessionController {
     public static void initialize() {
         //start TCP listener
         tcpListener = new TCPListener(PORT);
-        sessionsList = new ArrayList<TCPSession>();
+        sessionsList = new ArrayList<>();
 
     }
     /**
@@ -55,7 +56,7 @@ public class SessionController {
             System.out.println("< SESSION CONTROLLER > : SESSION CREATED WITH " + userDist.getPseudo());
         }
         else{
-            System.out.println("User not online");
+            System.out.println("< SESSION CONTROLLER > : USER NOT ONLINE");
         }
     }
 
@@ -76,19 +77,6 @@ public class SessionController {
                 DatabaseManager.insertMessage(user.getIP(), message);
             }
         }
-    }
-
-
-    /**
-     * This method is using the deleteMessage method from the DatabaseManager class.
-     * It deletes the message in the database.
-     *
-     * @param msg
-     */
-    public void deleteMsg(Message msg, User otherUser){
-        String ipOther = otherUser.getIP();
-        int index = DatabaseManager.getIndexFromMsg(ipOther, msg);
-        DatabaseManager.deleteMessage(ipOther, index);
     }
 
     public static TCPSession getSessionWithUser(User userDist){
@@ -133,10 +121,7 @@ public class SessionController {
     }
 
     public static boolean isSessionWith(User userDist){
-        if (getSessionWithUser(userDist) != null){
-            return true;
-        }
-        return false;
+        return getSessionWithUser(userDist) != null;
     }
 
     public static void closeSession(TCPSession session){
@@ -148,6 +133,7 @@ public class SessionController {
     public static void closeSession(User user){
         System.out.println("close session with " + user.getPseudo());
         TCPSession session = getSessionWithPseudo(user.getPseudo());
+        assert session != null;
         session.closeSession();
         sessionsList.remove(session);
     }

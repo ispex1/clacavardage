@@ -2,7 +2,6 @@ package view;
 
 import controller.SessionController;
 import controller.UserController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -13,23 +12,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.User;
-import network.UDPListener;
 
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static controller.SessionController.closeSession;
 import static controller.SessionController.createSession;
 import static controller.UserController.getListOnline;
 import static controller.UserController.getMyUser;
-import static view.SceneController.switchToParametersScene;
 
 public class MainFrame {
-
     protected static User chatter;
     @FXML
     private Label myPseudo;
@@ -41,7 +35,6 @@ public class MainFrame {
     private Pane mainPane;
     @FXML
     private Pane pane;
-
     @FXML
     public ClosedChatFrame closedChatController;
     @FXML
@@ -49,25 +42,16 @@ public class MainFrame {
     @FXML
     public ParametersFrame parametersController;
 
-    //permet de savoir si le chat est ouvert ou non afin de ne pas initializer le chat deux fois (quand changement de pseudo par exemple)
-    private static final AtomicBoolean hasRunAtom = new AtomicBoolean();
-
     public void initialize() {
         myPseudo.setText(getMyUser().getPseudo());
         myIP.setText("IP : " + getMyUser().getIP());
         updateUsersList();
         UserController.udpListener.setFrame(this);
-
-        if (!hasRunAtom.getAndSet(true)) {
-            System.out.println("+++++ Session Control initialize +++++");
-
-        }
         SessionController.tcpListener.setFrame(this);
     }
 
     public void updateUsersList() {
         UsersList.getItems().clear();
-
         for (User user : getListOnline()) {
             if (!user.equals(getMyUser())) {
                 UsersList.getItems().add(user.getPseudo());
@@ -78,7 +62,7 @@ public class MainFrame {
         }
     }
 
-    public void parametersClick(ActionEvent event) throws IOException {
+    public void parametersClick() throws IOException {
         if (pane != null) {
             mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
             if(openedChatController != null) openedChatController.getSession().setOpenDisplay(false);
@@ -124,7 +108,8 @@ public class MainFrame {
         File jokeFile = new File("src/main/resources/jokes.txt");
         Scanner scan = new Scanner(jokeFile);
 
-        int random = (int) (Math.random() * 10);
+        //I want a random int between 0 and 50
+        int random = (int) (Math.random() * 50);
         int i = 0;
 
         while (scan.hasNextLine() && i < random) {
@@ -143,13 +128,12 @@ public class MainFrame {
 
         String pseudo = UsersList.getSelectionModel().getSelectedItem();
         if (pseudo != null) {
-            System.out.println("test test test test");
             User user = UserController.getUserByPseudo(pseudo);
             if (user != chatter) {
                 chatter = user;
             }
         }
-        //check if user is in the online list
+
         updateChatPane();
     }
 
@@ -188,7 +172,6 @@ public class MainFrame {
 
     public void hidePane() {
         if (pane != null) {
-            System.out.println("hide");
             mainPane.getChildren().remove(mainPane.getChildren().size() - 1);
             pane = null;
             UsersList.getSelectionModel().clearSelection();
@@ -196,9 +179,7 @@ public class MainFrame {
         chatter = null;
     }
 
-
-
-    public void openChatSession() throws IOException {
+    public void openChatSession(){
         createSession(chatter);
     }
 

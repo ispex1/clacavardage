@@ -2,7 +2,6 @@ package view;
 
 import controller.SessionController;
 import controller.UserController;
-import database.DatabaseManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,9 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import model.User;
-import network.TCPSession;
-
 import java.io.IOException;
 import java.util.Objects;
 
@@ -31,7 +27,7 @@ public class SceneController extends Application {
 
     public static void main(String[] args){
         //TODO: remove this line, just for testing
-        //if (getListOnline().isEmpty()) testListOnline();
+        if (getListOnline().isEmpty()) testListOnline();
         launch(args);
     }
 
@@ -65,63 +61,29 @@ public class SceneController extends Application {
         else if (pseudo.isEmpty()) textPseudoNotValid.setText("Please enter a pseudo");
         else if (pseudo.length() > 15) textPseudoNotValid.setText("This pseudo is too long");
         else if (!pseudo.matches("[a-zA-Z0-9]+")) textPseudoNotValid.setText("Only letters and numbers");
-        else {
-            boolean pseudoValid = true;
-            for (User user : getListOnline()) {
-                if (user.getPseudo().equals(pseudo)) {
-                    pseudoValid = false;
-                    break;
-                }
-            }
-            if (pseudoValid) {
+        else if (UserController.pseudoNotPresent(pseudo)) {
                 setMyUser(pseudo);
                 UserController.updateMyUser();
                 UserController.sendPseudo(pseudo);
-
-                //print list online
-                System.out.println("List online :");
-                for (User user : getListOnline()) {
-                    System.out.println(user.getPseudo());
-                }
-                //print session list
-                System.out.println("Session list :");
-                for (TCPSession session : SessionController.sessionsList) {
-                    System.out.println(session.getUserDist().getPseudo());
-                }
                 switchToMainScene(event.getSource());
-            } else textPseudoNotValid.setText("This pseudo is already taken");
-        }
+        } else textPseudoNotValid.setText("This pseudo is already taken");
     }
 
     public static void tryConnect(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
         String pseudo = textFieldPseudo.getText().trim();
-        System.out.println(pseudo);
-
         UserController.askUserList();
 
         if (pseudo.isEmpty()) textPseudoNotValid.setText("Please enter a pseudo");
         else if (pseudo.length() > 15) textPseudoNotValid.setText("This pseudo is too long");
         else if (!pseudo.matches("[a-zA-Z0-9]+")) textPseudoNotValid.setText("Only letters and numbers");
-        else {
-            boolean pseudoValid = true;
-            for (User user : getListOnline()) {
-                if (user.getPseudo().equals(pseudo)) {
-                    System.out.println("..........");
-                    pseudoValid = false;
-                    getListOnline().clear();
-                    break;
-                }
-            }
-            if (UserController.pseudoNotPresent(pseudo)) {
+        else if (UserController.pseudoNotPresent(pseudo)) {
                 setMyUser(pseudo);
                 UserController.addMyUser();
                 UserController.sendConnect();
-                System.out.println("Connected");
                 switchToMainScene(event.getSource());
-            } else {
+        } else {
                 getListOnline().clear();
                 textPseudoNotValid.setText("This pseudo is already taken");
-            }
         }
     }
 
@@ -144,7 +106,6 @@ public class SceneController extends Application {
 
         stage.setOnCloseRequest(event -> {
             if (getMyUser().getPseudo() != null) {
-                System.out.println("Disconnected");
                 UserController.sendDisconnect();
             }
             SessionController.close();
@@ -158,12 +119,6 @@ public class SceneController extends Application {
         root = FXMLLoader.load(Objects.requireNonNull(MainFrame.class.getResource("/fxml/mainFrame.fxml")));
         switchScene(eventSource);
         stage.setTitle("Clac Chat - Main Page");
-    }
-
-    public static void switchToParametersScene(Object eventSource) throws IOException {
-        root = FXMLLoader.load(Objects.requireNonNull(ParametersFrame.class.getResource("/fxml/parametersFrame.fxml")));
-        switchScene(eventSource);
-        stage.setTitle("Clac Chat - Parameters");
     }
 
     public static void switchToLoginScene(Object eventSource) throws IOException {

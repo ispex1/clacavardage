@@ -34,10 +34,6 @@ public class testMain{
     //TODO : harmoniser le code, static au bon endroit, private public, get set, nom de fonction etc
     //TODO : Jenkins
 
-    // test UserController
-
-
-
     // test Network
     private static void testNetwork(){
         //test UDP

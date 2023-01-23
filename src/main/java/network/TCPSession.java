@@ -6,7 +6,6 @@ import database.DatabaseManager;
 import javafx.application.Platform;
 import model.Message;
 import model.User;
-import view.ClosedChatFrame;
 import view.OpenedChatFrame;
 
 import java.io.*;
@@ -14,7 +13,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import static controller.SessionController.sessionsList;
-import static controller.UserController.getListOnline;
 
 public class TCPSession extends Thread{
 
@@ -23,21 +21,17 @@ public class TCPSession extends Thread{
     private InputStream inputStream;
     private OutputStream outputStream;
     private boolean isRunning;
-    private PrintWriter writer;
-    private BufferedReader bufferedReader;
-    private User userDist;
-    private User myUser = UserController.getMyUser();
-    private Message msg = new Message();
+    private final PrintWriter writer;
+    private final BufferedReader bufferedReader;
+    private final User userDist;
+    private final User myUser = UserController.getMyUser();
+    private final Message msg = new Message();
     public Boolean isOpenDisplayed = false;
-    public Boolean isClosedDisplayed = false;
     private view.OpenedChatFrame openedFrame;
-    private view.ClosedChatFrame closedFrame;
-
-
 
     /**
      * Constructor of the TCPSession when a user start a session with us
-     * @param link
+     * @param link , the socket of the connection
      */
     public TCPSession(Socket link) {
         setSocket(link);
@@ -57,6 +51,7 @@ public class TCPSession extends Thread{
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession asked by " + link.getInetAddress().getHostAddress());
 
         //creating a table in the DB, SQL will check if the table already exists
+        assert userDist != null;
         DatabaseManager.createNewConvo(userDist.getIP());
         start();
     }
@@ -64,28 +59,24 @@ public class TCPSession extends Thread{
     /**
      * Constructor of the TCPSession when we start a session with a user
      */
-    public TCPSession(User userdist) {
-        this.userDist = userdist;
+    public TCPSession(User userDist) {
+        this.userDist = userDist;
         try {
-            setSocket(new Socket(InetAddress.getByName(userdist.getIP()), SessionController.PORT));
+            setSocket(new Socket(InetAddress.getByName(userDist.getIP()), SessionController.PORT));
             setInputStream(socket.getInputStream());
             setOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         //Input buffer setup
         InputStreamReader reader = new InputStreamReader(inputStream);
         bufferedReader = new BufferedReader(reader);
         //Output buffer setup
         writer = new PrintWriter(outputStream, true);
-        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userdist.getIP() + " on port " + SessionController.PORT);
+        System.out.println("<Session | "+ Thread.currentThread().getId() +" > : Trying to connect to " + userDist.getIP() + " on port " + SessionController.PORT);
 
-        //on creer une table dans la BDD, c'est le code SQL qui se charge de verifier si la table existe deja
-        DatabaseManager.createNewConvo(userdist.getIP());
-        //starting the thread
+        DatabaseManager.createNewConvo(userDist.getIP());
         start();
-
     }
 
     public void sendMessage(String data){
@@ -102,18 +93,9 @@ public class TCPSession extends Thread{
      */
     public void run(){
         setRunning(true);
-        String data = null;
-        //Message msg;
+        String data;
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is running, a connection has been established");
         while(isRunning){
-            if (isClosedDisplayed) {
-                try {
-                    closedFrame.updateChatPane();
-                    System.out.println("JE SUIS DANS LE IF");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
             try {
                 data = bufferedReader.readLine();
                 if (data != null) {
@@ -130,31 +112,19 @@ public class TCPSession extends Thread{
                     System.out.println("<Session | " + Thread.currentThread().getId() + " > : Message received from " + msg.getSender().getPseudo() + " : " + msg.getData());
 
                     DatabaseManager.insertMessage(userDist.getIP(), msg);
-                    System.out.println("Open frame : " + isOpenDisplayed);
                     if (isOpenDisplayed) {
-                        System.out.println("CUCUUUUUUUU");
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                System.out.println("ruuuuuuuuuuuuuuuuuun fumier");
-                                openedFrame.receiveMessage(msg);
-                            }
-                        });
+                        Platform.runLater(() -> openedFrame.receiveMessage(msg));
                     }
-                    System.out.println("PROUT PROUT");
                 } else {
                     System.out.println("<Session | " + Thread.currentThread().getId() + " > : Connection closed by " + userDist.getIP());
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            sessionsList.remove(getTCPSession());
+                    Platform.runLater(() -> {
+                        sessionsList.remove(getTCPSession());
 
-                            if (isOpenDisplayed) {
-                                try {
-                                    openedFrame.parentController.updateChatter();
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                        if (isOpenDisplayed) {
+                            try {
+                                openedFrame.parentController.updateChatter();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
                             }
                         }
                     });
@@ -167,7 +137,6 @@ public class TCPSession extends Thread{
         }
         System.out.println("<Session | "+ Thread.currentThread().getId() +" > : TCPSession is closed");
     }
-
 
     public void closeSession(){
         this.isRunning = false;
@@ -189,20 +158,11 @@ public class TCPSession extends Thread{
     public void setSocket(Socket socket) {
         this.socket = socket;
     }
-    public InputStream getInputStream() {
-        return inputStream;
-    }
     public void setInputStream(InputStream inputStream) {
         this.inputStream = inputStream;
     }
-    public OutputStream getOutputStream() {
-        return outputStream;
-    }
     public void setOutputStream(OutputStream outputStream) {
         this.outputStream = outputStream;
-    }
-    public boolean isRunning() {
-        return isRunning;
     }
     public void setRunning(boolean isRunning) {
         this.isRunning = isRunning;
@@ -213,25 +173,7 @@ public class TCPSession extends Thread{
     public void setOpenDisplay(Boolean display) {
         isOpenDisplayed = display;
     }
-    public Boolean getOpenDisplay() {
-        return this.isOpenDisplayed;
-    }
     public void setOpenedFrame(OpenedChatFrame frame){
         this.openedFrame = frame;
-    }
-    public OpenedChatFrame getOpenedFrame(){
-        return openedFrame;
-    }
-    public void setClosedDisplay(Boolean display) {
-        isClosedDisplayed = display;
-    }
-    public Boolean getClosedDisplay() {
-        return this.isOpenDisplayed;
-    }
-    public void setClosedFrame(ClosedChatFrame frame){
-        this.closedFrame = frame;
-    }
-    public ClosedChatFrame getClosedFrame(){
-        return closedFrame;
     }
 }

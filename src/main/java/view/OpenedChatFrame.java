@@ -1,13 +1,9 @@
 package view;
 
-import com.sun.javafx.tk.FontLoader;
-import com.sun.javafx.tk.Toolkit;
 import controller.SessionController;
 import controller.UserController;
 import database.DatabaseManager;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,15 +11,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.Message;
-import model.User;
 import network.TCPSession;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
 
 import static database.DatabaseManager.findListOfMessage;
 import static database.DatabaseManager.getHistory;
@@ -46,26 +38,15 @@ public class OpenedChatFrame extends AnchorPane {
     private ScrollPane scrollPane;
     @FXML
     private VBox vboxChat;
-
-    private int messageCount = 0;
     private boolean searchMode = false;
-
     private ArrayList<Message> listDisplayed = new ArrayList<>();
-    @FXML
-    public ObservableList<Message> observableHistory;
     public static TCPSession session;
-
-    public void setParentController(MainFrame parentController) {
-        this.parentController = parentController;
-    }
-
 
     public void initialize(){
         session = SessionController.getSessionWithAdress(chatter.getIP());
+        assert session != null;
         session.setOpenedFrame(this);
         session.setOpenDisplay(true);
-        //print session information
-        System.out.println("Session with " + chatter.getPseudo() + " is open");
 
         fieldMessage.setPromptText("Send your message to @" + chatter.getPseudo());
         setHistory();
@@ -77,6 +58,9 @@ public class OpenedChatFrame extends AnchorPane {
         listDisplayed = getHistory(chatter.getIP());
         labelTest.setText("History with " + chatter.getPseudo() + " displayed");
     }
+    public void setParentController(MainFrame parentController) {
+        this.parentController = parentController;
+    }
 
     public TCPSession getSession(){
         return session;
@@ -85,10 +69,8 @@ public class OpenedChatFrame extends AnchorPane {
     public void updateChat(){
         vboxChat.getChildren().clear();
         for(Message message : listDisplayed) {
-            //messageCount++;
             addMessageToChat(message, message.getSender().equals(UserController.getMyUser()));
         }
-        //i want to have my cursor on the text field after the update
         fieldMessage.requestFocus();
     }
 
@@ -100,17 +82,16 @@ public class OpenedChatFrame extends AnchorPane {
         msg.setWrapText(true);
 
         Group root = new Group();
-        Label label = msg;
-        label.setStyle("-fx-padding: 20px; -fx-font-size: 25px;");
-        label.setMaxWidth(650);
-        root.getChildren().add(label);
+        msg.setStyle("-fx-padding: 20px; -fx-font-size: 25px;");
+        msg.setMaxWidth(650);
+        root.getChildren().add(msg);
         Scene scene = new Scene(root);
         root.applyCss();
         root.layout();
 
-        label.getWidth();
+        msg.getWidth();
 
-        if (label.getWidth()>=650) msg.setMaxWidth(650);
+        if (msg.getWidth()>=650) msg.setMaxWidth(650);
         else msg.setMaxWidth(USE_COMPUTED_SIZE);
 
         if(sender){
@@ -118,13 +99,13 @@ public class OpenedChatFrame extends AnchorPane {
             user.setTranslateX(1219);
 
             msg.setStyle("-fx-background-color: #F88CD7; -fx-background-radius: 30px; -fx-padding: 10 20 10 20; -fx-font-size: 25px;");
-            double translate = 1354-label.getWidth()-10;
+            double translate = 1354- msg.getWidth()-10;
             msg.setTranslateX(translate);
 
-            if (label.getWidth()<150) time.setTranslateX(1219);
+            if (msg.getWidth()<150) time.setTranslateX(1219);
             else time.setTranslateX(translate+20);
 
-            if (label.getWidth()<43) user.setTranslateX(1310);
+            if (msg.getWidth()<43) user.setTranslateX(1310);
             else user.setTranslateX(translate+20);
 
         } else {

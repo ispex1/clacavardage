@@ -7,12 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.util.Objects;
-
-import static controller.UserController.getMyUser;
 
 public class ParametersFrame {
-
     @FXML
     private MainFrame parentController;
     @FXML
@@ -23,7 +19,6 @@ public class ParametersFrame {
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
     }
-
 
     public void changePseudoClick(ActionEvent event) throws IOException {
         SceneController.changePseudo(event, textFieldPseudo, textPseudoNotValid);
@@ -37,6 +32,4 @@ public class ParametersFrame {
         SceneController.switchToLoginScene(event.getSource());
         UserController.sendDisconnect();
     }
-
-
 }

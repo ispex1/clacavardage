@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="747.0" prefWidth="1365.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ClosedChatFrame">
+<AnchorPane prefHeight="747.0" prefWidth="1365.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ClosedChatFrame">
    <children>
       <ImageView fitHeight="751.0" fitWidth="1369.0" pickOnBounds="true" preserveRatio="true">
          <image>
