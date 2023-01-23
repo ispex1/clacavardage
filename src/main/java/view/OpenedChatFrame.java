@@ -75,7 +75,7 @@ public class OpenedChatFrame extends AnchorPane {
     }
     public void setHistory() {
         listDisplayed = getHistory(chatter.getIP());
-        labelTest.setText("History of " + chatter.getPseudo() + " generated");
+        labelTest.setText("History with " + chatter.getPseudo() + " displayed");
     }
 
     public TCPSession getSession(){
@@ -199,13 +199,13 @@ public class OpenedChatFrame extends AnchorPane {
             searchMode = false;
             imgCross.setVisible(false);
             btnCross.setDisable(true);
-            labelTest.setText("No search to display, basic history displayed");
+            labelTest.setText("No search to display, history with " + chatter.getPseudo() +" displayed");
         } else {
             searchMode = true;
             imgCross.setVisible(true);
             btnCross.setDisable(false);
             listDisplayed = findListOfMessage(chatter.getIP(), search);
-            labelTest.setText("List of message containing " + search + " generated");
+            labelTest.setText("List of messages containing " + search + " displayed");
             updateChat();
         }
     }
@@ -216,7 +216,7 @@ public class OpenedChatFrame extends AnchorPane {
         btnCross.setDisable(true);
         fieldSearch.clear();
         listDisplayed = getHistory(chatter.getIP());
-        labelTest.setText("History of " + chatter.getPseudo() + " generated");
+        labelTest.setText("History with " + chatter.getPseudo() + " displayed");
         updateChat();
     }
 }

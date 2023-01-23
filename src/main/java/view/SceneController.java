@@ -31,7 +31,7 @@ public class SceneController extends Application {
 
     public static void main(String[] args){
         //TODO: remove this line, just for testing
-        if (getListOnline().isEmpty()) testListOnline();
+        //if (getListOnline().isEmpty()) testListOnline();
         launch(args);
     }
 

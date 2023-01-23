@@ -11,13 +11,13 @@
 
 <AnchorPane prefHeight="753.0" prefWidth="753.0" styleClass="parameters" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ParametersFrame">
    <children>
-      <TextField fx:id="textFieldPseudo" alignment="CENTER" layoutX="201.0" layoutY="383.0" prefHeight="55.0" prefWidth="348.0" promptText="Enter your pseudo" styleClass="field_pseudo" />
-      <Button alignment="CENTER" defaultButton="true" layoutX="264.0" layoutY="520.0" mnemonicParsing="false" onAction="#changePseudoClick" prefHeight="79.0" prefWidth="232.0" styleClass="btn_connect_pseudo" stylesheets="@../style.css" text="CHANGE PSEUDO">
+      <TextField fx:id="textFieldPseudo" alignment="CENTER" layoutX="201.0" layoutY="383.0" prefHeight="55.0" prefWidth="348.0" promptText="Enter your new pseudo" styleClass="field_pseudo" />
+      <Button alignment="CENTER" defaultButton="true" layoutX="264.0" layoutY="549.0" mnemonicParsing="false" onAction="#changePseudoClick" prefHeight="79.0" prefWidth="232.0" styleClass="btn_connect_pseudo" stylesheets="@../style.css" text="CHANGE PSEUDO">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
 
-      <Button alignment="CENTER" layoutX="314.0" layoutY="613.0" mnemonicParsing="false" onAction="#disconnectClick" prefHeight="37.0" prefWidth="131.0" styleClass="btn_disconnect" text="DISCONNECT">
+      <Button alignment="CENTER" layoutX="314.0" layoutY="642.0" mnemonicParsing="false" onAction="#disconnectClick" prefHeight="37.0" prefWidth="131.0" styleClass="btn_disconnect" text="DISCONNECT">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
@@ -25,8 +25,8 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Circle>
-      <Text fx:id="textPseudoNotValid" layoutX="201.0" layoutY="494.0" styleClass="txt_pseudo" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="348.0" />
+      <Text fx:id="textPseudoNotValid" layoutX="201.0" layoutY="485.0" styleClass="txt_pseudo" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="348.0" />
       <Label alignment="CENTER" layoutX="182.0" layoutY="113.0" prefHeight="146.0" prefWidth="397.0" styleClass="label_parameters" text="Parameters" />
-      <Line endX="522.0" layoutX="158.0" layoutY="284.0" startX="-100.0" />
+      <Line endX="522.0" fill="BLACK" layoutX="158.0" layoutY="284.0" startX="-100.0" />
    </children>
 </AnchorPane>
