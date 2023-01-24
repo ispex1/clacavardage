@@ -126,11 +126,7 @@ public class TCPSession extends Thread{
                         sessionsList.remove(getTCPSession());
 
                         if (isOpenDisplayed) {
-                            try {
-                                openedFrame.parentController.updateChatter();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                            openedFrame.parentController.updateChatter();
                         }
                     });
                     setRunning(false);
