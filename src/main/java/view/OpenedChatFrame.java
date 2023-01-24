@@ -1,8 +1,17 @@
 package view;
 
+import java.util.ArrayList;
+
 import controller.SessionController;
 import controller.UserController;
+import model.Message;
+import network.TCPSession;
 import database.DatabaseManager;
+
+import static database.DatabaseManager.findListOfMessage;
+import static database.DatabaseManager.getHistory;
+import static view.MainFrame.chatter;
+
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -12,14 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.Message;
-import network.TCPSession;
-
-import java.util.ArrayList;
-
-import static database.DatabaseManager.findListOfMessage;
-import static database.DatabaseManager.getHistory;
-import static view.MainFrame.chatter;
 
 public class OpenedChatFrame extends AnchorPane {
     @FXML
@@ -43,7 +44,7 @@ public class OpenedChatFrame extends AnchorPane {
     public static TCPSession session;
 
     public void initialize(){
-        session = SessionController.getSessionWithAdress(chatter.getIP());
+        session = SessionController.getSessionWithAddress(chatter.getIP());
         assert session != null;
         session.setOpenedFrame(this);
         session.setOpenDisplay(true);

@@ -6,7 +6,6 @@ import java.util.Date;
 /**
  * This class represents a message.
  * It contains the text, the time, the sender and the receiver.
- *
  */
 
 public class Message {
@@ -16,6 +15,7 @@ public class Message {
     private User receiver; // Receiver of the message
     private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss"; // Date format
 
+
     /**
      * Constructor
      */
@@ -24,7 +24,7 @@ public class Message {
 
     /**
      * Constructor
-     * @param msg
+     * @param msg , the text of the message
      */
     public Message(String msg){
         this.setData(msg);
@@ -34,9 +34,9 @@ public class Message {
 
     /**
      * Constructor
-     * @param sender
-     * @param receiver
-     * @param msg
+     * @param sender , the sender of the message
+     * @param receiver , the receiver of the message
+     * @param msg , the text of the message
      */
     public Message(User sender, User receiver, String msg){
         this.setData(msg);
@@ -48,10 +48,10 @@ public class Message {
 
     /**
      * Constructor
-     * @param sender
-     * @param receiver
-     * @param msg
-     * @param time
+     * @param sender , the sender of the message
+     * @param receiver , the receiver of the message
+     * @param msg , the text of the message
+     * @param time , the time of the message
      */
     public Message(User sender, User receiver, String msg, String time){
         this.setData(msg);
@@ -62,10 +62,8 @@ public class Message {
 
     /**
      * This method returns the message in a string format
-     * @return String
+     * @return the message in a string format
      */
-    //TODO: resolve error Method threw 'java.lang.NullPointerException' exception. Cannot evaluate model.Message.toString()
-
     public String toString(){
         return ("Sender ; "     + this.getSender().getIP()      + " | "
                 +   "Receiver ; "   + this.getReceiver().getIP()    + " | "
@@ -76,7 +74,7 @@ public class Message {
 
     /**
      * Setter for data
-     * @param data
+     * @param data , the text of the message
      */
     public void setData(String data){
         this.data = data;
@@ -84,7 +82,7 @@ public class Message {
 
     /**
      * Getter for data
-     * @return data
+     * @return data , the text of the message
      */
     public String getData(){
         return this.data;
@@ -92,7 +90,7 @@ public class Message {
 
     /**
      * Setter for time
-     * @param time
+     * @param time , the time of the message
      */
     public void setTime(String time){
         this.time = time;
@@ -100,7 +98,7 @@ public class Message {
 
     /**
      * Getter for time
-     * @return time
+     * @return time , the time of the message
      */
     public String getTime(){
         return this.time;
@@ -108,7 +106,7 @@ public class Message {
 
     /**
      * Setter for sender
-     * @param sender
+     * @param sender , the sender of the message
      */
     public void setSender(User sender){
         this.sender = sender;
@@ -116,7 +114,7 @@ public class Message {
 
     /**
      * Getter for sender
-     * @return sender
+     * @return sender , the sender of the message
      */
     public User getSender(){
         return this.sender;
@@ -124,7 +122,7 @@ public class Message {
 
     /**
      * Setter for receiver
-     * @param receiver
+     * @param receiver , the receiver of the message
      */
     public void setReceiver(User receiver){
         this.receiver = receiver;
@@ -132,7 +130,7 @@ public class Message {
 
     /**
      * Getter for receiver
-     * @return receiver
+     * @return receiver , the receiver of the message
      */
     public User getReceiver(){
         return this.receiver;

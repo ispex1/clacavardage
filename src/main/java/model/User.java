@@ -13,7 +13,7 @@ public class User {
 
     /**
      * Constructor
-     * @param ip
+     * @param ip , the IP address of the user
      */
     public User (String ip){
         this.setIP(ip);
@@ -21,8 +21,8 @@ public class User {
 
     /**
      * Constructor
-     * @param ip
-     * @param pseudo
+     * @param ip , the IP address of the user
+     * @param pseudo , the pseudo of the user
      */
     public User (String ip, String pseudo){
         this.setIP(ip);
@@ -31,7 +31,7 @@ public class User {
 
     /**
      * Setter for ip
-     * @param ip
+     * @param ip , the IP address of the user
      */
     public void setIP(String ip){
         this.ip = ip ;
@@ -39,7 +39,7 @@ public class User {
 
     /**
      * Getter for ip
-     * @return ip
+     * @return ip , the IP address of the user
      */
     public String getIP(){
         return this.ip;
@@ -48,7 +48,7 @@ public class User {
 
     /**
      * Setter for pseudo
-     * @param pseudo
+     * @param pseudo , the pseudo of the user
      */
     public void setPseudo(String pseudo){
         this.pseudo = pseudo;
@@ -56,7 +56,7 @@ public class User {
 
     /**
      * Getter for pseudo
-     * @return pseudo
+     * @return pseudo , the pseudo of the user
      */
     public String getPseudo(){
         return pseudo;
@@ -64,7 +64,7 @@ public class User {
 
     /**
      * Setter for port
-     * @param port
+     * @param port , the port of the user
      */
     public void setPort(int port){
         this.port = port;
@@ -72,7 +72,7 @@ public class User {
 
     /**
      * Getter for port
-     * @return port
+     * @return port , the port of the user
      */
     public int getPort(){
         return this.port;

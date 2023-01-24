@@ -1,7 +1,11 @@
 package view;
 
+import java.io.IOException;
+import java.util.Objects;
+
 import controller.SessionController;
 import controller.UserController;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,8 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import java.io.IOException;
-import java.util.Objects;
 
 import static controller.UserController.*;
 
@@ -69,7 +71,7 @@ public class SceneController extends Application {
         } else textPseudoNotValid.setText("This pseudo is already taken");
     }
 
-    public static void tryConnect(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
+    public static void tryConnect(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) {
         String pseudo = textFieldPseudo.getText().trim();
         UserController.askUserList();
 
@@ -80,7 +82,12 @@ public class SceneController extends Application {
                 setMyUser(pseudo);
                 UserController.addMyUser();
                 UserController.sendConnect();
-                switchToMainScene(event.getSource());
+                try {
+                    switchToMainScene(event.getSource());
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
         } else {
                 getListOnline().clear();
                 textPseudoNotValid.setText("This pseudo is already taken");

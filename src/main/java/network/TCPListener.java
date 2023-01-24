@@ -5,16 +5,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import controller.SessionController;
-import javafx.application.Platform;
 import view.MainFrame;
 
-public class TCPListener extends Thread {
+import javafx.application.Platform;
 
-    // ** ATTRIBUTES **
-    private boolean isRunning;
-    private int port;
-    private ServerSocket serverSocket;
-    private MainFrame frame;
+
+/**
+ * TCPListener class is used to listen for TCP packets on a given port,
+ * we can listen for connexion responses, changing pseudo response
+ */
+public class TCPListener extends Thread {
+    private boolean isRunning; // Boolean to know if the thread is running
+    private int port; // Port to listen on
+    private ServerSocket serverSocket; // Server socket
+    private MainFrame frame; // Main frame of the application
     
 
     /**
@@ -28,7 +32,11 @@ public class TCPListener extends Thread {
     }
 
     /**
-     * run method
+     * This method is called when the thread is started
+     * It listens for incoming TCP connections
+     * When a connection is received, it creates a new TCPSession
+     * It also adds the session to the sessions list
+     * It also updates the chat pane
      */
     public void run(){
         this.isRunning = true;
@@ -56,6 +64,11 @@ public class TCPListener extends Thread {
         }
     }
 
+    /**
+     * It stops the thread
+     * By setting the isRunning boolean to false
+     * It also closes the server socket
+     */
     public void closeListener(){
         this.isRunning = false;
         try {
@@ -64,9 +77,19 @@ public class TCPListener extends Thread {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Setter for the port
+     * @param port , the port to listen to
+     */
     public void setPort(int port) {
         this.port = port;
     }
+
+    /**
+     * Setter for the main frame
+     * @param frame , the main frame of the application
+     */
     public void setFrame(MainFrame frame) {
         this.frame = frame;
     }

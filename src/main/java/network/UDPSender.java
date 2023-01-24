@@ -16,7 +16,7 @@ public class UDPSender {
     }
 
     /**
-     * sendUDP method is used to send a UDP packet to a specific address on a specific port
+     * It send a UDP packet to a specific address on a specific port
      * @param message , string message converted to DatagramPacket
      * @param port , port to send the message
      */
@@ -52,7 +52,7 @@ public class UDPSender {
     }
 
     /**
-     * sendBroadcast method is used to send a UDP packet in broadcast
+     * It send a UDP packet in broadcast
      * @param message String message converted to DatagramPacket
      */
     public static void sendBroadcast(String message, int port) {
@@ -67,7 +67,7 @@ public class UDPSender {
         }
         byte[] buffer = message.getBytes();
 
-        // send a packet to the broadcast address
+        // Send a packet to the broadcast address
         DatagramPacket packet;
         try {
             packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("255.255.255.255"), port);

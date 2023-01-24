@@ -41,7 +41,6 @@ public class DatabaseManager {
 
     /**
      * This method creates a new database if it does not exist.
-     *  
      */
     private static void createNewDatabase() {
         try (Connection conn = DriverManager.getConnection(url)) {
@@ -56,7 +55,6 @@ public class DatabaseManager {
 
     /**
      * This method connects to the database previously created.
-     * 
      */
     private static void connect() {
         Connection conn = null;
@@ -80,7 +78,6 @@ public class DatabaseManager {
     /**
      * This method create a new table (conversation) in the database.
      * The name of the table is the id of the other user.
-     * 
      * @param idOther , the id of the other user
      */
     public static void createNewConvo(String idOther) {
@@ -106,7 +103,6 @@ public class DatabaseManager {
     /**
      * This method inserts a message in a conversation.
      * The message is inserted in the table corresponding to the id of the other user.
-     * 
      * @param idOther , the id of the other user
      * @param msg , the message to insert
      */
@@ -129,6 +125,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * This method deletes all the messages in a conversation.
+     * The messages are deleted in the table corresponding to the id of the other user.
+     * @param idOther , the id of the other user
+     */
     public static void deletteAllMessages(String idOther) {
         // SQL statement for deleting a message
         String sql = "DELETE FROM id_" + idOther.replace(".","_");
@@ -146,7 +147,6 @@ public class DatabaseManager {
     /**
      * This method returns an ArrayList of Message
      * where a specific word appears in a conversation.
-     * 
      * @param idOther , the id of the other user
      * @param data , the word to search
      * @return msgList , the ArrayList of Message
@@ -177,7 +177,6 @@ public class DatabaseManager {
 
     /**
      * This method returns the history of a conversation into an ArrayList of Message.
-     * 
      * @param idOther , the id of the other user
      * @return history , the ArrayList of Message
      */
@@ -201,5 +200,4 @@ public class DatabaseManager {
         }
         return history;
     }
-
 }
