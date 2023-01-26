@@ -24,6 +24,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * This class is the controller of the main frame of the application.
+ * It is the frame that contains the list of online users and the chat with the selected user.
+ * It is displayed when the user is connected to the server.
+ */
 public class MainFrame {
     @FXML
     private Label myPseudo; // Label of the pseudo of the user

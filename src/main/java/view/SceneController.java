@@ -22,17 +22,34 @@ import javafx.stage.Stage;
 
 import static controller.UserController.*;
 
+/**
+ * This class is the controller of the frame switcher of the application.
+ * It is the controller that check the uniqueness of the pseudo.
+ * It is the controller that switch between the different frames of the application.
+ */
 public class SceneController extends Application {
-    protected static Stage stage;
-    protected static Scene scene;
-    protected static Parent root;
+    protected static Stage stage; // The stage of the application
+    protected static Scene scene; // The scene of the application
+    protected static Parent root; // The root of the application
 
+    /**
+     * It is called when the application is launched
+     * @param args , the argument of the application
+     */
     public static void main(String[] args){
         //TODO: remove this line, just for testing
         if (getListOnline().isEmpty()) testListOnline();
         launch(args);
     }
 
+    /**
+     * It is called when the application is launched
+     * It will :
+     * Initialize the stage
+     * Initialize the scene
+     * Initialize the root
+     * @param stageStart
+     */
     public void start(Stage stageStart){
         try {
             stage = stageStart;
@@ -53,6 +70,14 @@ public class SceneController extends Application {
         }
     }
 
+    /**
+     * Method to try to change pseudo
+     * It is called when the user click on the button "Change Pseudo" in the parameters frame
+     * @param event , the event that triggered the method
+     * @param textFieldPseudo , the textField that contains the pseudo
+     * @param textPseudoNotValid , the text that display if the pseudo is not valid
+     * @throws IOException , if the switch to the main scene failed
+     */
     public static void changePseudo(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) throws IOException {
         String pseudo = textFieldPseudo.getText().trim();
 
@@ -71,6 +96,13 @@ public class SceneController extends Application {
         } else textPseudoNotValid.setText("This pseudo is already taken");
     }
 
+    /**
+     * Method to try to connect to the server
+     * Its is called when the user click on the button "Connect" in the login frame
+     * @param event , the event that triggered the method
+     * @param textFieldPseudo , the TextField to enter the pseudo
+     * @param textPseudoNotValid , the Text to display if the pseudo is not valid
+     */
     public static void tryConnect(ActionEvent event, TextField textFieldPseudo, Text textPseudoNotValid) {
         String pseudo = textFieldPseudo.getText().trim();
         UserController.askUserList();
@@ -94,6 +126,10 @@ public class SceneController extends Application {
         }
     }
 
+    /**
+     * It will switch to another scene
+     * @param eventSource
+     */
     public static void switchScene(Object eventSource){
         scene = new Scene(root);
 
@@ -102,9 +138,14 @@ public class SceneController extends Application {
         stage.show();
 
         setStage();
-
     }
 
+    /**
+     * It is called everytime the application is showing a new stage
+     * It will :
+     * Set the stage to the center of the screen
+     * Set the stage to be not resizable
+     */
     public static void setStage() {
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
@@ -122,12 +163,22 @@ public class SceneController extends Application {
         });
     }
 
+    /**
+     * It will switch to the main scene
+     * @param eventSource , the source of the event that triggered the method
+     * @throws IOException , if the switch to the main scene failed
+     */
     public static void switchToMainScene(Object eventSource) throws IOException {
         root = FXMLLoader.load(Objects.requireNonNull(MainFrame.class.getResource("/fxml/mainFrame.fxml")));
         switchScene(eventSource);
         stage.setTitle("Clac Chat - Main Page");
     }
 
+    /**
+     * It will switch to the login scene
+     * @param eventSource , the source of the event that triggered the method
+     * @throws IOException , if the switch to the login scene failed
+     */
     public static void switchToLoginScene(Object eventSource) throws IOException {
         root = FXMLLoader.load(Objects.requireNonNull(LoginFrame.class.getResource("/fxml/loginFrame.fxml")));
         switchScene(eventSource);

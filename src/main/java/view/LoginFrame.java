@@ -13,7 +13,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 /**
- * Controller of the Login Frame
+ * This class is the controller of the login frame of the application.
+ * It is the first frame that the user sees when he launches the application
+ * It is the frame where the user can connect to the server
  */
 public class LoginFrame {
     @FXML

@@ -96,7 +96,7 @@
             <Image url="@../images/oblonged.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="40.0" fitWidth="44.0" layoutX="225.0" layoutY="11.0" onMouseClicked="#askDeleteConvo" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="40.0" fitWidth="44.0" layoutX="225.0" layoutY="11.0" onMouseClicked="#deleteConvo" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/recycle-bin.png" />
          </image>

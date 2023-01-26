@@ -22,27 +22,39 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * This class is the controller of the opened chat frame.
+ * It is the frame that contains the chat with the selected user.
+ * It is displayed when the user clicks on a user in the list of online users and when the chat session is open.
+ */
 public class OpenedChatFrame extends AnchorPane {
     @FXML
-    public MainFrame parentController;
+    public MainFrame parentController; // Controller of the main frame
     @FXML
-    private TextField fieldSearch;
+    private TextField fieldSearch; // Field to search a message
     @FXML
-    private ImageView imgCross;
+    private ImageView imgCross; // Image of the cross to close the search
     @FXML
-    private Button btnCross;
+    private Button btnCross; // Button of the cross to close the search
     @FXML
-    private Label labelTest;
+    private Label labelTest; // Label of the display status
     @FXML
-    private TextField fieldMessage;
+    private TextField fieldMessage; // Field to write a message
     @FXML
-    private ScrollPane scrollPane;
+    private ScrollPane scrollPane; // ScrollPane of the chat
     @FXML
-    private VBox vboxChat;
-    private boolean searchMode = false;
-    private ArrayList<Message> listDisplayed = new ArrayList<>();
-    public static TCPSession session;
+    private VBox vboxChat; // VBox of the chat
+    private boolean searchMode = false; // Boolean to know if the search mode is activated
+    private ArrayList<Message> listDisplayed = new ArrayList<>(); // List of the messages displayed in the chat
+    public static TCPSession session; // The session with the user with whom we are currently chatting
 
+    /**
+     * Initialize the opened chat frame
+     * It is called when the OpenedChatFrame is opened
+     * It set the history of the chat
+     * It set the label of the pseudo of the chatter
+     * It set the label of the display status
+     */
     public void initialize(){
         session = SessionController.getSessionWithAddress(chatter.getIP());
         assert session != null;
@@ -55,18 +67,39 @@ public class OpenedChatFrame extends AnchorPane {
         updateChat();
         fieldMessage.requestFocus();
     }
+
+    /**
+     * Set the history of the chat
+     * It is called when the OpenedChatFrame is opened
+     * It get the history of the chat in the database
+     */
     public void setHistory() {
         listDisplayed = getHistory(chatter.getIP());
         labelTest.setText("History with " + chatter.getPseudo() + " displayed");
     }
+
+    /**
+     * It set the parent controller of the opened chat frame
+     * It is called in the main frame
+     * @param parentController , The parent controller of the opened chat frame
+     */
     public void setParentController(MainFrame parentController) {
         this.parentController = parentController;
     }
 
+    /**
+     * It gets the TCP session with the chatter
+     * @return The TCP session with the chatter
+     */
     public TCPSession getSession(){
         return session;
     }
 
+    /**
+     * It updates the chat displayed
+     * It is called when the user clicks on the button "Search"
+     * It is called when the user clicks on the button "Cross"
+     */
     public void updateChat(){
         vboxChat.getChildren().clear();
         for(Message message : listDisplayed) {
@@ -75,6 +108,15 @@ public class OpenedChatFrame extends AnchorPane {
         fieldMessage.requestFocus();
     }
 
+    /**
+     * It adds a message to the chat
+     * It is called when the user clicks on the button "Send"
+     * It is called when the user receive a message
+     * It changes the design of the message displayed depending on the sender
+     * It adapts the position of the position depending on his size
+     * @param message , The message to add to the chat
+     * @param sender , True if the message is sent by the user, false otherwise
+     */
     public void addMessageToChat(Message message, Boolean sender){
         Label msg = new Label(message.getData().trim());
         Label time = new Label(message.getTime());
@@ -120,6 +162,11 @@ public class OpenedChatFrame extends AnchorPane {
         scrollPane.setVvalue(1.0);
     }
 
+    /**
+     * It sends a message to the chatter
+     * It is called when the user clicks on the button "Send"
+     * It is called when the user presses the key "Enter"
+     */
     public void sendMessage(){
         String message = fieldMessage.getText().trim();
 
@@ -138,10 +185,11 @@ public class OpenedChatFrame extends AnchorPane {
         }
     }
 
-    public void askDeleteConvo(){
-        deleteConvo();
-    }
-
+    /**
+     * It deletes the history of the chat in the database and in the chat displayed.
+     * It is called when the user clicks on the button "Delete history".
+     * It deletes the history if the user confirms his choice in a pop-up.
+     */
     public void deleteConvo() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete conversation");
@@ -162,19 +210,37 @@ public class OpenedChatFrame extends AnchorPane {
 
     }
 
+    /**
+     * It is called when the user receive a message
+     * It calls the method addMessageToChat to add the message to the chat
+     * It precise that the message is not sent by the user
+     * @param message , The message received
+     */
     public void receiveMessage(Message message){
         if(!searchMode) addMessageToChat(message, false);
     }
 
+    /**
+     * It calls the method of the mainFrame to hide the chatPane
+     * It is called when the user click on the hide button or when the chat session is closed
+     */
     public void hideChatPane() {
         session.setOpenDisplay(false);
         parentController.hidePane();
     }
 
+    /**
+     * It calls the method of the mainFrame to close the chat session
+     * It is called when the user clicks on the button "Close"
+     */
     public void closeChatSession(){
         parentController.closeChatSession();
     }
 
+    /**
+     * It search a message in the chat displayed
+     * It is called when the user clicks on the button "Search"
+     */
     public void searchMessage() {
         String search = fieldSearch.getText().trim();
         if(search.isEmpty()) {
@@ -192,6 +258,10 @@ public class OpenedChatFrame extends AnchorPane {
         }
     }
 
+    /**
+     * It cancels the research of a message in the chat displayed
+     * It is called when the user clicks on the cross button
+     */
     public void cancelSearch(){
         searchMode = false;
         imgCross.setVisible(false);
