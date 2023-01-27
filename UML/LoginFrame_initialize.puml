@@ -1,0 +1,36 @@
+@startuml
+actor Actor
+Actor -> LoginFrame : initialize
+activate LoginFrame
+LoginFrame -> DatabaseManager : initialize
+activate DatabaseManager
+DatabaseManager -> DatabaseManager : createNewDatabase
+activate DatabaseManager
+DatabaseManager --> DatabaseManager
+deactivate DatabaseManager
+DatabaseManager -> DatabaseManager : connect
+activate DatabaseManager
+DatabaseManager --> DatabaseManager
+deactivate DatabaseManager
+DatabaseManager --> LoginFrame
+deactivate DatabaseManager
+LoginFrame -> SessionController : initialize
+activate SessionController
+create TCPListener
+SessionController -> TCPListener : new
+activate TCPListener
+TCPListener --> SessionController
+deactivate TCPListener
+SessionController --> LoginFrame
+deactivate SessionController
+LoginFrame -> UserController : initialize
+activate UserController
+create UDPListener
+UserController -> UDPListener : new
+activate UDPListener
+UDPListener --> UserController
+deactivate UDPListener
+UserController --> LoginFrame
+deactivate UserController
+return
+@enduml

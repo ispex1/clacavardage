@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Gabriel/Travail/INSA/4A IR 2/clavaradage/projet/clacavardage/src/main/java</OriginalElement>
+  <nodes>
+    <node x="-48.14752952558135" y="2371.409870511628">model.Message</node>
+    <node x="142.98015106976743" y="1697.7462801860465">view.ClosedChatFrame</node>
+    <node x="-775.3023255813932" y="1372.6870935813954">view.LoginFrame</node>
+    <node x="-495.7209302325564" y="1372.6870935813954">view.SceneController</node>
+    <node x="336.5" y="297.4418604651162">network.TCPSession</node>
+    <node x="1017.6324186046509" y="2004.9163237209286">database.DatabaseManager</node>
+    <node x="680.75" y="297.4418604651162">network.UDPListener</node>
+    <node x="-547.3720930232535" y="675.2325581395341">Main</node>
+    <node x="-197.70010790697677" y="1697.7462801860465">view.OpenedChatFrame</node>
+    <node x="-49.0" y="1029.896395906977">view.MainFrame</node>
+    <node x="912.6731386046512" y="1326.279069767441">controller.UserController</node>
+    <node x="76.25" y="297.4418604651162">network.TCPListener</node>
+    <node x="320.30093693023264" y="2354.0">model.User</node>
+    <node x="-530.6501215255796" y="1118.7041619348834">view.ParametersFrame</node>
+    <node x="1209.173408372093" y="1349.5088446511616">controller.UserController.TypeMsg</node>
+    <node x="595.2483813953489" y="1326.279069767441">controller.SessionController</node>
+    <node x="354.5" y="118.58139534883696">network.UDPSender</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="view.ParametersFrame" target="view.MainFrame" relationship="TO_ONE">
+      <point x="5.0" y="94.5" />
+      <point x="-400.6501215255796" y="1217.4286085953486" />
+      <point x="23.25" y="1217.4286085953486" />
+      <point x="-62.25" y="-259.5" />
+    </edge>
+    <edge source="view.MainFrame" target="view.ParametersFrame" relationship="TO_ONE">
+      <point x="-72.25" y="0.0" />
+      <point x="13.25" y="1169.123883460465" />
+      <point x="-410.6501215255796" y="1169.123883460465" />
+      <point x="-5.0" y="94.5" />
+    </edge>
+    <edge source="network.TCPSession" target="model.User" relationship="TO_ONE">
+      <point x="0.0" y="270.5" />
+      <point x="474.5" y="2374.0" />
+      <point x="341.80093693023264" y="2374.0" />
+      <point x="-64.5" y="-116.5" />
+    </edge>
+    <edge source="controller.UserController.TypeMsg" target="controller.UserController" relationship="INNER_CLASS">
+      <point x="0.0" y="94.5" />
+      <point x="1300.673408372093" y="1420.2812279069756" />
+      <point x="1030.6731386046513" y="1420.2812279069756" />
+      <point x="0.0" y="-259.5" />
+    </edge>
+    <edge source="network.TCPListener" target="view.MainFrame" relationship="TO_ONE">
+      <point x="48.0" y="105.5" />
+      <point x="220.25" y="448.56688372093" />
+      <point x="113.37297674418596" y="448.56688372093" />
+      <point x="113.37297674418596" y="1061.108302883721" />
+      <point x="152.75" y="1061.108302883721" />
+      <point x="67.25" y="-259.5" />
+    </edge>
+    <edge source="network.TCPSession" target="view.OpenedChatFrame" relationship="TO_ONE">
+      <point x="0.0" y="-14.5" />
+      <point x="371.05981023255674" y="553.4418604651162" />
+      <point x="371.05981023255674" y="724.4450976744183" />
+      <point x="-98.69093829457367" y="724.4450976744183" />
+      <point x="-98.69093829457367" y="1746.3074455813949" />
+      <point x="-142.86677457364343" y="1746.3074455813949" />
+      <point x="-88.66666666666666" y="0.0" />
+    </edge>
+    <edge source="controller.UserController" target="network.UDPListener" relationship="CREATE">
+      <point x="5.0" y="259.5" />
+      <point x="1035.6731386046513" y="333.59438883720964" />
+      <point x="793.25" y="333.59438883720964" />
+      <point x="5.0" y="-116.5" />
+    </edge>
+    <edge source="view.OpenedChatFrame" target="network.TCPSession" relationship="TO_ONE">
+      <point x="-98.66666666666666" y="-292.5" />
+      <point x="-152.86677457364343" y="640.3436948837208" />
+      <point x="423.78580837209154" y="640.3436948837208" />
+      <point x="423.78580837209154" y="543.4418604651162" />
+      <point x="-138.0" y="-24.5" />
+    </edge>
+    <edge source="database.DatabaseManager" target="model.User" relationship="CREATE">
+      <point x="0.0" y="116.5" />
+      <point x="1187.1324186046509" y="2212.757164651162" />
+      <point x="1060.3050176744184" y="2212.757164651162" />
+      <point x="1060.3050176744184" y="2530.4574660465114" />
+      <point x="470.80093693023264" y="2530.4574660465114" />
+      <point x="64.5" y="-116.5" />
+    </edge>
+    <edge source="controller.UserController" target="model.User" relationship="CREATE">
+      <point x="0.0" y="-5.0" />
+      <point x="955.7337209302325" y="1580.779069767441" />
+      <point x="955.7337209302325" y="2394.248651162791" />
+      <point x="434.65803906976697" y="2394.248651162791" />
+      <point x="434.65803906976697" y="2465.5" />
+      <point x="86.0" y="-5.0" />
+    </edge>
+    <edge source="controller.SessionController" target="network.TCPListener" relationship="TO_ONE">
+      <point x="-76.0" y="182.5" />
+      <point x="661.2483813953489" y="913.1395348837204" />
+      <point x="249.93620093023128" y="913.1395348837204" />
+      <point x="249.93620093023128" y="402.9418604651162" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="network.UDPListener" target="view.MainFrame" relationship="TO_ONE">
+      <point x="-107.5" y="82.5" />
+      <point x="850.3496511627902" y="496.4418604651162" />
+      <point x="850.3496511627902" y="1110.2436182325587" />
+      <point x="48.47572837209293" y="1110.2436182325587" />
+      <point x="48.47572837209293" y="1091.896395906977" />
+      <point x="134.5" y="-197.5" />
+    </edge>
+    <edge source="controller.SessionController" target="network.TCPSession" relationship="TO_MANY">
+      <point x="76.0" y="182.5" />
+      <point x="813.2483813953489" y="698.4539534883716" />
+      <point x="479.5" y="698.4539534883716" />
+      <point x="5.0" y="-270.5" />
+    </edge>
+    <edge source="network.TCPSession" target="model.Message" relationship="CREATE">
+      <point x="-25.25" y="270.5" />
+      <point x="449.25" y="2022.7317127441868" />
+      <point x="188.32578530232536" y="2022.7317127441868" />
+      <point x="188.32578530232536" y="2453.659870511628" />
+      <point x="84.0" y="-89.25" />
+    </edge>
+    <edge source="view.OpenedChatFrame" target="model.Message" relationship="CREATE">
+      <point x="5.0" y="292.5" />
+      <point x="-49.20010790697677" y="2260.5654816744186" />
+      <point x="40.85247047441865" y="2260.5654816744186" />
+      <point x="5.0" y="-171.5" />
+    </edge>
+    <edge source="model.Message" target="model.User" relationship="TO_ONE">
+      <point x="0.0" y="171.5" />
+      <point x="35.85247047441865" y="2565.003237209302" />
+      <point x="341.80093693023264" y="2565.003237209302" />
+      <point x="-64.5" y="-116.5" />
+    </edge>
+    <edge source="view.MainFrame" target="model.User" relationship="TO_ONE">
+      <point x="67.25" y="259.5" />
+      <point x="152.75" y="1615.5654816744186" />
+      <point x="400.0" y="1615.5654816744186" />
+      <point x="400.0" y="2354.0" />
+      <point x="21.5" y="-116.5" />
+    </edge>
+    <edge source="controller.UserController" target="model.User" relationship="TO_MANY">
+      <point x="-118.0" y="5.0" />
+      <point x="989.9591795348836" y="1590.779069767441" />
+      <point x="989.9591795348836" y="2475.5" />
+      <point x="86.0" y="5.0" />
+    </edge>
+    <edge source="controller.SessionController" target="network.TCPListener" relationship="CREATE">
+      <point x="-66.0" y="182.5" />
+      <point x="671.2483813953489" y="1417.1585116279064" />
+      <point x="620.9271162790701" y="1417.1585116279064" />
+      <point x="620.9271162790701" y="944.4035906976737" />
+      <point x="177.25" y="944.4035906976737" />
+      <point x="5.0" y="-105.5" />
+    </edge>
+    <edge source="view.MainFrame" target="view.ClosedChatFrame" relationship="TO_ONE">
+      <point x="-62.25" y="259.5" />
+      <point x="23.25" y="1630.5654816744186" />
+      <point x="270.48015106976743" y="1630.5654816744186" />
+      <point x="5.0" y="-105.5" />
+    </edge>
+    <edge source="view.ClosedChatFrame" target="view.MainFrame" relationship="TO_ONE">
+      <point x="-5.0" y="0.0" />
+      <point x="260.48015106976743" y="1640.5654816744186" />
+      <point x="13.25" y="1640.5654816744186" />
+      <point x="-72.25" y="259.5" />
+    </edge>
+    <edge source="controller.UserController" target="network.UDPListener" relationship="TO_ONE">
+      <point x="-5.0" y="259.5" />
+      <point x="1025.6731386046513" y="1461.6883832558126" />
+      <point x="977.222221395349" y="1461.6883832558126" />
+      <point x="977.222221395349" y="374.7440651162794" />
+      <point x="783.25" y="374.7440651162794" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="controller.SessionController" target="network.TCPSession" relationship="CREATE">
+      <point x="66.0" y="182.5" />
+      <point x="803.2483813953489" y="1537.080372093022" />
+      <point x="780.982334883721" y="1537.080372093022" />
+      <point x="780.982334883721" y="770.7988837209296" />
+      <point x="469.5" y="770.7988837209296" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="network.TCPSession" target="model.Message" relationship="TO_ONE">
+      <point x="-15.25" y="270.5" />
+      <point x="459.25" y="2040.4268584186054" />
+      <point x="220.07670370232563" y="2040.4268584186054" />
+      <point x="220.07670370232563" y="2489.3103560930235" />
+      <point x="97.65025012092985" y="2489.3103560930235" />
+      <point x="97.65025012092985" y="2463.659870511628" />
+      <point x="84.0" y="-79.25" />
+    </edge>
+    <edge source="view.MainFrame" target="view.OpenedChatFrame" relationship="TO_ONE">
+      <point x="-62.25" y="259.5" />
+      <point x="23.25" y="1526.3562472186045" />
+      <point x="-21.4388459906977" y="1526.3562472186045" />
+      <point x="-21.4388459906977" y="1735.2082009302321" />
+      <point x="-49.20010790697677" y="1735.2082009302321" />
+      <point x="5.0" y="-292.5" />
+    </edge>
+    <edge source="view.OpenedChatFrame" target="view.MainFrame" relationship="TO_ONE">
+      <point x="-5.0" y="0.0" />
+      <point x="-59.20010790697677" y="1712.407769302325" />
+      <point x="-36.91094958139519" y="1712.407769302325" />
+      <point x="-36.91094958139519" y="1535.4764198697671" />
+      <point x="13.25" y="1535.4764198697671" />
+      <point x="-72.25" y="259.5" />
+    </edge>
+    <edge source="view.OpenedChatFrame" target="model.Message" relationship="TO_MANY">
+      <point x="-5.0" y="292.5" />
+      <point x="-59.20010790697677" y="2260.5654816744186" />
+      <point x="-16.335296446511677" y="2260.5654816744186" />
+      <point x="-16.335296446511677" y="2439.924920558139" />
+      <point x="30.852470474418652" y="2439.924920558139" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="database.DatabaseManager" target="model.Message" relationship="CREATE">
+      <point x="-20.0" y="116.5" />
+      <point x="1167.1324186046509" y="2192.8067869767433" />
+      <point x="1134.3567981395347" y="2192.8067869767433" />
+      <point x="1134.3567981395347" y="2627.159870511628" />
+      <point x="84.0" y="84.25" />
+    </edge>
+  </edges>
+  <settings layout="Series Parallel" zoom="0.7017411012700543" showDependencies="true" x="197.91903255813827" y="1727.7820948837204" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

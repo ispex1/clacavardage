@@ -1,0 +1,10 @@
+@startuml
+actor Actor
+Actor -> Main : main
+activate Main
+Main -> SceneController : main
+activate SceneController
+SceneController --> Main
+deactivate SceneController
+return
+@enduml

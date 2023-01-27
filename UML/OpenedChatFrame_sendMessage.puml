@@ -1,0 +1,29 @@
+@startuml
+actor Actor
+Actor -> OpenedChatFrame : sendMessage
+activate OpenedChatFrame
+create Message
+OpenedChatFrame -> Message : new
+activate Message
+Message --> OpenedChatFrame
+deactivate Message
+OpenedChatFrame -> SessionController : sendMessage(msg)
+activate SessionController
+SessionController -> Message : toString
+activate Message
+Message --> SessionController
+deactivate Message
+SessionController -> TCPSession : sendMessage(msg)
+activate TCPSession
+TCPSession --> SessionController
+deactivate TCPSession
+SessionController -> DatabaseManager : insertMessage(msg)
+activate DatabaseManager
+DatabaseManager --> SessionController
+deactivate DatabaseManager
+SessionController --> OpenedChatFrame
+deactivate SessionController
+OpenedChatFrame -> OpenedChatFrame : addMessageToChat(msg)
+
+return
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+:User:
+:Admin:
+:User2:
+
+User <|- Admin
+User --> (Se connecter)
+User --> (Se déconnecter)
+User --> (Choisir pseudo)
+User --> (Communiquer)
+User --> (Reduire l'application)
+
+(Communiquer) <|-- (Envoyer un message)
+(Communiquer) <|-- (Recevoir un message)
+(Communiquer) ..> (Choisir un utilisateur) : include
+(Communiquer) ..> (Récupérer l'historique) : include
+(Envoyer un message) ..> (Enregistrer dans l'historique) : include
+(Recevoir un message) ..> (Enregistrer dans l'historique) : include
+
+(Choisir pseudo) ..> (Notifier le reseau) : extends
+
+(Se connecter) ..> (Notifier le reseau) : include
+(Notifier le reseau) --> :User2:
+(Se connecter) ..> (Afficher les utilisateurs en ligne) : include
+(Se connecter)..> (Choisir pseudo) : include
+
+(Se déconnecter) ..> (Notifier le reseau) : include
+
+Admin --> (Déployer l'application)
+@enduml

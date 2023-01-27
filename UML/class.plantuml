@@ -1,0 +1,267 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class ClosedChatFrame {
+  - labelPseudo: Label
+  - parentController: MainFrame
+  ~ audioClip: AudioClip
+  + initialize(): void
+  + hideChatPane(): void
+  + setParentController(MainFrame): void
+  + openChatSession(): void
+  + easterEgg(): void
+}
+class DatabaseManager {
+  + url: String
+  - createNewDatabase(): void
+  + deletteAllMessages(String): void
+  + findListOfMessage(String, String): ArrayList<Message>
+  + initialize(): void
+  + createNewConvo(String): void
+  + insertMessage(String, Message): void
+  + getHistory(String): ArrayList<Message>
+  - connect(): void
+}
+class LoginFrame {
+  - textFieldPseudo: TextField
+  - textPseudoNotValid: Text
+  - hasRunAtom: AtomicBoolean
+  + initialize(): void
+  + connectClick(ActionEvent): void
+}
+class Main {
+  + main(String[]): void
+}
+class MainFrame {
+  - UsersList: ListView<String>
+  # chatter: User
+  - myIP: Label
+  + closedChatController: ClosedChatFrame
+  - myPseudo: Label
+  + openedChatController: OpenedChatFrame
+  + parametersController: ParametersFrame
+  - mainPane: Pane
+  - pane: Pane
+  + updateUsersList(): void
+  + getChatter(): User
+  + updateChatter(): void
+  + isShowing(): boolean
+  + openChatSession(): void
+  + initialize(): void
+  + updateChatPane(): void
+  + closeChatSession(): void
+  + parametersClick(): void
+  - findAJoke(): String
+  + easterEgg(): void
+  + updateSelection(): void
+  + hidePane(): void
+}
+class Message {
+  - data: String
+  - sender: User
+  - time: String
+  - DATE_FORMAT: String
+  - receiver: User
+  + setReceiver(User): void
+  + setSender(User): void
+  + getSender(): User
+  + toString(): String
+  + getData(): String
+  + setData(String): void
+  + getReceiver(): User
+  + setTime(String): void
+  + getTime(): String
+}
+class OpenedChatFrame {
+  - fieldSearch: TextField
+  - imgCross: ImageView
+  + parentController: MainFrame
+  - scrollPane: ScrollPane
+  - fieldMessage: TextField
+  - searchMode: boolean
+  - labelTest: Label
+  + session: TCPSession
+  - btnCross: Button
+  - vboxChat: VBox
+  - listDisplayed: ArrayList<Message>
+  + searchMessage(): void
+  + deleteConvo(): void
+  + addMessageToChat(Message, Boolean): void
+  + initialize(): void
+  + setParentController(MainFrame): void
+  + askDeleteConvo(): void
+  + closeChatSession(): void
+  + getSession(): TCPSession
+  + hideChatPane(): void
+  + setHistory(): void
+  + sendMessage(): void
+  + updateChat(): void
+  + cancelSearch(): void
+  + receiveMessage(Message): void
+}
+class ParametersFrame {
+  - textFieldPseudo: TextField
+  - textPseudoNotValid: Text
+  - parentController: MainFrame
+  + setParentController(MainFrame): void
+  + changePseudoClick(ActionEvent): void
+  + hideParametersPane(): void
+  + disconnectClick(ActionEvent): void
+}
+class SceneController {
+  # stage: Stage
+  # scene: Scene
+  # root: Parent
+  + main(String[]): void
+  + changePseudo(ActionEvent, TextField, Text): void
+  + tryConnect(ActionEvent, TextField, Text): void
+  + setStage(): void
+  + switchToMainScene(Object): void
+  + start(Stage): void
+  + switchScene(Object): void
+  + switchToLoginScene(Object): void
+}
+class SessionController {
+  + PORT: int
+  + sessionsList: ArrayList<TCPSession>
+  + tcpListener: TCPListener
+  + getSessionWithPseudo(String): TCPSession?
+  + closeSession(TCPSession): void
+  + close(): void
+  + initialize(): void
+  + createSession(User): void
+  + sendMessage(Message, User): void
+  + getSessionWithUser(User): TCPSession?
+  + getSessionWithAddress(String): TCPSession?
+  + sessionCreated(Socket): void
+  + closeAllSessions(): void
+  + isSessionWith(User): boolean
+  + closeSession(User): void
+}
+class TCPListener {
+  - serverSocket: ServerSocket
+  - port: int
+  - frame: MainFrame
+  - isRunning: boolean
+  + setFrame(MainFrame): void
+  + closeListener(): void
+  + run(): void
+  + setPort(int): void
+}
+class TCPSession {
+  - isRunning: boolean
+  - writer: PrintWriter
+  - bufferedReader: BufferedReader
+  - userDist: User
+  - inputStream: InputStream
+  - myUser: User
+  - openedFrame: OpenedChatFrame
+  - socket: Socket
+  - msg: Message
+  + isOpenDisplayed: Boolean
+  - outputStream: OutputStream
+  + run(): void
+  + getUserDist(): User
+  + setSocket(Socket): void
+  + closeSession(): void
+  + setOpenedFrame(OpenedChatFrame): void
+  + setInputStream(InputStream): void
+  + setOpenDisplay(Boolean): void
+  + getSocket(): Socket
+  + sendMessage(String): void
+  + setOutputStream(OutputStream): void
+  + getTCPSession(): TCPSession
+  + setRunning(boolean): void
+}
+enum TypeMsg << enumeration >> {
+  + USER_LIST: 
+  + DISCONNECT: 
+  + ASK_USER_LIST: 
+  + PSEUDO: 
+  + CONNECT: 
+  + values(): TypeMsg[]
+  + valueOf(String): TypeMsg
+}
+class UDPListener {
+  - port: int
+  - frame: MainFrame
+  - isRunning: boolean
+  - socket: DatagramSocket
+  + setFrame(MainFrame): void
+  + closeSocket(): void
+  + setRunningState(boolean): void
+  + setPort(int): void
+  + run(): void
+}
+class UDPSender {
+  + sendUDP(String, int, String): void
+  + sendBroadcast(String, int): void
+}
+class User {
+  - ip: String
+  - pseudo: String
+  - port: int
+  + getIP(): String
+  + setPseudo(String): void
+  + getPseudo(): String
+  + getPort(): int
+  + setIP(String): void
+  + setPort(int): void
+}
+class UserController {
+  - listOnline: ArrayList<User>
+  - myUser: User
+  + udpListener: UDPListener
+  + getMyUser(): User
+  + testListOnline(): void
+  + setMyUser(String): void
+  + initialize(): void
+  + sendDisconnect(): void
+  + sendConnect(): void
+  + updateUser(String, String): void
+  + sendPseudo(String): void
+  + pseudoNotPresent(String): boolean
+  + addMyUser(): void
+  + getUserByPseudo(String): User?
+  + informationTreatment(String): void
+  + getUserByIP(String): User?
+  + getListOnline(): List<User>
+  + getLocalIP(): String
+  + updateMyUser(): void
+  + askUserList(): void
+  + sendUserList(String): void
+  + close(): void
+}
+
+ClosedChatFrame   "1" *-[#595959,plain]-> "parentController\n1" MainFrame         
+DatabaseManager    -[#595959,dashed]->  Message           : "«create»"
+DatabaseManager    -[#595959,dashed]->  User              : "«create»"
+MainFrame         "1" *-[#595959,plain]-> "closedChatController\n1" ClosedChatFrame   
+MainFrame         "1" *-[#595959,plain]-> "openedChatController\n1" OpenedChatFrame   
+MainFrame         "1" *-[#595959,plain]-> "parametersController\n1" ParametersFrame   
+MainFrame         "1" *-[#595959,plain]-> "chatter\n1" User              
+Message           "1" *-[#595959,plain]-> "sender\n1" User              
+OpenedChatFrame   "1" *-[#595959,plain]-> "parentController\n1" MainFrame         
+OpenedChatFrame    -[#595959,dashed]->  Message           : "«create»"
+OpenedChatFrame   "1" *-[#595959,plain]-> "listDisplayed\n*" Message           
+OpenedChatFrame   "1" *-[#595959,plain]-> "session\n1" TCPSession        
+ParametersFrame   "1" *-[#595959,plain]-> "parentController\n1" MainFrame         
+SessionController  -[#595959,dashed]->  TCPListener       : "«create»"
+SessionController "1" *-[#595959,plain]-> "tcpListener\n1" TCPListener       
+SessionController "1" *-[#595959,plain]-> "sessionsList\n*" TCPSession        
+SessionController  -[#595959,dashed]->  TCPSession        : "«create»"
+TCPListener       "1" *-[#595959,plain]-> "frame\n1" MainFrame         
+TCPSession        "1" *-[#595959,plain]-> "msg\n1" Message           
+TCPSession         -[#595959,dashed]->  Message           : "«create»"
+TCPSession        "1" *-[#595959,plain]-> "openedFrame\n1" OpenedChatFrame   
+TCPSession        "1" *-[#595959,plain]-> "userDist\n1" User              
+TypeMsg            +-[#820000,plain]-  UserController    
+UDPListener       "1" *-[#595959,plain]-> "frame\n1" MainFrame         
+UserController     -[#595959,dashed]->  UDPListener       : "«create»"
+UserController    "1" *-[#595959,plain]-> "udpListener\n1" UDPListener       
+UserController    "1" *-[#595959,plain]-> "listOnline\n*" User              
+UserController     -[#595959,dashed]->  User              : "«create»"
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+participant Actor
+Actor -> OpenedChatFrame : closeChatSession
+activate OpenedChatFrame
+OpenedChatFrame -> MainFram : closeChatSession
+activate MainFram
+MainFram -> SessionController : closeSession
+activate SessionController
+SessionController -> SessionController : getSessionWithPseudo
+activate SessionController
+SessionController --> SessionController
+deactivate SessionController
+SessionController -> TCPSession : closeSession(session)
+activate TCPSession
+TCPSession --> SessionController
+deactivate TCPSession
+SessionController --> MainFram
+deactivate SessionController
+MainFram -> MainFram : hidePane
+activate MainFram
+MainFram --> MainFram
+deactivate MainFram
+MainFram --> OpenedChatFrame
+deactivate MainFram
+return
+@enduml

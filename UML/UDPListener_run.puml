@@ -1,0 +1,62 @@
+@startuml
+participant Network
+participant Mainframe as MF
+activate UDPListener
+Network -> UDPListener :
+
+UDPListener -> UserController : informationTreatment(data)
+activate UserController
+UserController -> TypeMsg : valueOf(data)
+activate TypeMsg
+TypeMsg --> UserController
+deactivate TypeMsg
+
+alt PSEUDO
+
+UserController -> UserController : updateUser
+activate UserController
+UserController --> UserController
+deactivate UserController
+
+else CONNECT
+create User
+UserController -> User : new
+activate User
+User --> UserController
+deactivate User
+UserController -> UserController : addUserList(user)
+
+else DISCONNECT
+
+UserController -> UserController : getUserByPseudo
+UserController -> UserController : removeUserList(user)
+
+else ASK_USER_LIST
+UserController -> UserController : sendUserList
+activate UserController
+UserController -> UDPSender : sendUDP
+activate UDPSender
+UDPSender --> UserController
+deactivate UDPSender
+UserController --> UserController
+deactivate UserController
+
+else USER_LIST
+UserController -> UserController : pseudoNotPresent
+
+create User
+UserController -> User : new
+activate User
+User --> UserController
+UserController -> UserController : addUserList(user)
+
+else ASK_FILE_LIST
+deactivate User
+end alt
+
+UserController --> UDPListener
+deactivate UserController
+
+deactivate UDPListener
+
+@enduml

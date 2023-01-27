@@ -1,0 +1,44 @@
+@startuml
+actor Actor
+Actor -> LoginFrame : connectClick(pseudo)
+activate LoginFrame
+LoginFrame -> SceneController : tryConnect(pseudo)
+activate SceneController
+SceneController -> UserController : askUserList(pseudo)
+activate UserController
+UserController -> UDPSender : sendBroadcast(ASK_USER_LIST)
+activate UDPSender
+UDPSender --> UserController
+deactivate UDPSender
+UserController --> SceneController
+deactivate UserController
+SceneController -> UserController : pseudoNotPresent(pseudo)
+activate UserController
+UserController --> SceneController
+deactivate UserController
+alt pseudoNotPresent
+
+SceneController -> UserController : addMyUser
+activate UserController
+UserController --> SceneController
+deactivate UserController
+SceneController -> UserController : sendConnect
+activate UserController
+UserController -> UDPSender : sendBroadcast
+activate UDPSender
+UDPSender --> UserController
+deactivate UDPSender
+UserController --> SceneController
+deactivate UserController
+SceneController -> SceneController : switchToMainScene
+
+else pseudoPresent
+
+SceneController -> SceneController : clearListOnline()
+
+end
+
+SceneController --> LoginFrame
+deactivate SceneController
+return
+@enduml
