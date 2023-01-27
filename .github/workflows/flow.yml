@@ -1,11 +1,15 @@
-name: maven ci-cd
+name: Maven ci-cd
 
-on: push
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
+  
   build:
-    name: Build project
+    
     runs-on: ubuntu-latest
+   
     steps:
       - name: Code Checkout
         uses: actions/checkout@v3
