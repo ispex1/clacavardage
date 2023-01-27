@@ -1,0 +1,27 @@
+name: maven ci-cd
+
+on: push
+
+jobs:
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+        
+      - name: Set up JDK
+        uses: actions/setup-java@3
+        with:
+          java-version: 15
+          distribution: adopt
+          
+       - name: Maven cache
+         uses: actions/cache@v2
+         with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2-
+       
+       - name: Build with maven
+         run: mvn --batch-mode --file pom.xml --update-snapshots package
