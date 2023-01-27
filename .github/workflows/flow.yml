@@ -1,8 +1,7 @@
 name: Maven ci-cd
 
 on:
-  push:
-  workflow_dispatch:
+  [push]
 
 jobs:
   
