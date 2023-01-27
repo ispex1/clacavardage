@@ -299,12 +299,4 @@ public class UserController {
     public static List<User> getListOnline(){
         return listOnline;
     }
-
-    //TODO : Just for test, to delete
-    public static void testListOnline() {
-        listOnline.add(new User(getLocalIP(), "Victoria"));
-        for(int i = 0; i < 10; i++){
-            listOnline.add(new User("192.168.56." + i, "pseudo" + i));
-        }
-    }
 }

@@ -20,19 +20,13 @@ import java.util.ArrayList;
 import static database.DatabaseManager.*;
 
 
-/**
- * This class is the main class of the project.
- *
- */
 public class testMain{
 
     public static void main (String[] args){
 
-        testSessionController();
+        //testSessionController();
 
     }
-    //TODO : harmoniser le code, static au bon endroit, private public, get set, nom de fonction etc
-    //TODO : Jenkins
 
     // test Network
     private static void testNetwork(){
@@ -63,9 +57,6 @@ public class testMain{
         DatabaseManager.getHistory(UserController.getListOnline().get(0).getIP());
     }
 
-
-    /*//test UDP
-    //TODO : A tester le unicast sur un autre pc
     private static void testUDPSender(int type){
         // type : 0 = broadcast, 1 = unicast
         int port=1234;
@@ -107,7 +98,7 @@ public class testMain{
         UserController.initialize();
         UserController.getListOnline().add(new User("10.10.10.10","gaboche"));
         UserController.getListOnline().add(new User(UserController.getMyUser().getIP(),"bacchus"));
-        UserController.getListOnline().add(new User(UserController.getMyUser().getIP(), "estebite"));
+        UserController.getListOnline().add(new User(UserController.getMyUser().getIP(), "esteban"));
         UserController.getListOnline().add(new User(UserController.getMyUser().getIP(), "paul"));
 
         System.out.println();
@@ -133,7 +124,6 @@ public class testMain{
             System.out.println("IP : " + user.getIP());
         });
         System.out.println();
-        //TODO :recuperer la liste de tous les utilisateurs connectés (je crois que je le fais a aucune moment ??)
     }
 
     private static void testDBManager() {
@@ -149,12 +139,5 @@ public class testMain{
         createNewConvo("IP_gaboche");
 
         insertMessage(gaboche.getIP(), msg);
-        ArrayList<Integer> list = findListOfIndex(gaboche.getIP(), "test");
-        //printList(list);
-        for (int i = 0; i < list.size(); i++) {
-            msg2 = getMsgFromIndex(gaboche.getIP(), list.get(i));
-            System.out.println(msg2.toString());
-            //db.deleteMessage(gaboche.getIP(), list.get(i));
-        }
-    }*/
+    }
 }

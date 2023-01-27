@@ -1,8 +1,10 @@
 # Projet de Clavardage
-Ce projet est un chat local écrit en Java. Il permet à plusieurs utilisateurs sur un même réseau de discuter ensemble en utilisant une interface graphique amusante.
+Ce projet est un chat local écrit en Java. Il permet à plusieurs utilisateurs sur un même réseau de discuter ensemble en utilisant une interface graphique originale.
 
 ## Prérequis
 - Java 11 ou version ultérieure
+- Maven
+- JavaFX
 - Une connexion réseau pour les utilisateurs
 ## Installation
 - Téléchargez ou clonez ce dépôt git
@@ -12,13 +14,13 @@ Ce projet est un chat local écrit en Java. Il permet à plusieurs utilisateurs 
    ```
 - Exécutez l'application avec la commande :
    ```
-   java -jar target/clavardage-1.0-SNAPSHOT-jar-with-dependencies.jar
+   java -jar target/clac.jar
    ```
   
 ## Fonctionnalités
-- Interface utilisateur graphique pour envoyer et recevoir des messages
+- Interface graphique pour envoyer et recevoir des messages
 - Utilisation de SQLite pour stocker les messages
-- Recherche dans lhistorique de conversation
+- Recherche dans l'historique de conversation
 
 ## Dépendances
 - SQLite JDBC
