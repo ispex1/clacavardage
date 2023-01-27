@@ -37,8 +37,6 @@ public class SceneController extends Application {
      * @param args , the argument of the application
      */
     public static void main(String[] args){
-        //TODO: remove this line, just for testing
-        if (getListOnline().isEmpty()) testListOnline();
         launch(args);
     }
 
