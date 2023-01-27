@@ -9,7 +9,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
 
 /**
- * Controller of the ClosedChatFrame FXML
+ * This class is the controller of the closed chat frame of the application.
+ * It is the frame that contains the pseudo of the user with whom we are chatting and the button to open the chat.
+ * It is displayed when the chat is closed.
+ * It is displayed in the main frame.
  */
 public class ClosedChatFrame extends AnchorPane {
     @FXML
