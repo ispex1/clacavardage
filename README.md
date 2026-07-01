@@ -25,7 +25,3 @@ Ce projet est un chat local écrit en Java. Il permet à plusieurs utilisateurs 
 ## Dépendances
 - SQLite JDBC
 - JavaFX
-## Auteurs
-
-- Esteban Geley https://github.com/iSpeX1
-- Gabriel Bordais https://github.com/aldeobacchus
